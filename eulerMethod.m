@@ -1,3 +1,5 @@
+% Computation of an approximation of a realisation of the solution of the 
+% SDE dX = b(X)dt + dWt
 function X = eulerMethod(X0,NT,N,T,Mu)
 
 % Setting the seed to 1

@@ -1,3 +1,5 @@
+% Simulation of a realisation of a fractional Brownian motion with Hurst 
+% index H on a Nx size grid
 function B = fbm(H,Nx,xmax)
 
 % Setting the seed to 1
@@ -23,7 +25,7 @@ B = [0 ; M'*random'];
 plot(x,B)
 xlabel('x')
 ylabel('B_x^H')
-chn = ['One realisation of a fractional Brownian motion (Nx = ',num2str(Nx),' ; H = ',num2str(H),')'];
+chn = ['Realisation of a fractional Brownian motion B^H_x (Nx = ',num2str(Nx),' ; H = ',num2str(H),')'];
 title(chn)
 
 end

@@ -14,3 +14,7 @@ end
 value = b(Mu,x);
 figure
 plot(x,value)
+xlabel('x')
+ylabel('Id^N')
+chn = ['Approximation of the identity function by Haar wavelets (N = ',num2str(N),')'];
+title(chn)

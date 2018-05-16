@@ -13,17 +13,21 @@ output = zeros(1,length(x));
 
 for k=1:length(x)
     
-    % Test if y is inside the haar function support or not
-    if (y(k) >= 1) || (y(k) < 0)
+    % First we test if y is inside the haar function support or not
+    if (j == -1) && ((x(k)<m) || (x(k) >= m+1))
         output(k) = 0;
     else
-        if (j == -1) || (y(k) < 1/2) % case j = -1 leads to 1 on the support
-            output(k) = 1;
-        else   
-            if (y(k) >= 1/2) 
-                output(k) = -1; 
-            end
-        end   
+        if (j > -1) && ((y(k) >= 1) || (y(k) < 0))
+            output(k) = 0;
+        else
+            if (j == -1) || (y(k) < 1/2) % case j = -1 leads to 1 on the support
+                output(k) = 1;
+            else   
+                if (y(k) >= 1/2) 
+                    output(k) = -1; 
+                end
+            end   
+        end
     end
     
 end

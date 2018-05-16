@@ -15,12 +15,8 @@ Xeuler(1) = X0;
 
 for i=1:NT
     increment = sqrt(dt)*randn();
-    X(i+1) = X(i) + b(N,Mu,X(i))*dt;
-    b(N,Mu,X(i))
-    Xeuler(i)
-    Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt;
-%     X(i+1) = X(i) + b(N,Mu,X(i))*dt + increment;
-%     Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt + increment;
+    X(i+1) = X(i) + b(Mu,X(i))*dt + increment;
+    Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt + increment;
 end
 
 % Display

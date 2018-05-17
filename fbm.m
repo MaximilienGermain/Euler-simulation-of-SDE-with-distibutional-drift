@@ -1,12 +1,13 @@
 % Simulation of a realisation of a fractional Brownian motion with Hurst 
 % index H on a Nx size grid
-function [xgrid,B] = fbm(H,N)
+function [xgrid,B] = fbm(H,K,Nx,N)
 
 % Setting the seed to 1
 %rng(10,'twister');
 rng(1000,'twister');
-Nx = 1 + (N+1)*2^(N+2);
-xgrid = linspace(-N,N+1,Nx);
+%Nx = 1 + (N+1)*2^(N+2);
+%Nx = K*2^(N+2) -2^N + 2;
+xgrid = linspace(-K,K,Nx);
 dx = 1/2^(N+1);
 
 % Simulation of Nx independent gaussian variables

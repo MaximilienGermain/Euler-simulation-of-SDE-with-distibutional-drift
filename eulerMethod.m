@@ -1,6 +1,6 @@
 % Computation of an approximation of a realisation of the solution of the 
 % SDE dX = b(X)dt + dWt
-function X = eulerMethod(X0,NT,N,Nx,T,H,B,xgrid,test)
+function X = eulerMethod(X0,NT,N,Nx,T,H,B,xgrid,test,K)
 
 % Setting the seed to 1
 rng(1,'twister');
@@ -13,51 +13,55 @@ Xeuler = zeros(1,NT+1);
 X(1) = X0;
 Xeuler(1) = X0;
 
-Mu = computeMu(B,N,test);
+% Computation of the coefficients on the wavelet basis
+Mu = computeMu(B,N,test,K);
 
 % Display of the fBm and its derivative approximation
-figure
-[AX,H1,H2] = plotyy(xgrid,b(Mu,xgrid),xgrid,B);
-ylabel(AX(1),'Approximation of $\frac{\partial}{\partial x}B^H_x$ by Haar wavelets','Interpreter','latex')
-ylabel(AX(2),'$B^H_x$','Interpreter','latex')
-set(AX(1),'ycolor','r')
-set(AX(2),'ycolor','b')
-set(H1,'Color','r')
-set(H2,'Color','b')
-set(AX(2),'Xgrid','on','Ygrid','on','YMinorGrid','on')
-xlabel('$x$','Interpreter','latex')
-xlim(AX(2), [min(xgrid) max(xgrid)])
-xlim(AX(1), [min(xgrid) max(xgrid)])
-chn = ['Sample path of $B^H_x$ and approximation of $\frac{\partial}{\partial x}B^H_x$ (Nx = ',num2str(Nx),' ; H = ',num2str(H),' ; N = ',num2str(N),')'];
-title(chn,'Interpreter','latex')
+if (test == 0)
+    figure
+    [AX,H1,H2] = plotyy(xgrid,b(Mu,K,xgrid),xgrid,B);
+    ylabel(AX(1),'Approximation of $\frac{\partial}{\partial x}B^H_x$ by Haar wavelets','Interpreter','latex')
+    ylabel(AX(2),'$B^H_x$','Interpreter','latex')
+    set(AX(1),'ycolor','r')
+    set(AX(2),'ycolor','b')
+    set(H1,'Color','r')
+    set(H2,'Color','b')
+    set(AX(2),'Xgrid','on','Ygrid','on','YMinorGrid','on')
+    xlabel('$x$','Interpreter','latex')
+    xlim(AX(2), [min(xgrid) max(xgrid)])
+    xlim(AX(1), [min(xgrid) max(xgrid)])
+    chn = ['Sample path of $B^H_x$ and approximation of $\frac{\partial}{\partial x}B^H_x$ (Nx = ',num2str(Nx),' ; H = ',num2str(H),' ; N = ',num2str(N),')'];
+    title(chn,'Interpreter','latex')
+end
 
+% Euler scheme
 for i=1:NT
     increment = sqrt(dt)*randn();
-    X(i+1) = X(i) + b(Mu,X(i))*dt + increment;
+    X(i+1) = X(i) + b(Mu,K,X(i))*dt + increment;
     Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt + increment;
 end
 
 % Display
-% if (test == 0)
-%     figure
-%     modifiedEuler = plot(t,X,'r') ;
-%     grid on
-%     xlabel('$t$','Interpreter','latex')
-%     ylabel('$X_t$','Interpreter','latex')
-%     chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),')'];
-%     title(chn,'Interpreter','latex')
-%     legend([modifiedEuler],'Approximation with Haar wavelets')
-% else
-%     figure
-%     modifiedEuler = plot(t,X,'r') ;
-%     grid on
-%     hold on
-%     euler = plot(t,Xeuler,'b');
-%     xlabel('$t$','Interpreter','latex')
-%     ylabel('$X_t$','Interpreter','latex')
-%     chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),')'];
-%     title(chn,'Interpreter','latex')
-%     legend([modifiedEuler,euler],'Approximation with Haar wavelets','Usual Euler scheme')
-% end
+if (test == 0)
+    figure
+    modifiedEuler = plot(t,X,'b') ;
+    grid on
+    xlabel('$t$','Interpreter','latex')
+    ylabel('$X_t$','Interpreter','latex')
+    chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),'; K = ',num2str(K),')'];
+    title(chn,'Interpreter','latex')
+    legend([modifiedEuler],'Approximation with Haar wavelets')
+else
+    figure
+    modifiedEuler = plot(t,X,'r') ;
+    grid on
+    hold on
+    euler = plot(t,Xeuler,'b');
+    xlabel('$t$','Interpreter','latex')
+    ylabel('$X_t$','Interpreter','latex')
+    chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),' ; K = ',num2str(K),')'];
+    title(chn,'Interpreter','latex')
+    legend([modifiedEuler,euler],'Approximation with Haar wavelets','Usual Euler scheme')
+end
 
 end

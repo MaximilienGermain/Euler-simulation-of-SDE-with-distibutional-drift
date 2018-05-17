@@ -1,17 +1,16 @@
 % Simulation of a realisation of a fractional Brownian motion with Hurst 
 % index H on a Nx size grid
-function [xgrid,B] = fbm(H,K,Nx,N)
+function [random,xgrid,B,M] = fbm(H,K,Nx,N)
 
 % Setting the seed to 1
 %rng(10,'twister');
 rng(1000,'twister');
-%Nx = 1 + (N+1)*2^(N+2);
-%Nx = K*2^(N+2) -2^N + 2;
+
 xgrid = linspace(-K,K,Nx);
 dx = 1/2^(N+1);
 
-% Simulation of Nx independent gaussian variables
-random = randn(1,Nx-1);
+% Simulation of Nx - 1 independent gaussian variables
+random = randn(1,Nx-1)';
 
 % Construction of the correlation matrix
 Gamma = zeros(Nx-1);
@@ -24,7 +23,7 @@ end
 
 M = chol(Gamma);
 % Here we must transpose M because of the definition chosen in Cholesky Matlab algorithm
-B = [0  random*M];
+B = [0 ; M'*random];
 % figure
 % plot(xgrid,B)
 % xlabel('x')

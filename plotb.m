@@ -1,17 +1,17 @@
-x = 1/100*(-500:500);
-N = 15;
+x = 1/100*(-700:700);
+N = 4;
 
 % Construction of the coefficients matrix
-Mu = zeros(N+2,2*N+1);
-for m = 1:2*N+1
-    Mu(1,m) = (2*(m-N-1)+1)/(2*sqrt(2));
+Mu = zeros(N+2,K*2^(N+1));
+for m = 1:2*K+1
+    Mu(1,m) = (2*(m-K-1)+1)/(2*sqrt(2));
 end    
     
 for j=2:N+2
     Mu(j,:) = - 1/(2^(j));
 end
 
-value = b(Mu,x);
+value = b(Mu,K,x);
 figure
 plot(x,value)
 grid on

@@ -4,7 +4,7 @@ function [xgrid,B] = fbm(H,N)
 
 % Setting the seed to 1
 %rng(10,'twister');
-rng(100,'twister');
+rng(1000,'twister');
 Nx = 1 + (N+1)*2^(N+2);
 xgrid = linspace(-N,N+1,Nx);
 dx = 1/2^(N+1);
@@ -23,7 +23,7 @@ end
 
 M = chol(Gamma);
 % Here we must transpose M because of the definition chosen in Cholesky Matlab algorithm
-B = [0 ; M'*random'];
+B = [0  random*M];
 % figure
 % plot(xgrid,B)
 % xlabel('x')

@@ -1,10 +1,13 @@
 X0 = 1;
 NT = 1500;
-N = 2;
-K = 5;
+N = 4;
+K = 3;
 T = 3;
-H = 0.95;
-Nx = 1+K*2^(N+2);
-[xgrid,B] = fbm(H,K,Nx,N);
+%H = 0.95;
+%H = 0.55;
+H = 0.985;
 
-X = eulerMethod(X0,NT,N,Nx,T,H,B,xgrid,0,K);
+%[random,xgrid,B,M] = fbm(H,K,N);
+[xgrid,B,M] = createfBm(H,K,N);
+
+X = eulerMethod(X0,NT,N,T,H,B,xgrid,0,K);

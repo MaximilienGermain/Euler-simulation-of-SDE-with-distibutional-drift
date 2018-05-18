@@ -1,22 +1,25 @@
-N = 2;
-K = 3;
+N = 3;
+K = 1;
 H = 0.95;
-Nx = 1+K*2^(N+2);
-[random,xgrid,B,M] = fbm(H,K,Nx,N);
-[newgrid,newB,newM] = refinefbm(random,xgrid,H,N,M);
+[random,xgrid,B,M] = fbm(H,K,N);
+[newrandom,newgrid,newB,newM] = refinefbm(random,xgrid,H,N,M);
 
 figure
 plot(xgrid,B)
+grid on
+grid minor
 xlabel('x')
 xlim([min(xgrid) max(xgrid)])
 ylabel('B_x^H')
-chn = ['Sample path of a fractional Brownian motion B^H_x (Nx = ',num2str(Nx),' ; H = ',num2str(H),')'];
+chn = ['Sample path of a fractional Brownian motion B^H_x (N = ',num2str(N),' ; H = ',num2str(H),')'];
 title(chn)
 
 figure
 plot(newgrid,newB)
+grid on
+grid minor
 xlabel('x')
-xlim([min(xgrid) max(xgrid)])
+xlim([min(newgrid) max(newgrid)])
 ylabel('B_x^H')
-chn = ['Sample path of a fractional Brownian motion B^H_x (Nx = ',num2str(2*Nx-1),' ; H = ',num2str(H),')'];
+chn = ['Sample path of a fractional Brownian motion B^H_x (N = ',num2str(N+1),' ; H = ',num2str(H),')'];
 title(chn)

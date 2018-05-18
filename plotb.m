@@ -1,16 +1,13 @@
-x = 1/100*(-700:700);
-N = 2;
+K = 4;
+N = 6;
+Nx = 1+K*2^(N+2);
+sqB = linspace(-K,K,Nx);
+%B = 0.5*sqB.^2;
+B = cos(sqB);
+x = linspace(-K-1,K+1,1000);
 
 % Construction of the coefficients matrix
-Mu = zeros(N+2,K*2^(N+1));
-for m = 1:2*K
-    Mu(1,m) = (2*(m-K-1)+1)/(2*sqrt(2));
-end    
-    
-for j=2:N+2
-    Mu(j,:) = - 1/(2^(j));
-end
-
+Mu = computeMu(B,N,0,K);
 value = b(Mu,K,x);
 figure
 plot(x,value)
@@ -18,5 +15,5 @@ grid on
 grid minor
 xlabel('$x$','Interpreter','latex')
 ylabel('$Id^N(x)$','Interpreter','latex')
-chn = ['Approximation of the identity function by Haar wavelets (N = ',num2str(N),')'];
+chn = ['Approximation of the derivative of B by Haar wavelets (N = ',num2str(N),')'];
 title(chn,'Interpreter','latex')

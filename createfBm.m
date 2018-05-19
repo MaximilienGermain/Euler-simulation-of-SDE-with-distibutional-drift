@@ -1,6 +1,6 @@
 function [xgrid,B,M] = createfBm(H,K,N) % Crashes if N >= start + 2
 
-start = 4;
+start = 5;
 [random,xgrid,B,M] = fbm(H,K,start);
 % figure
 % plot(xgrid,B)

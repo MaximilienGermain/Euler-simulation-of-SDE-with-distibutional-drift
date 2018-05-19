@@ -1,15 +1,17 @@
 % Computation of an approximation of a realisation of the solution of the 
 % SDE dX = b(X)dt + dWt
-function X = eulerMethod(X0,NT,N,T,H,B,xgrid,test,K)
+function X = eulerMethod(X0,startNT,NT,N,T,H,B,xgrid,test,K)
 
 % Setting the seed to 1
 rng(1,'twister');
 
 % Variables initialisation
-dt = T/NT;
-t = T/NT*(0:NT);
-X = zeros(1,NT+1);
-Xeuler = zeros(1,NT+1);
+startn = 1+(T)*2^startNT; % Number of points on the first time grid
+n = 1+(T)*2^NT; % Number of points on the most refined time grid
+dt = 1/2^NT; % Precision of the final grid
+t = linspace(0,T,n);
+X = zeros(1,n);
+Xeuler = zeros(1,n);
 X(1) = X0;
 if (test ~= 0)
     Xeuler(1) = X0;
@@ -40,18 +42,34 @@ if (test == 0)
 end
 
 % Euler scheme
-for i=1:NT
-    increment = sqrt(dt)*randn();
-    X(i+1) = X(i) + b(Mu,K,X(i))*dt + increment;
+rnd = randn(1,startn-1);
+for p=1:NT-startNT
+    newrandom = randn(1,2^(p-1)*(startn-1));
+    temprandom = zeros(1,2^(p)*(startn-1));
+    for y=1:2^(p-1)*(startn-1)
+        temprandom(2*y-1) = newrandom(y);
+        temprandom(2*y) = rnd(y);
+    end
+    rnd = temprandom;
+end
+rnd = sqrt(dt)*rnd;
+n = 1+(T)*2^NT;
+
+W = [0,cumsum(rnd)];
+
+for i=1:n-1
+    X(i+1) = X(i) + b(Mu,K,X(i))*dt + rnd(i);
+    %X(i+1) = X(i) + b(Mu,K,X(i))*dt;
     if (test ~= 0)
-        Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt + increment;
+        %Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt + rnd(i);
+        Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt;
     end
 end
 
 % Display
 if (test == 0)
     figure
-    modifiedEuler = plot(t,X,'b') ;
+    modifiedEuler = plot(t,X,'b');
     grid on
     grid minor
     xlabel('$t$','Interpreter','latex')
@@ -59,6 +77,9 @@ if (test == 0)
     chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),' ; K = ',num2str(K),')'];
     title(chn,'Interpreter','latex')
     %legend([modifiedEuler],'Approximation with Haar wavelets')
+    
+    figure
+    modifiedEuler = plot(t,X-W,'b') ; %%%%% Test if there isn't saturation
 else
     figure
     modifiedEuler = plot(t,X,'r') ;

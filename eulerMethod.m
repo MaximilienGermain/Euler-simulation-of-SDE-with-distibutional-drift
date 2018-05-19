@@ -6,9 +6,9 @@ function X = eulerMethod(X0,startNT,NT,N,T,H,B,xgrid,test,K)
 rng(1,'twister');
 
 % Variables initialisation
-startn = 1+(T)*2^startNT; % Number of points on the first time grid
-n = 1+(T)*2^NT; % Number of points on the most refined time grid
-dt = 1/2^NT; % Precision of the final grid
+startn = 1+startNT; % Number of points on the first time grid
+n = 1+NT; % Number of points on the most refined time grid
+dt = T/NT; % Precision of the final grid
 t = linspace(0,T,n);
 X = zeros(1,n);
 Xeuler = zeros(1,n);
@@ -43,7 +43,8 @@ end
 
 % Euler scheme
 rnd = randn(1,startn-1);
-for p=1:NT-startNT
+%for p=1:NT-startNT
+for p=1:NT/startNT-1
     newrandom = randn(1,2^(p-1)*(startn-1));
     temprandom = zeros(1,2^(p)*(startn-1));
     for y=1:2^(p-1)*(startn-1)
@@ -53,7 +54,7 @@ for p=1:NT-startNT
     rnd = temprandom;
 end
 rnd = sqrt(dt)*rnd;
-n = 1+(T)*2^NT;
+%n = 1+(T)*2^NT;
 
 W = [0,cumsum(rnd)];
 

@@ -1,10 +1,10 @@
 X0 = 1;
-startNT = 8;
-NT = 14; % Time grid precision 2^(-NT)
+startNT = 1000;
+NT = startNT * 2; % Number of points of the time grid
 N = 5; % Space grid precision 2^(-N)
-T = 2;
+T = 1.2;
 %K = ceil(exp(2)+T*3);
-K = 5;
+K = 5; % We cannot take K = N yet without changing omega
 H = 0.95;
 %H = 0.55;
 %H = 0.985;

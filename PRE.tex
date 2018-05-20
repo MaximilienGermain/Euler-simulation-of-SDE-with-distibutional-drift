@@ -1,0 +1,147 @@
+\documentclass{article}[12pt]
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}      
+\usepackage[english]{babel}
+%\usepackage[left=2.00cm, right=2cm, top=2.00cm, bottom=2.00cm]{geometry}
+\usepackage{amsthm}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{stmaryrd} 
+\renewcommand{\qedsymbol}{}
+\usepackage{graphicx}
+\graphicspath{{illustrations/}}
+\usepackage{caption}
+\usepackage{dsfont}
+\usepackage{xcolor}
+\usepackage{textcomp}
+
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{1pt}
+\lhead{}
+\chead{\textsc{numerical simulation of sdes with distributional drift}}
+\rhead{}
+
+\newcommand{\pade}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\de}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\integ}[4]{\int_{#1}^{#2}{#3\ \mathrm{d} #4}}
+
+\newtheorem{defi}{Definition}[section]
+\newtheorem{theo}{Theorem}[section]
+\newtheorem{Lem}{Lemme}[section]
+\newtheorem{cor}[theo]{Corollary}
+\newtheorem{Pro}{Proposition}[section]
+\newtheorem{ex}{Example}[section]
+\newtheorem{rem}{Remark}[section]
+
+\newcommand{\norme}[1]{\left\Vert #1\right\Vert}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\D}{D(\Omega)}
+\newcommand{\Di}{D'(\Omega)}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Cinf}{\mathcal{C}^\infty(\Omega,\R)}
+\newcommand\gts[1]{\og#1\fg}
+\newcommand{\n}{n\in\N^*}
+\newcommand{\di}{\mathrm{d}}
+\newcommand{\loc}{\mathcal{L}_{loc}^{1}(\Omega)}
+
+\begin{document}
+\title{\Large \textsc{\textbf{numerical simulation of sdes with distributional drift}}} \author{Maximilien \textsc{Germain} \date{May 2018}}
+\maketitle
+
+\section{Introduction}
+
+    \paragraph{}
+    We would like to simulate numerically sample paths of the solution of the stochastic differential equation
+    \begin{equation} \label{sde}
+    \di X_t = b(X_t)\ \di t + \di W_t
+    \end{equation}
+    where $b\in H^s_q(\R),\ s\in\left]-\frac{1}{2},0\right[$, $t\in[0,T]$, and $W_t$ is a standard Brownian motion. This equation is studied in \cite{Fla-Iss-Rus-2017} in which the authors prove existence and unicity in law of a virtual solution for equation (\ref{sde}). 
+    
+    \begin{ex}
+        An example of such drift $b$ is given by the derivative of a sample path of a fractional Brownian motion $B^H_x$ with Hurst index $1/2<H<1$. These stochastic processes are gaussian processes verifying $$\E\left[B_t^HB_s^H\right]=\frac{1}{2}\left(t^{2H}+s^{2H}+|t-s|^{2H}\right).$$ We note $s = H - 1$. Given $B^H_x(\omega)\in H^{s+1}_q(\R)$, we can take $b(x) = \pade{}{x}B^H_x(\omega)\in H^s_q(\R)$. We will use this in our numerical simulations.
+    \end{ex}    
+    
+    \paragraph{}
+    As far as the drift $b$ is not a function but a distribution, it must be approximated if we want to evaluate it at points. In order to do so, we will use a series representation of $b$ and truncate it. That is why we will consider two steps in our algorithm: \begin{enumerate}
+        \item approximate the drift $b$ by $b^N$.
+        \item approximate the solution $X^N_t$ of the approximated SDE:
+        \begin{equation} \label{sde2}
+        \di X^N_t = b^N\left(X^N_t\right)\ \di t + \di W_t
+        \end{equation} 
+        by $X^{N,n}_t$ with a Euler-Maruyama scheme.
+    \end{enumerate}
+
+\section{Numerical simulation of fractional Brownian motion}    
+
+    To simulate a sample path of a fractional brownian motion $B^H_x$ on a finite grid $(x_k)_{k\in\llbracket1,n\rrbracket}$, we simulate $n$ independent standard gaussian random variables $(X_k)_{k\in\llbracket1,n\rrbracket}$ and then correlate them with the definite positive correlation matrix 
+    $$C_{k,s}=\E\left[B_{x_k}^HB_{x_s}^H\right]=\frac{1}{2}\left(x_k^{2H}+x_s^{2H}+|x_k-x_s|^{2H}\right).$$
+    To do so, we use the Cholesky decomposition method and calculate the triangular matrix $M$ such that $C=MM^\top$. Therefore, defining
+    $$X = \begin{pmatrix}
+    X_1 \\ \vdots \\ X_n
+    \end{pmatrix}\ \mathrm{and}\ B^H = MX,$$
+    $B^H$ contains the values of a fractional brownian motion evaluated on the grid $(x_k)_{k\in\llbracket1,n\rrbracket}$.
+    
+\section{Approximation of the drift}
+    \subsection{Series representation}
+    \paragraph{}
+    We use Haar wavelets to give a series representation of $b$. By doing so, we will be able to approximate it numerically by truncating the series.
+    
+    \begin{defi}[Haar wavelets]
+        We define the Haar wavelets $h_{j,m}$ on $\R$ with $j\in\N\cup\{-1\}$ and $m\in\Z$ by:
+        $$\begin{cases}
+        h_M&:x\longmapsto\left(\mathds{1}_{\left[0,\frac{1}{2}\right[}-\mathds{1}_{\left[\frac{1}{2},1\right[}\right)(x)\\ h_{-1,m}&:x\longmapsto\sqrt{2}|h_M(x-m)|\\
+        h_{j,m}&:x\longmapsto h_M(2^jx-m) 
+        \end{cases}$$
+    \end{defi}
+    
+    \begin{theo}[See \cite{Iss-Rus-2200}]
+        Let $b\in H^s_q(\R)$ for $2\leq q \leq \infty$, and $s\in\left]-\frac{1}{2},\frac{1}{q}\right[$. Therefore,
+        \begin{equation}
+        b = \sum_{j=-1}^{+\infty}\sum_{m\in\Z}\mu_{j,m}h_{j,m}
+        \end{equation}
+        where $\mu_{j,m} = 2^j\int_{\R}b(x)h_{j,m}(x)\ \di x$ in the sense of dual pairing.
+    \end{theo}
+
+    \begin{defi}
+        Let $b\in H^s_q(\R)$ for $2\leq q \leq \infty$, and $s\in\left]-\frac{1}{2},0\right[$. For $N\in\N$ we define $b^N\in H_q^s(\R)$ by:
+        \begin{equation}
+        b^N = \sum_{j=-1}^{N}\sum_{m=-N2^j}^{N2^j-1}\mu_{j,m}h_{j,m}.
+        \end{equation}
+    \end{defi}
+
+    \begin{rem}
+        We can note that $\mathrm{Supp}\ b^N\subset [-N,N].$ Moreover, we have: $$\norme{b-b^N}_{H_q^s(\R)} \underset{N\rightarrow+\infty}{\longrightarrow} 0.$$
+    \end{rem}
+
+    \subsection{Computation of the coefficients $\mu_{j,m}$ when $b$ is the derivative of a fractional brownian motion}
+        Faber
+\section{Numerical results}
+\section{Convergence} 
+    
+    \subsection{Convergence of the Euler-Maruyama scheme}
+    
+    Ngo and Taguchi proved in \cite{Ngo-Tag-2017} the convergence of the Euler-Maruyama scheme for SDE (\ref{sde2}) in the following case which applies to our problem.
+    
+    \begin{theo}[Corollary 2.9. in \cite{Ngo-Tag-2017}]
+        Assume that $b\in L^1(\R)\cap H^\beta$ for some $\beta\in(0,1]$  and the diffusion coefficient $\sigma$
+        is Lipschitz continuous and uniformly elliptic. Then for any $p\geq1$, there exists positive constant C
+        which depends on $K_\sigma,\norme{b}_\beta,\norme{b}_{L^1(\R)},T,x_0,\alpha,\beta$ and $p$ such that
+        \begin{equation}
+        \mathbb{E}\left[\sup_{0\leq s\leq T}\left|X_s^N - X_s^{N,n}\right|^p\right] \leq \frac{C}{n^{p\beta/2}}
+        \end{equation}
+    \end{theo}
+
+    \textbf{TO DO: make explicit the dependance of $C$ in $N$}.
+    
+    \subsection{Convergence of $X_s^{N}$ to $X_s$}
+    
+\bibliographystyle{abbrv}
+\bibliography{pre}
+    
+\end{document}

@@ -10,25 +10,24 @@ otherM = M';
 % Simulation of Nx - 1 independent gaussian variables
 otherrandom = randn(1,Nx-1)';
 
-for u=1:Nx-1
-   s = length(otherM);
-   alpha = zeros(1,s);
-   for k=1:s+1-u
-       alpha(k) = dx^(2*H)*((2*u-1)^(2*H)+(2*k)^(2*H)-abs(2*u-1-2*k)^(2*H))/2;
-   end
-   for k=s+2-u:s % the real k goes from 1 to u-1 here
-       alpha(k) = dx^(2*H)*((2*u-1)^(2*H)+(2*(k-s+u-1)-1)^(2*H)-abs(2*u-1-2*(k-s+u-1)+1)^(2*H))/2;
-   end
-   %V = 100*alpha/(100*otherM)';
-   V = alpha/(otherM)';
-   w = sqrt(dx^(2*H)*(2*u-1)^(2*H)-V*V');
-   otherM = [otherM zeros(s,1); V w];
+s = length(otherM);
+A = zeros(Nx-1,s);
+B = zeros(Nx-1,s);
+for i=1:s
+    for j=1:s
+        A(i,j) = dx^(2*H)*((2*i-1)^(2*H)+(2*j)^(2*H)-abs(2*i-1-2*j)^(2*H))/2;
+        B(i,j) = dx^(2*H)*((2*i-1)^(2*H)+(2*j-1)^(2*H)-4^H*abs(i-j)^(2*H))/2;
+    end
 end
+
+V = A/(otherM)';
+D = chol(B-V*V');
+otherM = [otherM zeros(s); V D];
+
 gamma = otherM*otherM';
 allrandom = [random ; otherrandom];
 newvalues = otherM*allrandom;
-newB = [0];
-%newB = zeros(1,2*length(newvalues)+1);
+newB = zeros(1,length(newvalues)+1);
 
 newgamma = zeros(2*Nx-2);
 for i=1:Nx-1

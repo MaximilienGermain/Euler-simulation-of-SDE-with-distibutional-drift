@@ -1,5 +1,5 @@
 X0 = 1;
-startNT = 1000;
+startNT = 10;
 NT = startNT * 2; % Number of points of the time grid
 N = 5; % Space grid precision 2^(-N)
 T = 1.2;

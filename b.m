@@ -1,5 +1,3 @@
-% Evaluate the approximation of b at the point x given its truncated 
-% decomposition on the Haar basis, Mu
 % Compute the approximation of b evaluated in a vector x,
 % given its coefficients Mu on the N truncated Haar basis
 function output = b(Mu,K,x)

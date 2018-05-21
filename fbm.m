@@ -3,12 +3,11 @@
 function [random,xgrid,B,M] = fbm(H,K,N)
 
 % Setting the seed to 1
-%rng(10,'twister');
 rng(1000,'twister');
 
-Nx = 1+K*2^(N+2);
+Nx = 1+K*2^(N+2); % 2 times more precise than the grid for b^N
 xgrid = linspace(-K,K,Nx);
-dx = 1/2^(N+1);
+dx = 1/2^(N+1); % 2 times more precise than the grid for b^N
 
 % Simulation of Nx - 1 independent gaussian variables
 random = randn(1,Nx-1)';
@@ -22,15 +21,7 @@ for i=1:Nx-1
     end
 end
 
-M = chol(Gamma);
-% Here we must transpose M because of the definition chosen in Cholesky Matlab algorithm
-B = [0 ; M'*random];
-% figure
-% plot(xgrid,B)
-% xlabel('x')
-% xlim([min(xgrid) max(xgrid)])
-% ylabel('B_x^H')
-% chn = ['Sample path of a fractional Brownian motion B^H_x (Nx = ',num2str(Nx),' ; H = ',num2str(H),')'];
-% title(chn)
+M = chol(Gamma)'; % Here we must transpose M because of the definition chosen in Cholesky Matlab algorithm
+B = [0 ; M*random];
 
 end

@@ -1,56 +1,52 @@
 % Here newM is the the transpose of the cholesky root
-function [newrandom,newgrid,newB,newM] = refinefbm(random,xgrid,H,N,M)
+function [newrandom,newgrid,newB,newM] = refinefbm(random,xgrid,H,N,M,Ninit,p)
 
 rng(100,'twister');
 Nx = length(xgrid);
 newgrid = linspace(min(xgrid),max(xgrid),2*Nx-1);
-dx = 1/2^(N+2);
-otherM = M';
+dx = 1/2^(N+1);
 
 % Simulation of Nx - 1 independent gaussian variables
 otherrandom = randn(1,Nx-1)';
 
-s = length(otherM);
-A = zeros(Nx-1,s);
-B = zeros(Nx-1,s);
+s = length(M);
+A = zeros(s);
+B = zeros(s);
+
 for i=1:s
     for j=1:s
-        A(i,j) = dx^(2*H)*((2*i-1)^(2*H)+(2*j)^(2*H)-abs(2*i-1-2*j)^(2*H))/2;
-        B(i,j) = dx^(2*H)*((2*i-1)^(2*H)+(2*j-1)^(2*H)-4^H*abs(i-j)^(2*H))/2;
+        B(i,j) = dx^(2*H)*((2*i-1)^(2*H)+(2*j-1)^(2*H)-4^(H)*abs(i-j)^(2*H))/2;
+    end
+end
+for i=1:(Ninit-1)
+    for j=1:s
+        A(i,j) = dx^(2*H)*((2^p*i)^(2*H)+(2*j-1)^(2*H)-abs(2*j-1-2^p*i)^(2*H))/2;
+    end  
+end
+for k=1:p-1
+    for i=2^(k-1)*(Ninit-1)+1:2^(k)*(Ninit-1)
+        for j=1:s
+            A(i,j) = dx^(2*H)*((2^(p-k)*(2*(i-2^(k-1)*(Ninit-1))-1))^(2*H)...
+            +(2*j-1)^(2*H)-abs(2*j-1-2^(p-k)*(2*(i-2^(k-1)*(Ninit-1))-1))^(2*H))/2;
+        end
     end
 end
 
-V = A/(otherM)';
-D = chol(B-V*V');
-otherM = [otherM zeros(s); V D];
+C = A'/(M');
+gamma = [M*M' A; A' B];
+eig(gamma);
+D = chol(B-C*C')';
+%M = chol(gamma);
+M = [M zeros(s); C D];
+newM = M;
 
-gamma = otherM*otherM';
-allrandom = [random ; otherrandom];
-newvalues = otherM*allrandom;
-newB = zeros(1,length(newvalues)+1);
+newrandom = [random ; otherrandom];
+newvalues = M*newrandom
 
-newgamma = zeros(2*Nx-2);
-for i=1:Nx-1
-    newgamma(2*i-1,:) = gamma(Nx-1+i,:);
-    newgamma(2*i,:) = gamma(i,:);    
+index = 2*(Ninit-1)
+temp = fusion(newvalues(Ninit:index),newvalues(1:Ninit-1));
+while index < length(newvalues)
+    temp = fusion(newvalues(index+1:2*(index)),temp)
+    index=2*index;
 end
-gamma = newgamma;
-for j=1:Nx-1
-    newgamma(:,2*j-1) = gamma(:,Nx-1+j);
-    newgamma(:,2*j) = gamma(:,j);    
-end
-newM = chol(newgamma);
-
-newrandom = zeros(2*Nx-2,1);
-for t=1:Nx-1
-    newrandom(2*t-1) = random(t);
-    newrandom(2*t) = otherrandom(t);
-end
-
-for o=1:length(newvalues)/2
-    newB(2*o) = newvalues(o+Nx-1);
-    newB(2*o+1) = newvalues(o);
-end
-% Sort newM maybe in order to use refinefbm several times ?
-
-end
+newB=[0 ;temp];

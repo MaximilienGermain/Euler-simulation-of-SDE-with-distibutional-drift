@@ -21,25 +21,25 @@ end
 Mu = computeMu(B,N,test,K);
 
 % Display of the fBm and its derivative approximation
-if (test == 0)
-    figure
-    approx = b(Mu,K,xgrid);
-    [AX,H1,H2] = plotyy(xgrid,approx,xgrid,B);
-    ylabel(AX(1),'Approximation of $\frac{\partial}{\partial x}B^H_x$ by Haar wavelets','Interpreter','latex')
-    ylabel(AX(2),'$B^H_x$','Interpreter','latex')
-    set(AX(1),'ycolor','r')
-    set(AX(2),'ycolor','b')
-    set(H1,'Color','r')
-    set(H2,'Color','b')
-    set(AX(2),'Xgrid','on','Ygrid','on','YMinorGrid','on')
-    xlabel('$x$','Interpreter','latex')
-    xlim(AX(2), [min(xgrid) max(xgrid)])
-    xlim(AX(1), [min(xgrid) max(xgrid)])
-    ylim(AX(1), [min(approx)-0.2*abs(min(approx)) max(approx)+0.2*abs(min(approx))])
-    ylim(AX(2), [min(B)-0.2*abs(min(B)) max(B)+0.2*abs(min(B))])
-    chn = ['Sample path of $B^H_x$ and approximation of $\frac{\partial}{\partial x}B^H_x$ (H = ',num2str(H),' ; N = ',num2str(N),')'];
-    title(chn,'Interpreter','latex')
-end
+% if (test == 0)
+%     figure
+%     approx = b(Mu,K,xgrid);
+%     [AX,H1,H2] = plotyy(xgrid,approx,xgrid,B);
+%     ylabel(AX(1),'Approximation of $\frac{\partial}{\partial x}B^H_x$ by Haar wavelets','Interpreter','latex')
+%     ylabel(AX(2),'$B^H_x$','Interpreter','latex')
+%     set(AX(1),'ycolor','r')
+%     set(AX(2),'ycolor','b')
+%     set(H1,'Color','r')
+%     set(H2,'Color','b')
+%     set(AX(2),'Xgrid','on','Ygrid','on','YMinorGrid','on')
+%     xlabel('$x$','Interpreter','latex')
+%     xlim(AX(2), [min(xgrid) max(xgrid)])
+%     xlim(AX(1), [min(xgrid) max(xgrid)])
+%     ylim(AX(1), [min(approx)-0.2*abs(min(approx)) max(approx)+0.2*abs(min(approx))])
+%     ylim(AX(2), [min(B)-0.2*abs(min(B)) max(B)+0.2*abs(min(B))])
+%     chn = ['Sample path of $B^H_x$ and approximation of $\frac{\partial}{\partial x}B^H_x$ (H = ',num2str(H),' ; N = ',num2str(N),')'];
+%     title(chn,'Interpreter','latex')
+% end
 
 % Euler scheme
 rnd = randn(1,startn-1);
@@ -68,31 +68,31 @@ for i=1:n-1
 end
 
 % Display
-if (test == 0)
-    figure
-    modifiedEuler = plot(t,X,'b');
-    grid on
-    grid minor
-    xlabel('$t$','Interpreter','latex')
-    ylabel('$X_t$','Interpreter','latex')
-    chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),' ; K = ',num2str(K),')'];
-    title(chn,'Interpreter','latex')
-    %legend([modifiedEuler],'Approximation with Haar wavelets')
-    
-    figure
-    modifiedEuler = plot(t,X-W,'b') ; %%%%% Test if there isn't saturation
-else
-    figure
-    modifiedEuler = plot(t,X,'r') ;
-    grid on
-    grid minor
-    hold on
-    euler = plot(t,Xeuler,'b');
-    xlabel('$t$','Interpreter','latex')
-    ylabel('$X_t$','Interpreter','latex')
-    chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),' ; K = ',num2str(K),')'];
-    title(chn,'Interpreter','latex')
-    legend([modifiedEuler,euler],'Approximation with Haar wavelets','Usual Euler scheme')
-end
+% if (test == 0)
+%     figure
+%     modifiedEuler = plot(t,X,'b');
+%     grid on
+%     grid minor
+%     xlabel('$t$','Interpreter','latex')
+%     ylabel('$X_t$','Interpreter','latex')
+%     chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),' ; K = ',num2str(K),')'];
+%     title(chn,'Interpreter','latex')
+%     %legend([modifiedEuler],'Approximation with Haar wavelets')
+%     
+%     figure
+%     modifiedEuler = plot(t,X-W,'b') ; %%%%% Test if there isn't saturation
+% else
+%     figure
+%     modifiedEuler = plot(t,X,'r') ;
+%     grid on
+%     grid minor
+%     hold on
+%     euler = plot(t,Xeuler,'b');
+%     xlabel('$t$','Interpreter','latex')
+%     ylabel('$X_t$','Interpreter','latex')
+%     chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),' ; K = ',num2str(K),')'];
+%     title(chn,'Interpreter','latex')
+%     legend([modifiedEuler,euler],'Approximation with Haar wavelets','Usual Euler scheme')
+% end
 
 end

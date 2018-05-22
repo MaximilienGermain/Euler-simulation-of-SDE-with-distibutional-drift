@@ -11,17 +11,11 @@ n = 1+ceil(T)*2^NT; % Number of points on the most refined time grid
 dt = 2^(-NT); % Precision of the final grid
 alpha = NT/startNT;
 
-Xeuler = zeros(1,n);
-if (test ~= 0)
-    Xeuler(1) = X0;
-end
-
 % Computation of the coefficients on the wavelet basis
-%Mu = computeMu(B,N,test,K);
-Mu = computeMu(B,N,test,N);
+Mu = computeMu(B,N,test,K);
 
 % Display of the fBm and its derivative approximation
-if (test == 0) && (graphHaar == 1)
+if (graphHaar == 1)
     figure 
     dispgrid=linspace(-K,K,3000);  
     approx = b(Mu,N,dispgrid);    
@@ -44,18 +38,21 @@ end
 
 % Euler scheme
 [t,W] = createfBm(0.5,ceil(T),NT-1,startNT-1,1+ceil(T)*2^startNT,0,2);
-%plot(t,W)
 n=imax(T,t)+1;
 t=t(1:n);
 X = zeros(1,n);
 X(1)=X0;
+Xeuler = zeros(1,n);
+if (test ~= 0)
+    Xeuler(1) = X0;
+end
 
 for i=1:n-1
     X(i+1) = X(i) + b(Mu,N,X(i))*dt + W(i+1)-W(i);
-    %X(i+1) = X(i) + b(Mu,K,X(i))*dt + W(i+1)-W(i);
+    %X(i+1) = X(i) + b(Mu,N,X(i))*dt;
     if (test ~= 0)
-        %Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt + W(i);
-        Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt;
+        Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt + W(i+1)-W(i);
+        %Xeuler(i+1) = Xeuler(i) + Xeuler(i)*dt;
     end
 end
 
@@ -81,13 +78,14 @@ if (test == 0)
 %     chn = ['Approximation of the drift part of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),')'];
 % %   chn = ['Approximation of the drift part of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),' ; K = ',num2str(N),')'];
 %     title(chn,'Interpreter','latex')
+
 else
     figure
     modifiedEuler = plot(t,X,'r') ;
     grid on
     grid minor
     hold on
-    xlimits([0 T])
+    xlim([0 T])
     euler = plot(t,Xeuler,'b');
     xlabel('$t$','Interpreter','latex')
     ylabel('$X_t$','Interpreter','latex')

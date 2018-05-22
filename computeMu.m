@@ -11,7 +11,7 @@ if (test ==0)
     
     for j=2:N+2
         for m=1:N*2^(j-1)
-            Mu(j,m) = -2^(j-2)*(B(getk(j-2,m-Kmax*2^(j-2)-1,N,Kmax))-2*B(getk(j-1,2*(m-Kmax*2^(j-2)-1)+1,N,Kmax))+B(getk(j-2,m-Kmax*2^(j-2)-1+1,N,Kmax)));
+            Mu(j,m) = -2^(j-2)*(B(getk(j-2,m-N*2^(j-2)-1,N,Kmax))-2*B(getk(j-1,2*(m-N*2^(j-2)-1)+1,N,Kmax))+B(getk(j-2,m-N*2^(j-2)-1+1,N,Kmax)));
         end
     end
 else

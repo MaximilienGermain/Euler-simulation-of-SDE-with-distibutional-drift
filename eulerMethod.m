@@ -1,15 +1,14 @@
 % Computation of an approximation of a realisation of the solution of the 
 % SDE dX = b(X)dt + dWt
-function X = eulerMethod(X0,startNT,NT,N,T,H,B,xgrid,test,K,graphHaar)
+function X = eulerMethod(X0,startNT,NT,N,T,H,B,xgrid,test,K,graphHaar,control)
 
 % Setting the seed to 1
 rng(1,'twister');
 
 % Variables initialisation
-startn = 1+ceil(T)*2^startNT; % Number of points on the first time grid
-n = 1+ceil(T)*2^NT; % Number of points on the most refined time grid
+% startn = 1+ceil(T)*2^startNT; % Number of points on the first time grid
+% n = 1+ceil(T)*2^NT; % Number of points on the most refined time grid
 dt = 2^(-NT); % Precision of the final grid
-alpha = NT/startNT;
 
 % Computation of the coefficients on the wavelet basis
 Mu = computeMu(B,N,test,K);
@@ -37,9 +36,9 @@ if (graphHaar == 1)
 end
 
 % Euler scheme
-[t,W] = createfBm(0.5,ceil(T),NT-1,startNT-1,1+ceil(T)*2^startNT,0,2);
-n=imax(T,t)+1;
-t=t(1:n);
+kmax=floor(2^startNT*T);
+[t,W] = createfBm(0.5,(kmax+1)/2^(startNT),NT-1,startNT-1,kmax+2,0,2);
+n = length(t);
 X = zeros(1,n);
 X(1)=X0;
 Xeuler = zeros(1,n);
@@ -65,19 +64,10 @@ if (test == 0)
     xlim([0 T])
     xlabel('$t$','Interpreter','latex')
     ylabel('$X_t$','Interpreter','latex')
-    chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),')'];
+    chn = ['Approximation of a sample path of the SDE solution ($n =\ $',num2str(NT),' ; $N =\ $',num2str(N),')'];
     title(chn,'Interpreter','latex')
-    
-%     figure
-%     modifiedEuler = plot(t,X-W(1:n)','b') ; %%%%% Test if there isn't saturation
-%     grid on
-%     grid minor
-%         xlim([0 T])
-%     xlabel('$t$','Interpreter','latex')
-%     ylabel('$X_t-W_t$','Interpreter','latex')
-%     chn = ['Approximation of the drift part of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),')'];
-% %   chn = ['Approximation of the drift part of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),' ; K = ',num2str(N),')'];
-%     title(chn,'Interpreter','latex')
+    name = ['n = ',num2str(NT),' N = ',num2str(N),'.png'];
+    saveas(gcf,name);
 
 else
     figure
@@ -92,6 +82,20 @@ else
     chn = ['Approximation of a sample path of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),')'];
     title(chn,'Interpreter','latex')
     legend([modifiedEuler,euler],'Approximation with Haar wavelets','Usual Euler scheme')
+end
+
+if (control == 1)
+    figure
+    modifiedEuler = plot(t,X-W(1:n)','b') ; %%%%% Test if there isn't saturation
+    grid on
+    grid minor
+    xlim([0 T])
+    xlabel('$t$','Interpreter','latex')
+    ylabel('$X_t-W_t$','Interpreter','latex')
+    chn = ['Approximation of the drift part of the SDE solution (NT = ',num2str(NT),' ; N = ',num2str(N),')'];
+    title(chn,'Interpreter','latex')
+    name = ['drift part n = ',num2str(NT),' N = ',num2str(N),'.png'];
+    saveas(gcf,name);
 end
 
 end

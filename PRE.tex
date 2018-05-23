@@ -30,7 +30,7 @@
 
 \newtheorem{defi}{Definition}[section]
 \newtheorem{theo}{Theorem}[section]
-\newtheorem{Lem}{Lemme}[section]
+\newtheorem{lem}[theo]{Lemma}
 \newtheorem{cor}[theo]{Corollary}
 \newtheorem{Pro}{Proposition}[section]
 \newtheorem{ex}{Example}[section]
@@ -127,58 +127,58 @@
     \subsection{Computation of the coefficients $\mu_{j,m}$ when $b$ is the derivative of a fractional brownian motion}
         Faber basis
 \section{Numerical results}
+
+\newpage
 \section{Convergence} 
     
     \subsection{Convergence of $X_s^{N,n}$ to $X_s^N$ in $L^2$}
         \paragraph{}
-        Recently, Leobacher and Szölgyenyi proved in \cite{Leo-Szo} the convergence of the Euler-Maruyama scheme for SDE with discontinuous but piecewise Lipschitz drift and with a degenerate diffusion coefficient. This applies to the scheme we use with the piecewise constant drift $b^N$.
+        Recently, Leobacher and Szölgyenyi proved in \cite{Leo-Szo} the convergence of the Euler-Maruyama scheme for SDE with discontinuous but piecewise Lipschitz drift and with a degenerate diffusion coefficient. This framework applies to the scheme we use with piecewise constant drift $b^N$ and a constant diffusion coefficient.
     
     \begin{theo}[Theorem 3.1. in \cite{Leo-Szo}]
-        $\forall \varepsilon >0,\ \exists C_N, \exists n_0\in\N$ such that $\forall n\geq n_0$
+        $\forall \varepsilon >0,\ \exists C_N>0,\ \exists n_0\in\N$ such that $\forall n\geq n_0$
         \begin{equation}
         \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N,n}_t-X^N_t\right|^2\right]^{1/2}\leq C_N\delta^{1/4-\varepsilon}
         \end{equation}
         with $\delta=\frac{1}{2^n}$ the step size.
     \end{theo}
-    %Recently, Ngo and Taguchi proved in \cite{Ngo-Tag-2017} the convergence of the Euler-Maruyama scheme for SDE (\ref{sde2}) in the following case which applies to our problem.
-    
-    %\begin{theo}[Corollary 2.9. in \cite{Ngo-Tag-2017}] \label{the}
-        %Assume that $b^N\in L^1(\R)\cap H^\beta$ for some $\beta\in(0,1]$  and the diffusion coefficient $\sigma$
-        %is $K_\sigma$-Lipschitz continuous and uniformly elliptic $\left(\frac{1}{K_{\sigma}^2}\leq \sigma(x)^2 \leq K_{\sigma}^2\ %\mathrm{with}\ K_{\sigma}>1\right)$. Then for any $p\geq1$, there exists positive constant C
-        %which depends on $K_\sigma,\norme{b^N}_\beta,\norme{b^N}_{L^1(\R)},T,x_0,\alpha,\beta$ and $p$ such that
-        %$$
-        %\mathbb{E}\left[\sup_{0\leq s\leq T}\left|X_s^N - X_s^{N,n}\right|^p\right] \leq \frac{C}{n^{p\beta/2}}
-        %$$
-    %\end{theo}
 
-    %Applying theorem \ref{the} with $\beta = \frac{1}{q}$, we obtain :
-    
-    %\begin{theo}[]
-        %For any $p\geq1$, there exists positive constant C
-        %which depends on $K_\sigma,\norme{b^N}_\beta,\norme{b^N}_{L^1(\R)},T,x_0,1/q$ and $p$ such that
-        %\begin{equation}
-        %\mathbb{E}\left[\sup_{0\leq s\leq T}\left|X_s^N - X_s^{N,n}\right|^p\right] \leq \frac{C}{n^{\frac{p}{2q}}}
-        %\end{equation}
-    %\end{theo}
-
-    \textbf{TO DO: make explicit the dependance of $C$ in $N$}.
+    \textbf{TO DO: make $C_N$ explicit}.
     
     \subsection{Convergence of $X_s^{N}$ to $X_s$}
         \paragraph{}
-        In \cite{Fla-Iss-Rus-2017}, the authors define the virtual solution of SDE (\ref{sde}) by :
+        We want to estimate $\E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\right]$. In order to do so, we must go back to the definition of the virtual solution of the SDE (\ref{sde}) given in \cite{Fla-Iss-Rus-2017}. The authors define the virtual solution of SDE (\ref{sde}) by:
         \begin{equation}
-        X_t = X_0 + u(0,X_0) - u(t,X_t) + (\lambda+1)\int_0^t u(s,Xs)\ \di s +\int_0^t \nabla u(s,Xs)\ \di W_s
+        X_t = X_0 + u(0,X_0) - u(t,X_t) + (\lambda+1)\int_0^t u(s,Xs)\ \di s +\int_0^t \nabla u(s,Xs)\ \di W_s + W_t
         \end{equation}
-        where $u$ verifies the following parabolic PDE :
+        where $u$ is the mild solution in $H_p^{1+\delta}$ of the following parabolic PDE:
         \begin{equation}\label{pde}
         \begin{cases}
         \partial_t u + \frac{1}{2}\Delta u + b\nabla u - (\lambda+1)u = -b\ &\mathrm{on}\ [0,T]\times\R\\
         u(T) = 0\ &\mathrm{on}\ \R
-        \end{cases}
+        \end{cases}.
         \end{equation}
         
-        \paragraph{}
-        We want to estimate $\E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\right]$. Let's take $u$ solution of (\ref{pde}) and $u_N$ the solution of (\ref{pde}) when we replace $b$ by $b^N$. By lemma 19 in \cite{Fla-Iss-Rus-2017}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2\sqrt{3}}$. Therefore $u^N$ and $u$ are $\frac{1}{2\sqrt{3}}$-lipschitz.
+        We also define another similar PDE by replacing $b$ by $b^N$, and noting $u^N$ its mild solution in $H_p^{1+\delta}$.
+        \begin{equation}\label{pde2}
+        \begin{cases}
+        \partial_t u^N + \frac{1}{2}\Delta u^N + b^N\nabla u^N - (\lambda+1)u^N = -b^N\ &\mathrm{on}\ [0,T]\times\R\\
+        u^N(T) = 0\ &\mathrm{on}\ \R
+        \end{cases}.
+        \end{equation}
+        
+        \paragraph{}              
+        We recall a useful lemma concerning the solutions of (\ref{pde}) and (\ref{pde2}).
+        
+        \begin{lem}[Lemma 19 in \cite{Fla-Iss-Rus-2017}]\label{lem}
+            Let $(\delta,p)\in K(\beta,q)$ and let $v_\lambda$ be the mild solution to (\ref{pde}) in $H_p^{1+\delta}$. Fix $\rho$ such that the integral operator is a contraction and let $\lambda>\rho$. Then $v_\lambda(t)\in\mathcal{C}^{1,\alpha}$ with $\alpha=\delta-1/p$ for each fixed $t$ and 
+            \begin{equation}
+            \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla v_\lambda(t,x)| \rightarrow 0,\ as\ \lambda \rightarrow \infty
+            \end{equation}
+            where the choice of $\lambda$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b}_{H_q^{-\beta}}$.
+        \end{lem}
+        
+        By lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2\sqrt{3}}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$ (See Step 2 of the proof of Proposition 26 in \cite{Fla-Iss-Rus-2017}). Therefore $u^N$ and $u$ are $\frac{1}{2\sqrt{3}}$-lipschitz.
         
         \begin{multline*}
         \left|X^{N}_t-X_t\right|^2 = \bigg|u^N(0,X_0) - u(0,X_0) + u(t,X_t) - u^N(t,X_t)+ u^N(t,X_t)\\- u^N(t,X_t^N) + (\lambda+1)\int_0^t \{u^N(s,X_s^N)- u^N(s,X_s) + u^N(s,X_s) - u(s,X_s)\}\ \di s \\+ \int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2
@@ -190,7 +190,7 @@
         \leq 6\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{12}\big|X_t- X_t^N\big|^2\\ + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s^N)- u^N(s,X_s)\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
         \end{multline*}
         \begin{multline*}
-        \leq 6\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{12}\big|X_t- X_t^N\big|^2\\ + \frac{\lambda+1}{12}\ t\int_0^t \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+        \leq 6\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{12}\big|X_t- X_t^N\big|^2\\ + \frac{\lambda+1}{12}\ t\int_0^t \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg).
         \end{multline*}
         
         It follows that:
@@ -200,12 +200,52 @@
         \begin{multline*}
         \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{12}\ T\int_0^T \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ T\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \underset{0\leq t\leq T}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
         \end{multline*}
-        Taking the expectation, we obtain
         \begin{multline*}
-        \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\right] \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg] \\ + \frac{\lambda+1}{12}\ T\E\bigg[\int_0^T \big|X_s^N- X_s\big|^2\ \di s\bigg] + (\lambda+1)\ T\E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg] \\+\E\bigg[ \underset{0\leq t\leq T}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \bigg]\Bigg)
+        \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{12}\ T\int_0^T \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ T\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \underset{0\leq t\leq T}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg).
+        \end{multline*}
+        Taking the expectation, we obtain:
+        \begin{multline*}
+        \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\right] \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2\\ + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg] + \frac{\lambda+1}{12}\ T\ \E\bigg[\int_0^T \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s\bigg]\\ + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +\E\bigg[ \underset{0\leq t\leq T}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \bigg]\Bigg).
         \end{multline*}
         
+        Using Burkholder-Davis-Gundy inequality, it follows that:
+        \begin{multline*}
+        \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\right] \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2\\ + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg] + \frac{\lambda+1}{12}\ T\ \E\bigg[\int_0^T \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s\bigg]\\ + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +2\int_0^T \Big|\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\Big|^2\ \di s \Bigg)
+        \end{multline*}
+%        \begin{multline*}
+%        \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{12}\ T\ \E\bigg[\int_0^T \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s\bigg]\\ + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg] +\frac{2}{3}\ T \Bigg)
+%        \end{multline*}
         
+        Applying fractional Morrey inequality, we obtain $\forall t\in[0,T]$:
+        \begin{equation*}
+        \begin{cases}
+        \norme{u^N(t) - u(t)}_{L^\infty}\leq\norme{u^N(t) - u(t)}_{\mathcal{C}^{1,\alpha}}\leq c\norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}\\        
+        \norme{\nabla u^N(t) - \nabla u(t)}_{L^\infty}\leq\norme{u^N(t) - u(t)}_{\mathcal{C}^{1,\alpha}}\leq c\norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}.
+        \end{cases}        
+        \end{equation*}
+        
+        Now, with
+        \begin{equation*}
+        \norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}\leq e^T \norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}^{(\rho)}\leq Ke^T\norme{b^N(t)-b(t)}_{H^{-\beta}_{q}}
+        \end{equation*} from lemma 22 in \cite{Fla-Iss-Rus-2017}, we have:
+        
+        \begin{multline*}
+        \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\right]
+        \leq 12\Bigg(2c^2K^2e^{2T}\norme{b^N(t)-b(t)}_{H^{-\beta}_{q}}^2\\ + \frac{\lambda+1}{12}\ T\ \E\bigg[\int_0^T \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s\bigg]\\ + (\lambda+1)\ T^2 c^2K^2e^{2T}\norme{b^N(t)-b(t)}_{H^{-\beta}_{q}}^2 +2c^2K^2Te^{2T}\norme{b^N(t)-b(t)}_{H^{-\beta}_{q}}^2 \Bigg)
+        \end{multline*}
+        
+        \begin{multline*}
+        \leq 12\left(2 + T + (\lambda+1)\ T^2\right) c^2K^2e^{2T}\norme{b^N(t)-b(t)}_{H^{-\beta}_{q}}^2\\  +
+        (\lambda+1)\ T\ \E\bigg[\int_0^T \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s\bigg]
+        \end{multline*}
+        
+        Finally Gronwall inequality gives:
+        \begin{equation}
+        \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\right]
+        \leq 
+        C\exp\left((\lambda+1)\ T^2\right)\norme{b^N(t)-b(t)}_{H^{-\beta}_{q}}^2        
+        \end{equation}
+        with $C=\left(12\left(2 + T + (\lambda+1)\ T^2\right) c^2K^2e^{2T}\right)$.
        
 \bibliographystyle{abbrv}
 \bibliography{pre}

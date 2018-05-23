@@ -1,6 +1,11 @@
 % Computation of an approximation of a realisation of the solution of the 
 % SDE dX = b(X)dt + dWt
-function [X,frame] = eulerMethod(X0,startNT,NT,N,T,H,B,xgrid,testId,K,graphHaar,control)
+function [X,frame,haar,control,usual] = eulerMethod(X0,startNT,NT,N,T,H,B,xgrid,testId,K,graphHaar,control)
+
+frame = [];
+haar = [];
+control = [];
+usual = [];
 
 % Setting the seed to 1 for reuse
 rng(1,'twister');
@@ -34,18 +39,18 @@ end
 
 % Displays of the approximated solution
 if (testId == 0)
-    frame = plotSolution(t,X,NT,N,T)
+    frame = plotSolution(t,X,NT,N,T);
 else
-    plotUsualSolution(t,X,NT,N,T,Xeuler)
+    usual = plotUsualSolution(t,X,NT,N,T,Xeuler);
 end
 
 if (control == 1)
-    plotControl(t,X,NT,N,T,W)
+    control = plotControl(t,X,NT,N,T,W);
 end
 
 % Display of the fBm and its derivative approximation
 if (graphHaar == 1)
-    plotHaarApproximation(K,Mu,N,B,xgrid,H)
+    haar = plotHaarApproximation(K,Mu,N,B,xgrid,H);
 end
 
 end

@@ -1,4 +1,4 @@
-function plotUsualSolution(t,X,NT,N,T,Xeuler)
+function frame = plotUsualSolution(t,X,NT,N,T,Xeuler)
 
 figure
 modifiedEuler = plot(t,X,'r') ;
@@ -12,5 +12,9 @@ ylabel('$X_t$','Interpreter','latex')
 chn = ['Approximation of a sample path of the SDE solution ($n =\ $',num2str(NT),' ; $N =\ $',num2str(N),')'];
 title(chn,'Interpreter','latex')
 legend([modifiedEuler,euler],'Approximation with Haar wavelets','Usual Euler scheme')
-    
+name = ['Identity test n = ',num2str(NT),' ; N = ',num2str(N),'.png'];
+set(gcf,'PaperPositionMode','auto')
+print(name,'-dpng','-r0')
+frame = getframe(gcf);    
+
 end

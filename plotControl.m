@@ -1,4 +1,4 @@
-function plotControl(t,X,NT,N,T,W)
+function frame = plotControl(t,X,NT,N,T,W)
 
 figure
 n = length(t);
@@ -10,7 +10,8 @@ xlabel('$t$','Interpreter','latex')
 ylabel('$X_t-W_t$','Interpreter','latex')
 chn = ['Approximation of the drift part of the SDE solution ($n =\ $',num2str(NT),' ; $N =\ $',num2str(N),')'];
 title(chn,'Interpreter','latex')
-name = ['drift part n = ',num2str(NT),' ; N = ',num2str(N),'.png'];
-saveas(gcf,name);
+%name = ['drift part n = ',num2str(NT),' ; N = ',num2str(N),'.png'];
+%saveas(gcf,name);
+frame = getframe(gcf);
     
 end

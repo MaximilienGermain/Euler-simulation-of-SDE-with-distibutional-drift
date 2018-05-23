@@ -1,6 +1,6 @@
 \documentclass{article}[12pt]
 
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}      
 \usepackage[english]{babel}
 %\usepackage[left=2.00cm, right=2cm, top=2.00cm, bottom=2.00cm]{geometry}
@@ -69,16 +69,21 @@
     
     \paragraph{}
     As far as the drift $b$ is not a function but a distribution, it must be approximated if we want to evaluate it at points. In order to do so, we will use a series representation of $b$ and truncate it. That is why we will consider two steps in our algorithm: \begin{enumerate}
-        \item approximate the drift $b$ by $b^N$.
-        \item approximate the solution $X^N_t$ of the approximated SDE:
+        \item approximate the drift $b$ by a function $b^N$ meant to converge to $b$ as $N\rightarrow\infty$.
+        \item approximate the solution $X^N_t$ of the approximated SDE
         \begin{equation} \label{sde2}
         \di X^N_t = b^N\left(X^N_t\right)\ \di t + \di W_t
         \end{equation} 
-        by $X^{N,n}_t$ with a Euler-Maruyama scheme.
+        by $X^{N,n}_t$ defined with the Euler-Maruyama scheme
+        \begin{equation*}
+        X^{N,n}_t = X_0 + \int_0^t b^N\left(X^{N,n}_{\eta_n(t)}\right)\di t + W_{\eta_n(t)}
+        \end{equation*}
+        where $\eta_n(t)=t_k$ if $t\in[t_k,t_k+1]$, for $t_k=\frac{k}{2^n}$ with $ k\in\llbracket0,\lceil2^nT\rceil\rrbracket$.
+        
     \end{enumerate}
 
 \section{Numerical simulation of fractional Brownian motion}    
-
+    \paragraph{}
     To simulate a sample path of a fractional brownian motion $B^H_x$ on a finite grid $(x_k)_{k\in\llbracket1,n\rrbracket}$, we simulate $n$ independent standard gaussian random variables $(X_k)_{k\in\llbracket1,n\rrbracket}$ and then correlate them with the definite positive correlation matrix 
     $$C_{k,s}=\E\left[B_{x_k}^HB_{x_s}^H\right]=\frac{1}{2}\left(x_k^{2H}+x_s^{2H}+|x_k-x_s|^{2H}\right).$$
     To do so, we use the Cholesky decomposition method and calculate the triangular matrix $M$ such that $C=MM^\top$. Therefore, defining
@@ -109,38 +114,99 @@
     \end{theo}
 
     \begin{defi}
-        Let $b\in H^s_q(\R)$ for $2\leq q \leq \infty$, and $s\in\left]-\frac{1}{2},0\right[$. For $N\in\N$ we define $b^N\in H_q^s(\R)$ by:
+        With the same notation $\mu_{j,m} $, let $b\in H^s_q(\R)$ for $2\leq q \leq \infty$, and $s\in\left]-\frac{1}{2},\frac{1}{q}\right[$. Given $N\in\N^*$ we define $b^N$ by:
         \begin{equation}
-        b^N = \sum_{j=-1}^{N}\sum_{m=-N2^j}^{N2^j-1}\mu_{j,m}h_{j,m}.
+        b^N = \sum_{m=N}^{N-1}\mu_{-1,m}h_{-1,m}+\sum_{j=0}^{N}\sum_{m=-N2^j}^{N2^j-1}\mu_{j,m}h_{j,m}.
         \end{equation}
     \end{defi}
 
     \begin{rem}
-        We can note that $\mathrm{Supp}\ b^N\subset [-N,N].$ Moreover, we have: $$\norme{b-b^N}_{H_q^s(\R)} \underset{N\rightarrow+\infty}{\longrightarrow} 0.$$
+        We can note that $\mathrm{Supp}\ b^N\subset [-N,N]$ and $ b^N\in H_q^{1/q}(\R).$ Moreover, we have: $$\norme{b-b^N}_{H_q^s(\R)} \underset{N\rightarrow+\infty}{\longrightarrow} 0.$$
     \end{rem}
 
     \subsection{Computation of the coefficients $\mu_{j,m}$ when $b$ is the derivative of a fractional brownian motion}
-        Faber
+        Faber basis
 \section{Numerical results}
 \section{Convergence} 
     
-    \subsection{Convergence of the Euler-Maruyama scheme}
+    \subsection{Convergence of $X_s^{N,n}$ to $X_s^N$ in $L^2$}
+        \paragraph{}
+        Recently, Leobacher and Szölgyenyi proved in \cite{Leo-Szo} the convergence of the Euler-Maruyama scheme for SDE with discontinuous but piecewise Lipschitz drift and with a degenerate diffusion coefficient. This applies to the scheme we use with the piecewise constant drift $b^N$.
     
-    Ngo and Taguchi proved in \cite{Ngo-Tag-2017} the convergence of the Euler-Maruyama scheme for SDE (\ref{sde2}) in the following case which applies to our problem.
-    
-    \begin{theo}[Corollary 2.9. in \cite{Ngo-Tag-2017}]
-        Assume that $b\in L^1(\R)\cap H^\beta$ for some $\beta\in(0,1]$  and the diffusion coefficient $\sigma$
-        is Lipschitz continuous and uniformly elliptic. Then for any $p\geq1$, there exists positive constant C
-        which depends on $K_\sigma,\norme{b}_\beta,\norme{b}_{L^1(\R)},T,x_0,\alpha,\beta$ and $p$ such that
+    \begin{theo}[Theorem 3.1. in \cite{Leo-Szo}]
+        $\forall \varepsilon >0,\ \exists C_N, \exists n_0\in\N$ such that $\forall n\geq n_0$
         \begin{equation}
-        \mathbb{E}\left[\sup_{0\leq s\leq T}\left|X_s^N - X_s^{N,n}\right|^p\right] \leq \frac{C}{n^{p\beta/2}}
+        \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N,n}_t-X^N_t\right|^2\right]^{1/2}\leq C_N\delta^{1/4-\varepsilon}
         \end{equation}
+        with $\delta=\frac{1}{2^n}$ the step size.
     \end{theo}
+    %Recently, Ngo and Taguchi proved in \cite{Ngo-Tag-2017} the convergence of the Euler-Maruyama scheme for SDE (\ref{sde2}) in the following case which applies to our problem.
+    
+    %\begin{theo}[Corollary 2.9. in \cite{Ngo-Tag-2017}] \label{the}
+        %Assume that $b^N\in L^1(\R)\cap H^\beta$ for some $\beta\in(0,1]$  and the diffusion coefficient $\sigma$
+        %is $K_\sigma$-Lipschitz continuous and uniformly elliptic $\left(\frac{1}{K_{\sigma}^2}\leq \sigma(x)^2 \leq K_{\sigma}^2\ %\mathrm{with}\ K_{\sigma}>1\right)$. Then for any $p\geq1$, there exists positive constant C
+        %which depends on $K_\sigma,\norme{b^N}_\beta,\norme{b^N}_{L^1(\R)},T,x_0,\alpha,\beta$ and $p$ such that
+        %$$
+        %\mathbb{E}\left[\sup_{0\leq s\leq T}\left|X_s^N - X_s^{N,n}\right|^p\right] \leq \frac{C}{n^{p\beta/2}}
+        %$$
+    %\end{theo}
+
+    %Applying theorem \ref{the} with $\beta = \frac{1}{q}$, we obtain :
+    
+    %\begin{theo}[]
+        %For any $p\geq1$, there exists positive constant C
+        %which depends on $K_\sigma,\norme{b^N}_\beta,\norme{b^N}_{L^1(\R)},T,x_0,1/q$ and $p$ such that
+        %\begin{equation}
+        %\mathbb{E}\left[\sup_{0\leq s\leq T}\left|X_s^N - X_s^{N,n}\right|^p\right] \leq \frac{C}{n^{\frac{p}{2q}}}
+        %\end{equation}
+    %\end{theo}
 
     \textbf{TO DO: make explicit the dependance of $C$ in $N$}.
     
     \subsection{Convergence of $X_s^{N}$ to $X_s$}
-    
+        \paragraph{}
+        In \cite{Fla-Iss-Rus-2017}, the authors define the virtual solution of SDE (\ref{sde}) by :
+        \begin{equation}
+        X_t = X_0 + u(0,X_0) - u(t,X_t) + (\lambda+1)\int_0^t u(s,Xs)\ \di s +\int_0^t \nabla u(s,Xs)\ \di W_s
+        \end{equation}
+        where $u$ verifies the following parabolic PDE :
+        \begin{equation}\label{pde}
+        \begin{cases}
+        \partial_t u + \frac{1}{2}\Delta u + b\nabla u - (\lambda+1)u = -b\ &\mathrm{on}\ [0,T]\times\R\\
+        u(T) = 0\ &\mathrm{on}\ \R
+        \end{cases}
+        \end{equation}
+        
+        \paragraph{}
+        We want to estimate $\E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\right]$. Let's take $u$ solution of (\ref{pde}) and $u_N$ the solution of (\ref{pde}) when we replace $b$ by $b^N$. By lemma 19 in \cite{Fla-Iss-Rus-2017}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2\sqrt{3}}$. Therefore $u^N$ and $u$ are $\frac{1}{2\sqrt{3}}$-lipschitz.
+        
+        \begin{multline*}
+        \left|X^{N}_t-X_t\right|^2 = \bigg|u^N(0,X_0) - u(0,X_0) + u(t,X_t) - u^N(t,X_t)+ u^N(t,X_t)\\- u^N(t,X_t^N) + (\lambda+1)\int_0^t \{u^N(s,X_s^N)- u^N(s,X_s) + u^N(s,X_s) - u(s,X_s)\}\ \di s \\+ \int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2
+        \end{multline*}
+        \begin{multline*}
+        \leq 6\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \Big|u^N(t,X_t)- u^N(t,X_t^N)\Big|^2\\ + \bigg|(\lambda+1)\int_0^t \{u^N(s,X_s^N)- u^N(s,X_s)\}\ \di s\bigg|^2 + \bigg|(\lambda+1)\int_0^t \{u^N(s,X_s) - u(s,X_s)\}\ \di s\bigg|^2 \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+        \end{multline*}
+        \begin{multline*}
+        \leq 6\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{12}\big|X_t- X_t^N\big|^2\\ + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s^N)- u^N(s,X_s)\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+        \end{multline*}
+        \begin{multline*}
+        \leq 6\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{12}\big|X_t- X_t^N\big|^2\\ + \frac{\lambda+1}{12}\ t\int_0^t \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+        \end{multline*}
+        
+        It follows that:
+        \begin{multline*}
+        \underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\leq 12\underset{0\leq t\leq T}{\sup}\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{12}\ t\int_0^t \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+        \end{multline*}
+        \begin{multline*}
+        \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{12}\ T\int_0^T \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ T\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \underset{0\leq t\leq T}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+        \end{multline*}
+        Taking the expectation, we obtain
+        \begin{multline*}
+        \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\right] \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg] \\ + \frac{\lambda+1}{12}\ T\E\bigg[\int_0^T \big|X_s^N- X_s\big|^2\ \di s\bigg] + (\lambda+1)\ T\E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg] \\+\E\bigg[ \underset{0\leq t\leq T}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \bigg]\Bigg)
+        \end{multline*}
+        
+        
+       
 \bibliographystyle{abbrv}
 \bibliography{pre}
     

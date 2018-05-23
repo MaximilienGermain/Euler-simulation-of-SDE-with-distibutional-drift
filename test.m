@@ -40,7 +40,7 @@ frames = [];
 
 % Convergence in N
 for N=startN:startN+9
-    [xgrid,B,M] = createfBm(H,Kmax,7,start,Nx,-Kmax,1000);
+    [xgrid,B,M] = createfBm(H,Kmax,7,startN,Nx,-Kmax,1000);
     NT = 8;
     control = 1;
     [X,frame,haar,control,usual] = eulerMethod(X0,startNT,NT,N,T,H,B,xgrid,testId,Kmax,graphHaar,control);

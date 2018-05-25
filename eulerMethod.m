@@ -1,14 +1,11 @@
 % Computation of an approximation of a realisation of the solution of the 
 % SDE dX = b(X)dt + dWt
-function [X,frame,haar,control,usual] = eulerMethod(X0,startNT,NT,N,T,H,B,xgrid,testId,K,graphHaar,control)
+function [X,frame,haar,control,usual] = eulerMethod(X0,startNT,NT,N,T,H,B,xgrid,testId,K,graphHaar,control,seed)
 
 frame = [];
 haar = [];
 control = [];
 usual = [];
-
-% Setting the seed to 1 for reuse
-rng(1,'twister');
 
 % Precision of the time grid
 dt = 2^(-NT); 
@@ -18,7 +15,7 @@ Mu = computeMu(B,N,testId,K);
 
 % Brownian motion simulation on the time grid
 kmax=floor(2^startNT*T);
-[t,W] = createfBm(0.5,(kmax+1)/2^(startNT),NT-1,startNT-1,kmax+2,0,2);
+[t,W] = createfBm(0.5,(kmax+1)/2^(startNT),NT-1,startNT-1,kmax+2,0,seed);
 n = length(t);
 
 % Initialisation of X (and Xeuler)

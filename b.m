@@ -6,18 +6,20 @@ sizeMu = size(Mu);
 N = sizeMu(1) - 2;
 
 % Construction of the evaluation of the haar functions at the vector x
-hm = zeros(N+2,K*2^(N+1));
 output = zeros(1,length(x));
 
 for i = 1:length(x)
+    hm = zeros(N+2,K*2^(N+1));
     for j = 1:N+2
         if (j==1)
-            for m = 1:K*2
-                hm(j,m) = h(j-2,m-K-1,x(i));
+            if (floor(x(i)) < K) && (floor(x(i)) >= -K)
+                hm(j,floor(x(i))+K+1) = h(j-2,floor(x(i)),x(i));
+                l(j,floor(x(i))+K+1) = h(j-2,floor(x(i)),x(i));
             end
         else
-            for m = 1:K*2^(j-1)
-                hm(j,m) = h(j-2,m-K*2^(j-2)-1,x(i));
+            p= floor(2^(j-2)*x(i));
+            if (p < K*2^(j-2)) && (p >= -K*2^(j-2))
+                 hm(j,p+K*2^(j-2)+1) = h(j-2,p,x(i));
             end
         end
     end

@@ -32,15 +32,15 @@ for k=1:p-1
         end
     end
 end
-M*M';
-A;
-B;
-C = A'/(M');
+%M*M';
+%A;
+%B;
+%C = A'/(M');
 gamma = [M*M' A; A' B];
-eig(gamma);
-D = chol(B-C*C')';
-%M = chol(gamma);
-M = [M zeros(s); C D];
+%eig(gamma);
+M = chol(gamma)';
+%D = chol(B-C*C')';
+%M = [M zeros(s); C D];
 newM = M;
 
 newrandom = [random ; otherrandom];

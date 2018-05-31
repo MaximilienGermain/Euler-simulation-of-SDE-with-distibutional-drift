@@ -10,7 +10,7 @@
 \usepackage{amssymb}
 \usepackage{mathrsfs}
 \usepackage{stmaryrd} 
-\renewcommand{\qedsymbol}{}
+%\renewcommand{\qedsymbol}{}
 \usepackage{graphicx}
 \graphicspath{{illustrations/}}
 \usepackage{caption}
@@ -28,13 +28,13 @@
 \newcommand{\de}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
 \newcommand{\integ}[4]{\int_{#1}^{#2}{#3\ \mathrm{d} #4}}
 
-\newtheorem{defi}{Definition}[section]
-\newtheorem{theo}{Theorem}[section]
+\newtheorem{defi}{Definition}
+\newtheorem{theo}{Theorem}
 \newtheorem{lem}[theo]{Lemma}
 \newtheorem{cor}[theo]{Corollary}
 \newtheorem{Pro}{Proposition}[section]
-\newtheorem{ex}{Example}[section]
-\newtheorem{rem}{Remark}[section]
+\newtheorem{ex}{Example}
+\newtheorem{rem}{Remark}
 
 \newcommand{\norme}[1]{\left\Vert #1\right\Vert}
 \newcommand{\R}{\mathbb{R}}
@@ -61,7 +61,7 @@
     \begin{equation} \label{sde}
     \di X_t = b(X_t)\ \di t + \di W_t
     \end{equation}
-    where $b\in H^s_q(\R),\ s\in\left]-\frac{1}{2},0\right[$, $t\in[0,T]$, and $W_t$ is a standard Brownian motion. This equation is studied in \cite{Fla-Iss-Rus-2017} in which the authors prove existence and unicity in law of a virtual solution for equation (\ref{sde}). 
+    where $b\in H^s_q(\R),\ s\in\left]-\frac{1}{2},0\right[$, $t\in[0,T]$, and $W_t$ is a standard Brownian motion. This equation is studied by F. Flandoli, E. Issoglio, and F. Russo in \cite{Fla-Iss-Rus-2017} in which they define a virtual solution for equation (\ref{sde}). The authors prove then existence and unicity in law of this solution. 
     
     \begin{ex}
         An example of such drift $b$ is given by the derivative of a sample path of a fractional Brownian motion $B^H_x$ with Hurst index $1/2<H<1$. These stochastic processes are gaussian processes verifying $$\E\left[B_t^HB_s^H\right]=\frac{1}{2}\left(t^{2H}+s^{2H}+|t-s|^{2H}\right).$$ We note $s = H - 1$. Given $B^H_x(\omega)\in H^{s+1}_q(\R)$, we can take $b(x) = \pade{}{x}B^H_x(\omega)\in H^s_q(\R)$. We will use this in our numerical simulations.
@@ -149,7 +149,7 @@
     
     \subsection{Convergence of $X_s^{N}$ to $X_s$}
         \paragraph{}
-        We want to estimate the weak error $\E[f(X_T)-f(X_T^N)]$ for our approximation algorithm. In order to do so, we must go back to the definition of the virtual solution of the SDE (\ref{sde}) given in \cite{Fla-Iss-Rus-2017}. The authors define the virtual solution of SDE (\ref{sde}) by:
+        We want to estimate the weak error $\E\left[f\left(X_T\right)-f\left(X_T^N\right)\right]$ with suitable functions $f$. In order to do so, we must go back to the definition of the virtual solution of the SDE (\ref{sde}) given in \cite{Fla-Iss-Rus-2017}. The authors define the virtual solution of SDE (\ref{sde}) by $X_t$ such that:
         \begin{equation}
         \begin{cases}
         X_t = \Psi(t,Y_t) = \varphi^{-1}(t,Y_t)
@@ -175,21 +175,38 @@
         \end{cases}.
         \end{equation}
         
+        \paragraph{}
+        We will need to use the following local time inequality from Liqing Yan:
+        
+        \begin{lem}[Lemma 4.2 in \cite{Yan}]\label{local}
+            Let $X$ be a continuous semimartingale with $X_0 = 0$. For $\varepsilon>0$ we define a double sequence of stopping times by $\sigma_1 = 0$, $\tau_1=\inf\{t>0 | X_t=\varepsilon\}$, $\sigma_n = \inf\{t>\tau_{n-1}|X_t=0\}$, $\tau_n=\inf\{t>\sigma_n|X_t=\varepsilon\}$. For any real function $F(\cdot)\in\mathcal{C}^2$ with $F(0)=0,\ F'(0) = 0$ and $F(\cdot) > 0$ on $(0,\varepsilon_0)$ for some $\varepsilon_0 > 0$, then for any $0<\varepsilon<\varepsilon_0$ we have
+            \begin{multline*}
+                0\leq L^0_t(X) \leq 2\varepsilon - \frac{2}{F(\varepsilon)}\int_0^t \theta_s(X) \left(F\left(\varepsilon\right) - \varepsilon F'\left(X_s^+\right)\right)\ \di X_s\\
+                +\frac{1}{F(\varepsilon)}\int_0^t \theta_s(X)\varepsilon F''(X_s^+)\ \di[X]_s
+            \end{multline*}
+            with $\theta_s(X) = \sum_{n=1}^\infty \mathds{1}_{\sigma_n< s\leq \tau_n,\ 0<X_s\leq \varepsilon}(X)$.
+        \end{lem}
+        
+        Applying lemma \ref{local} with $F(x) = x^2$, it follows:
+        \begin{cor}
+            Let X be a continuous martingale with $X_0 = 0$. With the same notations as in lemma \ref{local}, for any $\varepsilon>0$ we have
+            \begin{multline}
+                0\leq L^0_t(X) \leq 2\varepsilon - \frac{2}{\varepsilon}\int_0^t \theta_s(X) \left(\varepsilon - 2{X_s^+}\right)\ \di X_s
+                +\frac{2}{\varepsilon}\int_0^t \theta_s(X) \ \di[X]_s
+            \end{multline}
+        \end{cor}
+        
         \paragraph{}              
-        We recall a useful lemma concerning the solutions of (\ref{pde}) and (\ref{pde2}).
+        We also recall a useful lemma concerning the solutions of (\ref{pde}) and (\ref{pde2}).
         
         \begin{lem}[Lemma 20 in \cite{Fla-Iss-Rus-2017}]\label{lem}
             Let $(\delta,p)\in K(\beta,q)$ and let $v_\lambda$ be the mild solution to (\ref{pde}) in $H_p^{1+\delta}$. Fix $\rho$ such that the integral operator is a contraction and let $\lambda>\rho$. Then $v_\lambda(t)\in\mathcal{C}^{1,\alpha}$ with $\alpha=\delta-1/p$ for each fixed $t$ and 
-            \begin{equation}
+            \begin{equation*}
             \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla v_\lambda(t,x)| \rightarrow 0,\ as\ \lambda \rightarrow \infty
-            \end{equation}
+            \end{equation*}
             where the choice of $\lambda$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b}_{H_q^{-\beta}}$.
         \end{lem}
-    \paragraph{}  
-    By lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$ (See Step 2 of the proof of Proposition 29 in \cite{Fla-Iss-Rus-2017}). Therefore $u^N$ and $u$ are $\frac{1}{2}$-lipschitz. We recall that in this case, by lemma 22 in \cite{Fla-Iss-Rus-2017}, $\Psi(t,\cdot)$ is 2-lipschitz.
-    
-    
-        
+         
 %        By lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{\sqrt{14}}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$ (See Step 2 of the proof of Proposition 26 in \cite{Fla-Iss-Rus-2017}). Therefore $u^N$ and $u$ are $\frac{1}{\sqrt{14}}$-lipschitz.
 %        
 %        \begin{multline*}
@@ -237,24 +254,90 @@
 %%        \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{12}\ T\ \E\bigg[\int_0^T \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s\bigg]\\ + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg] +\frac{2}{3}\ T \Bigg)
 %%        \end{multline*}
 %
-\paragraph{}          
-Applying fractional Morrey inequality, $\exists c>0,\ \forall t\in[0,T]$:
-\begin{equation*}
-        \begin{cases}
-        \norme{u^N(t) - u(t)}_{L^\infty}\leq\norme{u^N(t) - u(t)}_{\mathcal{C}^{1,\alpha}}\leq c\norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}\\        
-        \norme{\nabla u^N(t) - \nabla u(t)}_{L^\infty}\leq\norme{u^N(t) - u(t)}_{\mathcal{C}^{1,\alpha}}\leq c\norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}.
-        \end{cases}        
-\end{equation*}
+\begin{lem}\label{morrey} Exists $c>0$ such that for both $N\in\N$ and $\rho>1$ big enough, 
+    \begin{equation}
+    \begin{cases}
+    \norme{u^N(t) - u(t)}_{L^\infty}\leq cKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\        
+    \norme{\nabla u^N(t) - \nabla u(t)}_{L^\infty}\leq c Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}.
+    \end{cases} .
+    \end{equation}
+\end{lem}    
+
+\begin{proof}
+    Applying fractional Morrey inequality, $\exists c>0,\ \forall t\in[0,T]$:
+    \begin{equation*}
+    \begin{cases}
+    \norme{u^N(t) - u(t)}_{L^\infty}\leq\norme{u^N(t) - u(t)}_{\mathcal{C}^{1,\alpha}}\leq c\norme{u^N(t)-u(t)}_{H^{1+\delta}_{p}}\\        
+    \norme{\nabla u^N(t) - \nabla u(t)}_{L^\infty}\leq\norme{u^N(t) - u(t)}_{\mathcal{C}^{1,\alpha}}\leq c\norme{u^N(t)-u(t)}_{H^{1+\delta}_{p}}.
+    \end{cases}        
+    \end{equation*}
+    
+    Now, with can conclude with
+    \begin{equation*}
+    \norme{u^N(t)-u(t)}_{\infty,H^{1+\delta}_{p}}\leq e^{\rho T} \norme{u^N(t)-u(t)}_{\infty,H^{1+\delta}_{p}}^{(\rho)}\leq Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}
+    \end{equation*} from Lemma 23 in \cite{Fla-Iss-Rus-2017}, for both $N\in\N$ and $\rho>1$ big enough, and where $\norme{f(t)}_{\infty,X}^{(\rho)} := \underset{0\leq t\leq T}{\sup} e^{-\rho t} \norme{f(t)}_X$.
+\end{proof}
+
+\begin{theo}
+    Let $f$ be $\mu$-Hölder with constant $C_f>0$ and $\mu\in(0,1]$. Then for $N\in\N$, $\rho>1$, $\lambda$ big enough, exists $\xi_f$ independent of $N$ such that:
+    
+    \begin{equation*}
+    \E\left[f\left(X_T\right)-f\left(X_T^N\right)\right] \leq \xi_f \norme{b^N-b}_{H^{-\beta}_{q}}^\gamma
+    \end{equation*}
+    
+\end{theo}
+
+\begin{proof}
+    By Lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$ (See Step 2 of the proof of Proposition 29 in \cite{Fla-Iss-Rus-2017}). Therefore $u^N$ and $u$ are $\frac{1}{2}$-lipschitz. We recall that in this case, by Lemma 22 in \cite{Fla-Iss-Rus-2017}, $\Psi(t,\cdot)$ is 2-lipschitz.
+    
+    \begin{equation*}
+    \E\left[f\left(X_T\right)-f\left(X_T^N\right)\right] = \E\left[f\left(\Psi\left(T,Y_T\right)\right)-f\left(\Psi\left(T,Y_T^N\right)\right)\right]
+    \end{equation*}
+    
+    \begin{equation*}
+    \leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|^\mu\right] \leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|\right]^\mu
+    \end{equation*}
+    
+    by Jensen's inequality. Let $t\in[0,T]$.
+    \begin{multline*}
+    Y_t-Y_t^N = (\lambda + 1\ )\int_0^t\left\{u\left(s,\Psi\left(s,Y_s\right)\right)-u^N\left(s,\Psi\left(s,Y_s^N\right)\right)\right\}\ \di s\\ + \int_0^t\left\{\nabla u\left(s,\Psi\left(s,Y_s\right)\right)-\nabla u^N\left(t,\Psi\left(s,Y_s^N\right)\right)\right\}\ \di W_s
+    \end{multline*}
+    
+    For clarity purpose, we note $\tilde{u}\left(s,x\right) = u\left(s,\Psi\left(s,x\right)\right)$ and use the same notation for the gradient and the approximated mild solution. We can notice that $\tilde{u}$ is 1-lipschitz in space. We apply Meyer-Tanaka's formula to obtain:
+    \begin{multline*}
+    \left|Y_t-Y_t^N\right| = (\lambda + 1)\ \int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s\\ + \int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\nabla\tilde{u}\left(s,Y_s\right)-\nabla\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di W_s + L_t^0(Y-Y^N)
+    \end{multline*}
+    
+    Taking the expectation leads to:
+    \begin{multline*}
+    \E\left[\left|Y_t-Y_t^N\right|\right] = (\lambda + 1)\ \E\left[\int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s\right]\\ + \E \left[L_t^0(Y-Y^N)\right]
+    \end{multline*}
+    because $\nabla\tilde{u}$ and $\nabla\tilde{u}^N$ are bounded so the Itô integral is a martingale.
+    
+    \begin{multline*}
+    \E\left[\left|Y_t-Y_t^N\right|\right]\leq (\lambda + 1)\ \E\left[\int_0^t\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}\left(s,Y_s^N\right)\right\} \di s\right]\\ +(\lambda + 1)\ \E\left[\int_0^t\left\{\tilde{u}\left(s,Y_s^N\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\} \di s\right] + \E \left[L_t^0(Y-Y^N)\right]
+    \end{multline*}
+    
+    We use Lemma \ref{morrey} and the 1-lipschitz property of $\tilde{u}$:
+    \begin{multline*}
+    \leq (\lambda + 1)\ \E\left[\int_0^t\left|Y_s-Y_s^N\right| \di s\right] +(\lambda + 1)\ ctKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\ + \E \left[L_t^0(Y-Y^N)\right]
+    \end{multline*}
+    
+    \begin{multline*}
+    \leq (\lambda + 1)\ \int_0^t\E\left[\left|Y_s-Y_s^N\right|\right] \di s + (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\ + \E \left[L_t^0(Y-Y^N)\right]
+    \end{multline*}
+    
+    By Gronwall's Lemma, it follows:
+    \begin{equation}
+    \E\left[\left|Y_T-Y_T^N\right|\right] \leq C(N) \exp((\lambda+1)T)
+    \end{equation}
+    with $C(N) = (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \E \left[L_t^0(Y-Y^N)\right].$      
+    
+    \paragraph{}
+    We now have to study the term $\E \left[L_t^0(Y-Y^N)\right]$.
+\end{proof}
         
-        Now, with
-        \begin{equation*}
-        \norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}\leq e^{\rho T} \norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}^{(\rho)}\leq Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}
-        \end{equation*} from lemma 23 in \cite{Fla-Iss-Rus-2017}, we have \begin{equation*}
-        \begin{cases}
-            \norme{u^N(t) - u(t)}_{L^\infty}\leq cKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\        
-            \norme{\nabla u^N(t) - \nabla u(t)}_{L^\infty}\leq c Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}.
-        \end{cases} .
-        \end{equation*}
+        
         
 %        \begin{multline*}
 %        w(y)
@@ -282,33 +365,9 @@ Applying fractional Morrey inequality, $\exists c>0,\ \forall t\in[0,T]$:
 %        C\exp\left((\lambda+1)\ T^2\right)\norme{b^N-b}_{H^{-\beta}_{q}}^2        
 %        \end{equation}
 %        with $C=\left(14\left(2 + T + (\lambda+1)\ T^2\right) c^2K^2e^{2T}\right)$.}
+ 
 
-\paragraph{}
-Let $f$ be $\mu$-Hölder with constant $C_f$ and $\mu\in(0,1]$. 
-
-\begin{equation*}
-\E\left[f\left(X_T\right)-f\left(X_T^N\right)\right] = \E\left[f\left(\Psi\left(T,Y_T\right)\right)-f\left(\Psi\left(T,Y_T^N\right)\right)\right]
-\end{equation*}
-
-\begin{equation*}
-\leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|^\mu\right] \leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|\right]^\mu
-\end{equation*}
-
-by Jensen's inequality. Let $t\in[0,T]$.
-\begin{multline*}
-Y_t-Y_t^N = (\lambda + 1\ )\int_0^t\left\{u\left(t,\Psi\left(t,Y_t\right)\right)-u^N\left(t,\Psi\left(t,Y_t^N\right)\right)\right\}\ \di t\\ + \int_0^t\left\{\nabla u\left(t,\Psi\left(t,Y_t\right)\right)-\nabla u^N\left(t,\Psi\left(t,Y_t^N\right)\right)\right\}\ \di W_t
-\end{multline*}
-
-For clarity purpose, we note $\tilde{u}\left(t,Y_t\right) = u\left(t,\Psi\left(t,Y_t\right)\right)$ and use the same notation for the gradient and the approximated mild solution. We apply Meyer-Tanaka's formula to obtain:
-\begin{multline*}
-\left|Y_t-Y_t^N\right| = (\lambda + 1)\ \int_0^t\mathrm{sign}(Y_t-Y_t^N)\left\{\tilde{u}\left(t,Y_t\right)-\tilde{u}^N\left(t,Y_t^N\right)\right\}\ \di t\\ + \int_0^t\mathrm{sign}(Y_t-Y_t^N)\left\{\nabla\tilde{u}\left(t,Y_t\right)-\nabla\tilde{u}^N\left(t,Y_t^N\right)\right\}\ \di W_t + L_t^0(Y_-Y^N)
-\end{multline*}
-
-Taking the expectation:
-\begin{multline*}
-\E\left|Y_t-Y_t^N\right| = (\lambda + 1)\ \E\left[\int_0^t\mathrm{sign}(Y_t-Y_t^N)\left\{\tilde{u}\left(t,Y_t\right)-\tilde{u}^N\left(t,Y_t^N\right)\right\}\ \di t\right]\\ + \E \left[L_t^0(Y_-Y^N)\right]
-\end{multline*}
-
+ 
        
 \bibliographystyle{abbrv}
 \bibliography{pre}

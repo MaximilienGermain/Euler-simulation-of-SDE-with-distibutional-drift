@@ -78,7 +78,7 @@
         \begin{equation*}
         X^{N,n}_t = X_0 + \int_0^t b^N\left(X^{N,n}_{\eta_n(t)}\right)\di t + W_{\eta_n(t)}
         \end{equation*}
-        where $\eta_n(t)=t_k$ if $t\in[t_k,t_k+1]$, for $t_k=\frac{k}{2^n}$ with $ k\in\llbracket0,\lceil2^nT\rceil\rrbracket$.
+        where $\eta_n(t)=t_k$ if $t\in[t_k,t_k+1]$, for $t_k=\frac{k}{n}$ with $ k\in\llbracket0,\lceil2^nT\rceil\rrbracket$.
         
     \end{enumerate}
 
@@ -145,21 +145,29 @@
 
     \textbf{TO DO: make $C_N$ explicit}.
     
+    \newpage
+    
     \subsection{Convergence of $X_s^{N}$ to $X_s$}
         \paragraph{}
-        We want to estimate $w(y):=\E\left[\underset{0\leq t\leq y}{\sup}\left|X^{N}_t-X_t\right|^2\right]$ for $y\in[0,T]$. In order to do so, we must go back to the definition of the virtual solution of the SDE (\ref{sde}) given in \cite{Fla-Iss-Rus-2017}. The authors define the virtual solution of SDE (\ref{sde}) by:
+        We want to estimate the weak error $\E[f(X_T)-f(X_T^N)]$ for our approximation algorithm. In order to do so, we must go back to the definition of the virtual solution of the SDE (\ref{sde}) given in \cite{Fla-Iss-Rus-2017}. The authors define the virtual solution of SDE (\ref{sde}) by:
         \begin{equation}
-        X_t = X_0 + u(0,X_0) - u(t,X_t) + (\lambda+1)\int_0^t u(s,Xs)\ \di s +\int_0^t \nabla u(s,Xs)\ \di W_s + W_t
+        \begin{cases}
+        X_t = \Psi(t,Y_t) = \varphi^{-1}(t,Y_t)
+        \\
+        Y_t = y + (\lambda+1)\int_0^t u(s,Y_s)\ \di s +\int_0^t (\nabla u(s,Y_s)+1)\ \di W_s
+        \end{cases}
         \end{equation}
         where $u$ is the mild solution in $H_p^{1+\delta}$ of the following parabolic PDE:
         \begin{equation}\label{pde}
         \begin{cases}
         \partial_t u + \frac{1}{2}\Delta u + b\nabla u - (\lambda+1)u = -b\ &\mathrm{on}\ [0,T]\times\R\\
         u(T) = 0\ &\mathrm{on}\ \R
-        \end{cases}.
+        \end{cases}
         \end{equation}
+        and $\varphi(t,x) = x + u(t,x)$.
         
-        We also define another similar PDE by replacing $b$ by $b^N$, and noting $u^N$ its mild solution in $H_p^{1+\delta}$.
+        \paragraph{}
+        We also define another similar PDE by replacing $b$ by $b^N$. We call $u^N$ its mild solution in $H_p^{1+\delta}$.
         \begin{equation}\label{pde2}
         \begin{cases}
         \partial_t u^N + \frac{1}{2}\Delta u^N + b^N\nabla u^N - (\lambda+1)u^N = -b^N\ &\mathrm{on}\ [0,T]\times\R\\
@@ -170,89 +178,101 @@
         \paragraph{}              
         We recall a useful lemma concerning the solutions of (\ref{pde}) and (\ref{pde2}).
         
-        \begin{lem}[Lemma 19 in \cite{Fla-Iss-Rus-2017}]\label{lem}
+        \begin{lem}[Lemma 20 in \cite{Fla-Iss-Rus-2017}]\label{lem}
             Let $(\delta,p)\in K(\beta,q)$ and let $v_\lambda$ be the mild solution to (\ref{pde}) in $H_p^{1+\delta}$. Fix $\rho$ such that the integral operator is a contraction and let $\lambda>\rho$. Then $v_\lambda(t)\in\mathcal{C}^{1,\alpha}$ with $\alpha=\delta-1/p$ for each fixed $t$ and 
             \begin{equation}
             \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla v_\lambda(t,x)| \rightarrow 0,\ as\ \lambda \rightarrow \infty
             \end{equation}
             where the choice of $\lambda$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b}_{H_q^{-\beta}}$.
         \end{lem}
+    \paragraph{}  
+    By lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$ (See Step 2 of the proof of Proposition 29 in \cite{Fla-Iss-Rus-2017}). Therefore $u^N$ and $u$ are $\frac{1}{2}$-lipschitz. We recall that in this case, by lemma 22 in \cite{Fla-Iss-Rus-2017}, $\Psi(t,\cdot)$ is 2-lipschitz.
+    
+    
         
-        By lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{\sqrt{14}}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$ (See Step 2 of the proof of Proposition 26 in \cite{Fla-Iss-Rus-2017}). Therefore $u^N$ and $u$ are $\frac{1}{\sqrt{14}}$-lipschitz.
-        
-        \begin{multline*}
-        \left|X^{N}_t-X_t\right|^2 = \bigg|u^N(0,X_0) - u(0,X_0) + u(t,X_t) - u^N(t,X_t)+ u^N(t,X_t)\\- u^N(t,X_t^N) + (\lambda+1)\int_0^t \{u^N(s,X_s^N)- u^N(s,X_s) + u^N(s,X_s) - u(s,X_s)\}\ \di s \\+ \int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s) + \nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2
-        \end{multline*}
-        \begin{multline*}
-        \leq 7\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \Big|u^N(t,X_t)- u^N(t,X_t^N)\Big|^2\\ + \bigg|(\lambda+1)\int_0^t \{u^N(s,X_s^N)- u^N(s,X_s)\}\ \di s\bigg|^2 + \bigg|(\lambda+1)\int_0^t \{u^N(s,X_s) - u(s,X_s)\}\ \di s\bigg|^2 \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
-        \end{multline*}
-        \begin{multline*}
-        \leq 7\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{14}\big|X_t- X_t^N\big|^2\\ + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s^N)- u^N(s,X_s)\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
-        \end{multline*}
-        \begin{multline*}
-        \leq 7\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{14}\big|X_t- X_t^N\big|^2\\ + \frac{\lambda+1}{14}\ t\int_0^t \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg).
-        \end{multline*}
-        
-        It follows that:
-        \begin{multline*}
-        \underset{0\leq t\leq y}{\sup}\left|X^{N}_t-X_t\right|^2\leq 14\underset{0\leq t\leq y}{\sup}\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ t\int_0^t \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
-        \end{multline*}
-        \begin{multline*}
-        \leq 14\Bigg(\underset{0\leq t\leq y}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq y}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ y\int_0^y \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ y\int_0^y \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 +\\ \underset{0\leq t\leq y}{\sup} \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
-        \end{multline*}
-        \begin{multline*}
-        \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ T\int_0^y \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ T\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 +\\ \underset{0\leq t\leq T}{\sup} \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
-        \end{multline*}
-        \begin{multline*}
-        \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ T\int_0^y \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ T\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+\underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 +\\ \underset{0\leq t\leq T}{\sup} \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg).
-        \end{multline*}
-        Taking the expectation, we obtain:
-        \begin{multline*}
-        w(y) \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{14}\ T\ \int_0^y w(s)\ \di s + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +\E\bigg[ \underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 \bigg] +\\ \E\bigg[ \underset{0\leq t\leq T}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \bigg]\Bigg).
-        \end{multline*}
-        
-        Using Burkholder-Davis-Gundy inequality, it follows that:
-        \begin{multline*}
-        w(y) \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{14}\ T\ \int_0^y w(s)\ \di s + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +2\int_0^y \E\bigg[\Big|\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\Big|^2\bigg]\ \di s +2\int_0^T \E\bigg[\Big|\nabla u^N(s,X_s) - \nabla u(s,X_s)\Big|^2\bigg]\ \di s\Bigg)
-        \end{multline*}
-        
-        \begin{multline*}
-        \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{14}\ T\ \int_0^y w(s) \di s + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +\frac{1}{7}\int_0^y\E\bigg[ \Big|X_s^N - X_s\Big|^{2\alpha}\bigg]\ \di s +2\int_0^T \E\bigg[\Big|\nabla u^N(s,X_s) - \nabla u(s,X_s)\Big|^2\bigg]\ \di s\Bigg)
-        \end{multline*}
+%        By lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{\sqrt{14}}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$ (See Step 2 of the proof of Proposition 26 in \cite{Fla-Iss-Rus-2017}). Therefore $u^N$ and $u$ are $\frac{1}{\sqrt{14}}$-lipschitz.
+%        
 %        \begin{multline*}
-%        \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{12}\ T\ \E\bigg[\int_0^T \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s\bigg]\\ + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg] +\frac{2}{3}\ T \Bigg)
+%        \left|X^{N}_t-X_t\right|^2 = \bigg|u^N(0,X_0) - u(0,X_0) + u(t,X_t) - u^N(t,X_t)+ u^N(t,X_t)\\- u^N(t,X_t^N) + (\lambda+1)\int_0^t \{u^N(s,X_s^N)- u^N(s,X_s) + u^N(s,X_s) - u(s,X_s)\}\ \di s \\+ \int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s) + \nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2
 %        \end{multline*}
-        
-        Applying fractional Morrey inequality, we obtain $\forall t\in[0,T]$:
-        \begin{equation*}
+%        \begin{multline*}
+%        \leq 7\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \Big|u^N(t,X_t)- u^N(t,X_t^N)\Big|^2\\ + \bigg|(\lambda+1)\int_0^t \{u^N(s,X_s^N)- u^N(s,X_s)\}\ \di s\bigg|^2 + \bigg|(\lambda+1)\int_0^t \{u^N(s,X_s) - u(s,X_s)\}\ \di s\bigg|^2 \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+%        \end{multline*}
+%        \begin{multline*}
+%        \leq 7\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{14}\big|X_t- X_t^N\big|^2\\ + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s^N)- u^N(s,X_s)\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+%        \end{multline*}
+%        \begin{multline*}
+%        \leq 7\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{14}\big|X_t- X_t^N\big|^2\\ + \frac{\lambda+1}{14}\ t\int_0^t \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg).
+%        \end{multline*}
+%        
+%        It follows that:
+%        \begin{multline*}
+%        \underset{0\leq t\leq y}{\sup}\left|X^{N}_t-X_t\right|^2\leq 14\underset{0\leq t\leq y}{\sup}\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ t\int_0^t \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+%        \end{multline*}
+%        \begin{multline*}
+%        \leq 14\Bigg(\underset{0\leq t\leq y}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq y}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ y\int_0^y \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ y\int_0^y \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 +\\ \underset{0\leq t\leq y}{\sup} \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+%        \end{multline*}
+%        \begin{multline*}
+%        \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ T\int_0^y \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ T\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 +\\ \underset{0\leq t\leq T}{\sup} \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
+%        \end{multline*}
+%        \begin{multline*}
+%        \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ T\int_0^y \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ T\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+\underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 +\\ \underset{0\leq t\leq T}{\sup} \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg).
+%        \end{multline*}
+%        Taking the expectation, we obtain:
+%        \begin{multline*}
+%        w(y) \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{14}\ T\ \int_0^y w(s)\ \di s + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +\E\bigg[ \underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 \bigg] +\\ \E\bigg[ \underset{0\leq t\leq T}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \bigg]\Bigg).
+%        \end{multline*}
+%        
+%        Using Burkholder-Davis-Gundy inequality, it follows that:
+%        \begin{multline*}
+%        w(y) \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{14}\ T\ \int_0^y w(s)\ \di s + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +2\int_0^y \E\bigg[\Big|\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\Big|^2\bigg]\ \di s +2\int_0^T \E\bigg[\Big|\nabla u^N(s,X_s) - \nabla u(s,X_s)\Big|^2\bigg]\ \di s\Bigg)
+%        \end{multline*}
+%        
+%        Lipschitz constant for $\nabla u\neq \frac{1}{\sqrt{14}}$ but $\leq C$ independent of $N$. See lemma 24.
+%        
+%        \begin{multline*}
+%        \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{14}\ T\ \int_0^y w(s) \di s + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +\frac{1}{7}\int_0^y\E\bigg[ \Big|X_s^N - X_s\Big|^{2\alpha}\bigg]\ \di s +2\int_0^T \E\bigg[\Big|\nabla u^N(s,X_s) - \nabla u(s,X_s)\Big|^2\bigg]\ \di s\Bigg)
+%        \end{multline*}
+%%        \begin{multline*}
+%%        \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{12}\ T\ \E\bigg[\int_0^T \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s\bigg]\\ + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg] +\frac{2}{3}\ T \Bigg)
+%%        \end{multline*}
+%
+\paragraph{}          
+Applying fractional Morrey inequality, $\exists c>0,\ \forall t\in[0,T]$:
+\begin{equation*}
         \begin{cases}
         \norme{u^N(t) - u(t)}_{L^\infty}\leq\norme{u^N(t) - u(t)}_{\mathcal{C}^{1,\alpha}}\leq c\norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}\\        
         \norme{\nabla u^N(t) - \nabla u(t)}_{L^\infty}\leq\norme{u^N(t) - u(t)}_{\mathcal{C}^{1,\alpha}}\leq c\norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}.
         \end{cases}        
-        \end{equation*}
+\end{equation*}
         
         Now, with
         \begin{equation*}
-        \norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}\leq e^{\rho T} \norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}^{(\rho)}\leq Ke^T\norme{b^N-b}_{H^{-\beta}_{q}}
-        \end{equation*} from lemma 22 in \cite{Fla-Iss-Rus-2017}, we have:
+        \norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}\leq e^{\rho T} \norme{u^N(t)-u(t)}_{H^{-\beta}_{\tilde{q},q}}^{(\rho)}\leq Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}
+        \end{equation*} from lemma 23 in \cite{Fla-Iss-Rus-2017}, we have \begin{equation*}
+        \begin{cases}
+            \norme{u^N(t) - u(t)}_{L^\infty}\leq cKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\        
+            \norme{\nabla u^N(t) - \nabla u(t)}_{L^\infty}\leq c Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}.
+        \end{cases} .
+        \end{equation*}
         
-        \begin{multline*}
-        w(y)
-        \leq 14\Bigg(2c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2 + \frac{\lambda+1}{14}\ T\ \int_0^y w(s)\ \di s\\+\frac{1}{7}\ \int_0^y\E\bigg[ \Big|X_s^N - X_s\Big|^{2\alpha}\bigg]\ \di s + (\lambda+1)\ T^2 c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\\ +2c^2K^2Te^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2 \Bigg)
-        \end{multline*}
-        
-        \begin{multline*}
-        \leq 14\left[2 + 2T + (\lambda+1)\ T^2\right] c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2  +
-        (\lambda+1)\ T\ \int_0^y w(s)\ \di s\\+2\ \int_0^y\E\bigg[ \underset{0\leq t\leq s}{\sup}\big|X_s^N - X_s\big|^{2\alpha}\bigg]\ \di s
-        \end{multline*}        
-        \begin{multline*}
-        \leq 14\left[2 + 2T + (\lambda+1)\ T^2\right] c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2  +
-        (\lambda+1)\ T\ \int_0^y w(s)\ \di s\\+2\ \int_0^y\E\bigg[ \underset{0\leq t\leq s}{\sup}\big|X_s^N - X_s\big|^{2}\bigg]^\alpha\ \di s
-        \end{multline*}
-        \begin{multline*}
-        \leq 14\left[2 + 2T + (\lambda+1)\ T^2\right] c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2  +
-        (\lambda+1)\ T\ \int_0^y w(s)\ \di s\\+2\ \int_0^y w(s)^\alpha\ \di s
-        \end{multline*}
+%        \begin{multline*}
+%        w(y)
+%        \leq 14\Bigg(2c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2 + \frac{\lambda+1}{14}\ T\ \int_0^y w(s)\ \di s\\+\frac{1}{7}\ \int_0^y\E\bigg[ \Big|X_s^N - X_s\Big|^{2\alpha}\bigg]\ \di s + (\lambda+1)\ T^2 c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\\ +2c^2K^2Te^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2 \Bigg)
+%        \end{multline*}
+%        
+%        \begin{multline*}
+%        \leq 14\left[2 + 2T + (\lambda+1)\ T^2\right] c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2  +
+%        (\lambda+1)\ T\ \int_0^y w(s)\ \di s\\+2\ \int_0^y\E\bigg[ \underset{0\leq t\leq s}{\sup}\big|X_s^N - X_s\big|^{2\alpha}\bigg]\ \di s
+%        \end{multline*}        
+%        \begin{multline*}
+%        \leq 14\left[2 + 2T + (\lambda+1)\ T^2\right] c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2  +
+%        (\lambda+1)\ T\ \int_0^y w(s)\ \di s\\+2\ \int_0^y\E\bigg[ \underset{0\leq t\leq s}{\sup}\big|X_s^N - X_s\big|^{2}\bigg]^\alpha\ \di s
+%        \end{multline*}
+%        \begin{multline*}
+%        \leq 14\left[2 + 2T + (\lambda+1)\ T^2\right] c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2  +
+%        (\lambda+1)\ T\ \int_0^y w(s)\ \di s\\+2\ \int_0^y w(s)^\alpha\ \di s
+%        \end{multline*}
         
         
 %        \textsc{Finally Gronwall inequality gives:
@@ -262,6 +282,33 @@
 %        C\exp\left((\lambda+1)\ T^2\right)\norme{b^N-b}_{H^{-\beta}_{q}}^2        
 %        \end{equation}
 %        with $C=\left(14\left(2 + T + (\lambda+1)\ T^2\right) c^2K^2e^{2T}\right)$.}
+
+\paragraph{}
+Let $f$ be $\mu$-Hölder with constant $C_f$ and $\mu\in(0,1]$. 
+
+\begin{equation*}
+\E\left[f\left(X_T\right)-f\left(X_T^N\right)\right] = \E\left[f\left(\Psi\left(T,Y_T\right)\right)-f\left(\Psi\left(T,Y_T^N\right)\right)\right]
+\end{equation*}
+
+\begin{equation*}
+\leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|^\mu\right] \leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|\right]^\mu
+\end{equation*}
+
+by Jensen's inequality. Let $t\in[0,T]$.
+\begin{multline*}
+Y_t-Y_t^N = (\lambda + 1\ )\int_0^t\left\{u\left(t,\Psi\left(t,Y_t\right)\right)-u^N\left(t,\Psi\left(t,Y_t^N\right)\right)\right\}\ \di t\\ + \int_0^t\left\{\nabla u\left(t,\Psi\left(t,Y_t\right)\right)-\nabla u^N\left(t,\Psi\left(t,Y_t^N\right)\right)\right\}\ \di W_t
+\end{multline*}
+
+For clarity purpose, we note $\tilde{u}\left(t,Y_t\right) = u\left(t,\Psi\left(t,Y_t\right)\right)$ and use the same notation for the gradient and the approximated mild solution. We apply Meyer-Tanaka's formula to obtain:
+\begin{multline*}
+\left|Y_t-Y_t^N\right| = (\lambda + 1)\ \int_0^t\mathrm{sign}(Y_t-Y_t^N)\left\{\tilde{u}\left(t,Y_t\right)-\tilde{u}^N\left(t,Y_t^N\right)\right\}\ \di t\\ + \int_0^t\mathrm{sign}(Y_t-Y_t^N)\left\{\nabla\tilde{u}\left(t,Y_t\right)-\nabla\tilde{u}^N\left(t,Y_t^N\right)\right\}\ \di W_t + L_t^0(Y_-Y^N)
+\end{multline*}
+
+Taking the expectation:
+\begin{multline*}
+\E\left|Y_t-Y_t^N\right| = (\lambda + 1)\ \E\left[\int_0^t\mathrm{sign}(Y_t-Y_t^N)\left\{\tilde{u}\left(t,Y_t\right)-\tilde{u}^N\left(t,Y_t^N\right)\right\}\ \di t\right]\\ + \E \left[L_t^0(Y_-Y^N)\right]
+\end{multline*}
+
        
 \bibliographystyle{abbrv}
 \bibliography{pre}

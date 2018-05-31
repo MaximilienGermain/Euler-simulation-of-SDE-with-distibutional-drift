@@ -32,7 +32,7 @@
 \newtheorem{theo}{Theorem}
 \newtheorem{lem}[theo]{Lemma}
 \newtheorem{cor}[theo]{Corollary}
-\newtheorem{Pro}{Proposition}[section]
+\newtheorem{Pro}{Proposition}
 \newtheorem{ex}{Example}
 \newtheorem{rem}{Remark}
 
@@ -124,30 +124,18 @@
         We can note that $\mathrm{Supp}\ b^N\subset [-N,N].$ Moreover, we have: $$\norme{b-b^N}_{H_q^s(\R)} \underset{N\rightarrow+\infty}{\longrightarrow} 0.$$
     \end{rem}
 
-    \subsection{Computation of the coefficients $\mu_{j,m}$ when $b$ is the derivative of a fractional brownian motion}
-        Faber basis
-\section{Numerical results}
-
-\newpage
+%    \subsection{Computation of the coefficients $\mu_{j,m}$ when $b$ is the derivative of a fractional brownian motion}
+%        Faber basis
+%\section{Numerical results}
+%
+%\newpage
 \section{Convergence} 
     
-    \subsection{Convergence of $X_s^{N,n}$ to $X_s^N$ in $L^2$}
-        \paragraph{}
-        Recently, Leobacher and Szölgyenyi proved in \cite{Leo-Szo} the convergence of the Euler-Maruyama scheme for SDE with discontinuous but piecewise Lipschitz drift and with a degenerate diffusion coefficient. This framework applies to the scheme we use with piecewise constant drift $b^N$ and a constant diffusion coefficient.
+    %\subsection{Weak xonvergence of $X_s^{N,n}$ to $X_s^N$}
     
-    \begin{theo}[Theorem 3.1. in \cite{Leo-Szo}]
-        $\forall \varepsilon >0,\ \exists C_N>0,\ \exists n_0\in\N$ such that $\forall n\geq n_0$
-        \begin{equation}
-        \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N,n}_t-X^N_t\right|^2\right]^{1/2}\leq C_N\delta^{1/4-\varepsilon}
-        \end{equation}
-        with $\delta=\frac{1}{2^n}$ the step size.
-    \end{theo}
-
-    \textbf{TO DO: make $C_N$ explicit}.
+    %\newpage
     
-    \newpage
-    
-    \subsection{Convergence of $X_s^{N}$ to $X_s$}
+    \subsection{Weak convergence of $X^{N}$ to $X$}
         \paragraph{}
         We want to estimate the weak error $\E\left[f\left(X_T\right)-f\left(X_T^N\right)\right]$ with suitable functions $f$. In order to do so, we must go back to the definition of the virtual solution of the SDE (\ref{sde}) given in \cite{Fla-Iss-Rus-2017}. The authors define the virtual solution of SDE (\ref{sde}) by $X_t$ such that:
         \begin{equation}
@@ -188,7 +176,7 @@
         \end{lem}
         
         Applying lemma \ref{local} with $F(x) = x^2$, it follows:
-        \begin{cor}
+        \begin{cor}\label{cor}
             Let X be a continuous martingale with $X_0 = 0$. With the same notations as in lemma \ref{local}, for any $\varepsilon>0$ we have
             \begin{multline}
                 0\leq L^0_t(X) \leq 2\varepsilon - \frac{2}{\varepsilon}\int_0^t \theta_s(X) \left(\varepsilon - 2{X_s^+}\right)\ \di X_s
@@ -207,53 +195,6 @@
             where the choice of $\lambda$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b}_{H_q^{-\beta}}$.
         \end{lem}
          
-%        By lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{\sqrt{14}}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$ (See Step 2 of the proof of Proposition 26 in \cite{Fla-Iss-Rus-2017}). Therefore $u^N$ and $u$ are $\frac{1}{\sqrt{14}}$-lipschitz.
-%        
-%        \begin{multline*}
-%        \left|X^{N}_t-X_t\right|^2 = \bigg|u^N(0,X_0) - u(0,X_0) + u(t,X_t) - u^N(t,X_t)+ u^N(t,X_t)\\- u^N(t,X_t^N) + (\lambda+1)\int_0^t \{u^N(s,X_s^N)- u^N(s,X_s) + u^N(s,X_s) - u(s,X_s)\}\ \di s \\+ \int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s) + \nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2
-%        \end{multline*}
-%        \begin{multline*}
-%        \leq 7\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \Big|u^N(t,X_t)- u^N(t,X_t^N)\Big|^2\\ + \bigg|(\lambda+1)\int_0^t \{u^N(s,X_s^N)- u^N(s,X_s)\}\ \di s\bigg|^2 + \bigg|(\lambda+1)\int_0^t \{u^N(s,X_s) - u(s,X_s)\}\ \di s\bigg|^2 \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
-%        \end{multline*}
-%        \begin{multline*}
-%        \leq 7\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{14}\big|X_t- X_t^N\big|^2\\ + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s^N)- u^N(s,X_s)\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
-%        \end{multline*}
-%        \begin{multline*}
-%        \leq 7\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 + \frac{1}{14}\big|X_t- X_t^N\big|^2\\ + \frac{\lambda+1}{14}\ t\int_0^t \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg).
-%        \end{multline*}
-%        
-%        It follows that:
-%        \begin{multline*}
-%        \underset{0\leq t\leq y}{\sup}\left|X^{N}_t-X_t\right|^2\leq 14\underset{0\leq t\leq y}{\sup}\Bigg(\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ t\int_0^t \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ t\int_0^t \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 + \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
-%        \end{multline*}
-%        \begin{multline*}
-%        \leq 14\Bigg(\underset{0\leq t\leq y}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq y}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ y\int_0^y \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ y\int_0^y \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 +\\ \underset{0\leq t\leq y}{\sup} \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
-%        \end{multline*}
-%        \begin{multline*}
-%        \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ T\int_0^y \big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ T\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+ \underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 +\\ \underset{0\leq t\leq T}{\sup} \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg)
-%        \end{multline*}
-%        \begin{multline*}
-%        \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2 \\ + \frac{\lambda+1}{14}\ T\int_0^y \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s + (\lambda+1)\ T\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s \\+\underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 +\\ \underset{0\leq t\leq T}{\sup} \bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \Bigg).
-%        \end{multline*}
-%        Taking the expectation, we obtain:
-%        \begin{multline*}
-%        w(y) \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{14}\ T\ \int_0^y w(s)\ \di s + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +\E\bigg[ \underset{0\leq t\leq y}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\}\ \di W_s\bigg|^2 \bigg] +\\ \E\bigg[ \underset{0\leq t\leq T}{\sup}\bigg|\int_0^t \{\nabla u^N(s,X_s) - \nabla u(s,X_s)\}\ \di W_s\bigg|^2 \bigg]\Bigg).
-%        \end{multline*}
-%        
-%        Using Burkholder-Davis-Gundy inequality, it follows that:
-%        \begin{multline*}
-%        w(y) \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{14}\ T\ \int_0^y w(s)\ \di s + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +2\int_0^y \E\bigg[\Big|\nabla u^N(s,X_s^N) - \nabla u^N(s,X_s)\Big|^2\bigg]\ \di s +2\int_0^T \E\bigg[\Big|\nabla u^N(s,X_s) - \nabla u(s,X_s)\Big|^2\bigg]\ \di s\Bigg)
-%        \end{multline*}
-%        
-%        Lipschitz constant for $\nabla u\neq \frac{1}{\sqrt{14}}$ but $\leq C$ independent of $N$. See lemma 24.
-%        
-%        \begin{multline*}
-%        \leq 14\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{14}\ T\ \int_0^y w(s) \di s + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg]\\ +\frac{1}{7}\int_0^y\E\bigg[ \Big|X_s^N - X_s\Big|^{2\alpha}\bigg]\ \di s +2\int_0^T \E\bigg[\Big|\nabla u^N(s,X_s) - \nabla u(s,X_s)\Big|^2\bigg]\ \di s\Bigg)
-%        \end{multline*}
-%%        \begin{multline*}
-%%        \leq 12\Bigg(\underset{0\leq t\leq T}{\sup}\Big|u^N(0,X_0) - u(0,X_0)\Big|^2 + \E\bigg[\underset{0\leq t\leq T}{\sup}\Big|u(t,X_t) - u^N(t,X_t)\Big|^2\bigg]\\ + \frac{\lambda+1}{12}\ T\ \E\bigg[\int_0^T \underset{0\leq t\leq s}{\sup}\big|X_s^N- X_s\big|^2\ \di s\bigg]\\ + (\lambda+1)\ T\ \E\bigg[\int_0^T \big|u^N(s,X_s) - u(s,X_s)\big|^2\ \di s\bigg] +\frac{2}{3}\ T \Bigg)
-%%        \end{multline*}
-%
 \begin{lem}\label{morrey} Exists $c>0$ such that for both $N\in\N$ and $\rho>1$ big enough, 
     \begin{equation}
     \begin{cases}
@@ -300,75 +241,80 @@
     
     by Jensen's inequality. Let $t\in[0,T]$.
     \begin{multline*}
-    Y_t-Y_t^N = (\lambda + 1\ )\int_0^t\left\{u\left(s,\Psi\left(s,Y_s\right)\right)-u^N\left(s,\Psi\left(s,Y_s^N\right)\right)\right\}\ \di s\\ + \int_0^t\left\{\nabla u\left(s,\Psi\left(s,Y_s\right)\right)-\nabla u^N\left(t,\Psi\left(s,Y_s^N\right)\right)\right\}\ \di W_s
+    Y_t-Y_t^N = (\lambda + 1 )\int_0^t\left\{u\left(s,\Psi\left(s,Y_s\right)\right)-u^N\left(s,\Psi\left(s,Y_s^N\right)\right)\right\}\ \di s\\ + \int_0^t\left\{\nabla u\left(s,\Psi\left(s,Y_s\right)\right)-\nabla u^N\left(t,\Psi\left(s,Y_s^N\right)\right)\right\}\ \di W_s.
     \end{multline*}
     
-    For clarity purpose, we note $\tilde{u}\left(s,x\right) = u\left(s,\Psi\left(s,x\right)\right)$ and use the same notation for the gradient and the approximated mild solution. We can notice that $\tilde{u}$ is 1-lipschitz in space. We apply Meyer-Tanaka's formula to obtain:
+    \begin{rem}  
+    For clarity purpose, we note $\tilde{u}\left(s,x\right) = u\left(s,\Psi\left(s,x\right)\right)$ and use the same notation for the gradient and the approximated mild solution. We can notice that $\tilde{u}$ is 1-lipschitz in space and $\nabla\tilde{u}$ is $\alpha$-Hölder with constant $2\norme{u}_{\mathcal{C}^{1,\alpha}}$.
+    \end{rem}
+    
+    We apply Meyer-Tanaka's formula to obtain:
     \begin{multline*}
-    \left|Y_t-Y_t^N\right| = (\lambda + 1)\ \int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s\\ + \int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\nabla\tilde{u}\left(s,Y_s\right)-\nabla\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di W_s + L_t^0(Y-Y^N)
+    \left|Y_t-Y_t^N\right| = (\lambda + 1)\ \int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s\\ + \int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\nabla\tilde{u}\left(s,Y_s\right)-\nabla\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di W_s + L_t^0(Y-Y^N).
     \end{multline*}
     
     Taking the expectation leads to:
     \begin{multline*}
     \E\left[\left|Y_t-Y_t^N\right|\right] = (\lambda + 1)\ \E\left[\int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s\right]\\ + \E \left[L_t^0(Y-Y^N)\right]
     \end{multline*}
-    because $\nabla\tilde{u}$ and $\nabla\tilde{u}^N$ are bounded so the Itô integral is a martingale.
-    
+    because $\nabla\tilde{u}$ and $\nabla\tilde{u}^N$ are bounded so the Itô integral is a martingale.    
     \begin{multline*}
-    \E\left[\left|Y_t-Y_t^N\right|\right]\leq (\lambda + 1)\ \E\left[\int_0^t\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}\left(s,Y_s^N\right)\right\} \di s\right]\\ +(\lambda + 1)\ \E\left[\int_0^t\left\{\tilde{u}\left(s,Y_s^N\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\} \di s\right] + \E \left[L_t^0(Y-Y^N)\right]
+    \E\left[\left|Y_t-Y_t^N\right|\right]\leq (\lambda + 1)\ \E\left[\int_0^t\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}\left(s,Y_s^N\right)\right\} \di s\right]\\ +(\lambda + 1)\ \E\left[\int_0^t\left\{\tilde{u}\left(s,Y_s^N\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\} \di s\right] + \E \left[L_t^0(Y-Y^N)\right].
     \end{multline*}
     
+    \paragraph{}
     We use Lemma \ref{morrey} and the 1-lipschitz property of $\tilde{u}$:
     \begin{multline*}
-    \leq (\lambda + 1)\ \E\left[\int_0^t\left|Y_s-Y_s^N\right| \di s\right] +(\lambda + 1)\ ctKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\ + \E \left[L_t^0(Y-Y^N)\right]
+    \E\left[\left|Y_t-Y_t^N\right|\right]\leq (\lambda + 1)\ \E\left[\int_0^t\left|Y_s-Y_s^N\right| \di s\right] +(\lambda + 1)\ ctKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\ + \E \left[L_t^0(Y-Y^N)\right]
     \end{multline*}
     
     \begin{multline*}
-    \leq (\lambda + 1)\ \int_0^t\E\left[\left|Y_s-Y_s^N\right|\right] \di s + (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\ + \E \left[L_t^0(Y-Y^N)\right]
+    \leq (\lambda + 1)\ \int_0^t\E\left[\left|Y_s-Y_s^N\right|\right] \di s + (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\ + \E \left[L_T^0(Y-Y^N)\right].
     \end{multline*}
+    where we have used the fact that $L_t^0(Y-Y^N)$ is an increasing process.
     
+    \paragraph{}
     By Gronwall's Lemma, it follows:
     \begin{equation}
     \E\left[\left|Y_T-Y_T^N\right|\right] \leq C(N) \exp((\lambda+1)T)
     \end{equation}
-    with $C(N) = (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \E \left[L_t^0(Y-Y^N)\right].$      
+    with $C(N) = (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \E \left[L_T^0(Y-Y^N)\right].$      
     
     \paragraph{}
-    We now have to study the term $\E \left[L_t^0(Y-Y^N)\right]$.
-\end{proof}
-        
-        
-        
-%        \begin{multline*}
-%        w(y)
-%        \leq 14\Bigg(2c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2 + \frac{\lambda+1}{14}\ T\ \int_0^y w(s)\ \di s\\+\frac{1}{7}\ \int_0^y\E\bigg[ \Big|X_s^N - X_s\Big|^{2\alpha}\bigg]\ \di s + (\lambda+1)\ T^2 c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\\ +2c^2K^2Te^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2 \Bigg)
-%        \end{multline*}
-%        
-%        \begin{multline*}
-%        \leq 14\left[2 + 2T + (\lambda+1)\ T^2\right] c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2  +
-%        (\lambda+1)\ T\ \int_0^y w(s)\ \di s\\+2\ \int_0^y\E\bigg[ \underset{0\leq t\leq s}{\sup}\big|X_s^N - X_s\big|^{2\alpha}\bigg]\ \di s
-%        \end{multline*}        
-%        \begin{multline*}
-%        \leq 14\left[2 + 2T + (\lambda+1)\ T^2\right] c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2  +
-%        (\lambda+1)\ T\ \int_0^y w(s)\ \di s\\+2\ \int_0^y\E\bigg[ \underset{0\leq t\leq s}{\sup}\big|X_s^N - X_s\big|^{2}\bigg]^\alpha\ \di s
-%        \end{multline*}
-%        \begin{multline*}
-%        \leq 14\left[2 + 2T + (\lambda+1)\ T^2\right] c^2K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2  +
-%        (\lambda+1)\ T\ \int_0^y w(s)\ \di s\\+2\ \int_0^y w(s)^\alpha\ \di s
-%        \end{multline*}
-        
-        
-%        \textsc{Finally Gronwall inequality gives:
-%        \begin{equation}
-%        \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N}_t-X_t\right|^2\right]
-%        \leq 
-%        C\exp\left((\lambda+1)\ T^2\right)\norme{b^N-b}_{H^{-\beta}_{q}}^2        
-%        \end{equation}
-%        with $C=\left(14\left(2 + T + (\lambda+1)\ T^2\right) c^2K^2e^{2T}\right)$.}
+    We now have to study the term $\E \left[L_T^0(Y-Y^N)\right]$. Let $\varepsilon>0$. Corollary \ref{cor} gives us:    
+    \begin{multline*}
+    0\leq L^0_T(Y-Y^N) \leq 2\varepsilon - \frac{2}{\varepsilon}\int_0^T \theta_s(Y-Y^N) \left(\varepsilon - 2{(Y_s-Y_s^N)^+}\right)\ \di (Y_s-Y_s^N)\\
+    +\frac{2}{\varepsilon}\int_0^T \theta_s(Y-Y^N) \ \di[(Y-Y^N)]_s.
+    \end{multline*}    
+    \begin{rem}
+        Note that $\theta_s(Y-Y^N) \left|\varepsilon - 2{(Y_s-Y_s^N)^+}\right|\leq \varepsilon\theta_s(Y-Y^N)$.
+    \end{rem}
+We take the expectation to remove again the martingale part:
+    \begin{multline*}
+    \E\left[L^0_T(Y-Y^N)\right] \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\} \di s \right]\\
+    +\frac{2}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\nabla\tilde{u}\left(s,Y_s\right)-\nabla\tilde{u}^N\left(s,Y_s^N\right)\right\}^2\ \di s\right]
+    \end{multline*}
+    \begin{multline*}
+    \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}\left(s,Y_s^N\right)\right\}\ \di s \right]\\+2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left\{\tilde{u}\left(s,Y_s^N\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s \right]\\
+    +\frac{4}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\nabla\tilde{u}\left(s,Y_s\right)-\nabla\tilde{u}\left(s,Y_s^N\right)\right\}^2\ \di s\right]\\
+    +\frac{4}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\nabla\tilde{u}\left(s,Y_s^N\right)-\nabla\tilde{u}^N\left(s,Y_s^N\right)\right\}^2\ \di s\right]
+    \end{multline*}
+    \begin{multline*}
+    \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|\ \di s \right] \\
+    +\frac{16\norme{u}_{\mathcal{C}^{1,\alpha}}^2}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|^{2\alpha}\ \di s\right]\\
+    +2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} +4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}
+    \end{multline*}
+    by Lemma \ref{morrey}, the 1-lipschitz property of $\tilde{u}$ and the $\alpha$-Hölder property of $\nabla\tilde{u}$ (with constant $2\norme{u}_{\mathcal{C}^{1,\alpha}}$).
+    
+    \begin{multline*}
+    \E\left[L^0_T(Y-Y^N)\right]\leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + 16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T \varepsilon^{2\alpha-1}\\
+    + 2(1+(\lambda + 1)T)\varepsilon + 4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}
+    \end{multline*}
+    
+    We choose an optimal $\varepsilon$.
+    
+\end{proof}   
  
-
- 
-       
 \bibliographystyle{abbrv}
 \bibliography{pre}
     

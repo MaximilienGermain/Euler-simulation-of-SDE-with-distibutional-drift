@@ -43,6 +43,7 @@ end
 if (plot ~= 0)
     if (testId == 0)
         frame = plotSolution(t,X,NT,N,T);
+        plotSolution(t,Y,NT,N,T);
     else
         usual = plotUsualSolution(t,X,NT,N,T,Xeuler);
     end

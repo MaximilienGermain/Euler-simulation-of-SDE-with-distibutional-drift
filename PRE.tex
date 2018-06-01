@@ -1,4 +1,4 @@
-\documentclass{article}[12pt]
+\documentclass[12pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}      
@@ -55,16 +55,16 @@
 \maketitle
 
 \section{Introduction}
-
+    
     \paragraph{}
     We would like to simulate numerically sample paths of the solution of the stochastic differential equation
     \begin{equation} \label{sde}
     \di X_t = b(X_t)\ \di t + \di W_t
     \end{equation}
-    where $b\in H^{-\beta}_q(\R),\ \beta\in\left(0,\frac{1}{2}\right)$, $q\in\left(\frac{1}{1-\beta},\frac{1}{\beta}\right) $, $t\in[0,T]$, and $W_t$ is a standard Brownian motion. Equation (\ref{sde}) is studied by F. Flandoli, E. Issoglio, and F. Russo in \cite{Fla-Iss-Rus-2017} in which they define a concept of virtual solution. The authors prove then existence and unicity in law of this solution. 
+    where $b\in H^{-\beta}_q(\R),\ \beta\in\left(0,\frac{1}{2}\right)$, $q\in\left(\frac{1}{1-\beta},\frac{1}{\beta}\right)$, $t\in[0,T]$, and $W_t$ is a standard Brownian motion. Equation (\ref{sde}) is studied by F. Flandoli, E. Issoglio, and F. Russo in \cite{Fla-Iss-Rus-2017} in which they define a concept of virtual solution. The authors prove then existence and unicity in law of this solution. 
     
     \begin{ex}
-        An example of such drift $b$ is given by the derivative of a sample path of a fractional Brownian motion $B^H_x$ with Hurst index $1/2<H<1$. These stochastic processes are gaussian processes verifying $$\E\left[B_t^HB_s^H\right]=\frac{1}{2}\left(t^{2H}+s^{2H}+|t-s|^{2H}\right).$$ We note $s = H - 1$. Given $B^H_x(\omega)\in H^{s+1}_q(\R)$, we can take $b(x) = \pade{}{x}B^H_x(\omega)\in H^s_q(\R)$. We will use this in our numerical simulations.
+        An example of such drift $b$ is given by the derivative of a sample path of a fractional Brownian motion $B^H_x$ with Hurst index $1/2<H<1$. These stochastic processes are gaussian processes verifying $$\E\left[B_t^HB_s^H\right]=\frac{1}{2}\left(t^{2H}+s^{2H}+|t-s|^{2H}\right).$$ We note $-\beta = H - 1$. Given $B^H_x(\omega)\in H^{1-\beta}_q(\R)$, we can take $b(x) = \pade{}{x}B^H_x(\omega)\in H^{-\beta}_q(\R)$. We will use this in our numerical simulations.
     \end{ex}    
     
     \paragraph{}
@@ -127,10 +127,10 @@
 %    \subsection{Computation of the coefficients $\mu_{j,m}$ when $b$ is the derivative of a fractional brownian motion}
 %        Faber basis
 
-%\newpage
+\newpage
 \section{Convergence} 
     
-    \subsection{Weak convergence of $X_s^{N,n}$ to $X_s^N$}
+    \subsection{Weak convergence of $X_T^{N,n}$ to $X_T^N$}
             \paragraph{}
             Recently, Leobacher and Szölgyenyi proved in \cite{Leo-Szo} the convergence of the Euler-Maruyama scheme for SDE with discontinuous but piecewise Lipschitz drift and with a degenerate diffusion coefficient. This framework applies to the scheme we use with piecewise constant drift $b^N$ and a constant diffusion coefficient.
     
@@ -139,13 +139,13 @@
            \begin{equation}
             \E\left[\underset{0\leq t\leq T}{\sup}\left|X^{N,n}_t-X^N_t\right|^2\right]^{1/2}\leq C_N\delta^{1/4-\varepsilon}
             \end{equation}
-            with $\delta=\frac{1}{n}$ the step size.
+            with $\delta=\frac{1}{n}$ the step size and $C_N$ depending on $\norme{b^N}_\infty$.
         \end{theo}
     
         \begin{theo}
             Let $f$ be $\mu$-Hölder with constant $C_f>0$ and $\mu\in(0,1]$. Then, exists $C_N'>0$ independent of $n$ such that it holds  $\forall \varepsilon >0,\ \exists n_0\in\N$, $\forall n\geq n_0$:
             \begin{equation}
-            \E\left[f\left(X_T^{N,n}\right)-f\left(X_T^N\right)\right] \leq C_N'\delta^{\mu/4-\varepsilon}
+            \left|\E\left[f\left(X_T^{N,n}\right)-f\left(X_T^N\right)\right]\right| \leq C_N'\delta^{\mu/4-\varepsilon}
             \end{equation}                       
             with $\delta=\frac{1}{n}$ the step size.
         \end{theo}
@@ -153,7 +153,7 @@
         \begin{proof}
             By Jensen's inequality and the $\mu$-Hölder property of $f$, we obtain:
             \begin{equation*}
-            \E\left[f\left(X_T^{N,n}\right)-f\left(X_T^N\right)\right] \leq C_f  \E\left[\left|X_T^{N,n}-X_T^N\right|^\mu\right]
+            \left|\E\left[f\left(X_T^{N,n}\right)-f\left(X_T^N\right)\right]\right| \leq C_f  \E\left[\left|X_T^{N,n}-X_T^N\right|^\mu\right]
             \end{equation*}
             \begin{equation*}
              \leq  C_f  \E\left[\left|Y_T-Y_T^N\right|^2\right]^{\mu/2}
@@ -164,9 +164,9 @@
         \end{proof}
     %\newpage
     
-    \subsection{Weak convergence of $X^{N}$ to $X$}
+    \subsection{Weak convergence of $X^{N}_T$ to $X_T$}
         \paragraph{}
-        The goal of this section is to estimate the weak error $\E\left[f\left(X_T\right)-f\left(X_T^N\right)\right]$ with suitable functions $f$. In order to do so, we must go back to the definition of the virtual solution of the SDE (\ref{sde}) given in \cite{Fla-Iss-Rus-2017}. Let $(\delta,p)\in K(\beta,q)$. The authors define the virtual solution of SDE (\ref{sde}) by $X_t$ such that:
+        The goal of this section is to estimate the weak error $\left|\E\left[f\left(X_T\right)-f\left(X_T^N\right)\right]\right|$ with suitable functions $f$. In order to do so, we must go back to the definition of the virtual solution of the SDE (\ref{sde}) given in \cite{Fla-Iss-Rus-2017}. Let $(\delta,p)\in K(\beta,q):=\{(\delta,p)\ |\ \beta<\delta<1-\beta,\ \frac{1}{\delta}<p<q\}$. The authors define the virtual solution of SDE (\ref{sde}) by $X_t$ such that:
         \begin{equation}\label{virtual}
         \begin{cases}
         Y_t = y + (\lambda+1)\int_0^t u(s,Y_s)\ \di s +\int_0^t (\nabla u(s,Y_s)+1)\ \di W_s \\X_t = \Psi(t,Y_t) = \varphi^{-1}(t,Y_t)
@@ -211,7 +211,7 @@
         where the choice of $\lambda$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b}_{H_q^{-\beta}}$.
     \end{lem}
     
-    \begin{lem}\label{morrey} Let $(\delta,p)\in K(\beta,q)$ and let $v_\lambda$ be the mild solution to (\ref{pde}) in $H_p^{1+\delta}$. $\alpha = \delta - 1/p$. Exists $c>0$ such that for both $N\in\N$ and $\rho>1$ big enough, 
+    \begin{lem}\label{morrey} Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solutions to (\ref{pde}),(\ref{pde2}) in $H_p^{1+\delta}$. $\alpha = \delta - 1/p$. Exists $c,K>0$ such that for both $N\in\N$ and $\rho>1$ big enough, $\forall t\in[0,T]$,
         \begin{equation}
         \begin{cases}
         \norme{u^N(t) - u(t)}_{L^\infty}\leq cKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\        
@@ -227,8 +227,7 @@
         \norme{u^N(t) - u(t)}_{L^\infty}\leq\norme{u^N(t) - u(t)}_{\mathcal{C}^{1,\alpha}}\leq c\norme{u^N(t)-u(t)}_{H^{1+\delta}_{p}}\\        
         \norme{\nabla u^N(t) - \nabla u(t)}_{L^\infty}\leq\norme{u^N(t) - u(t)}_{\mathcal{C}^{1,\alpha}}\leq c\norme{u^N(t)-u(t)}_{H^{1+\delta}_{p}}.
         \end{cases}        
-        \end{equation*}
-        
+        \end{equation*}        
         Now, we can conclude with
         \begin{equation*}
         \norme{u^N-u}_{\infty,H^{1+\delta}_{p}}\leq e^{\rho T} \norme{u^N-u}_{\infty,H^{1+\delta}_{p}}^{(\rho)}\leq Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}
@@ -236,17 +235,15 @@
     \end{proof}
         
         \paragraph{}
-        We will need the following local time inequality from Liqing Yan:
-        
+        We will need the following local time inequality from Liqing Yan:        
         \begin{lem}[Lemma 4.2 in \cite{Yan}]\label{local}
             Let $X$ be a continuous semimartingale with $X_0 = 0$. For $\varepsilon>0$ we define a double sequence of stopping times by $\sigma_1 = 0$, $\tau_1=\inf\{t>0 | X_t=\varepsilon\}$, $\sigma_n = \inf\{t>\tau_{n-1}|X_t=0\}$, $\tau_n=\inf\{t>\sigma_n|X_t=\varepsilon\}$. For any real function $F(\cdot)\in\mathcal{C}^2$ with $F(0)=0,\ F'(0) = 0$ and $F(\cdot) > 0$ on $(0,\varepsilon_0)$ for some $\varepsilon_0 > 0$, then for any $0<\varepsilon<\varepsilon_0$ we have
             \begin{multline*}
                 0\leq L^0_t(X) \leq 2\varepsilon - \frac{2}{F(\varepsilon)}\int_0^t \theta_s(X) \left(F\left(\varepsilon\right) - \varepsilon F'\left(X_s^+\right)\right)\ \di X_s\\
                 +\frac{1}{F(\varepsilon)}\int_0^t \theta_s(X)\varepsilon F''(X_s^+)\ \di[X]_s
             \end{multline*}
-            with $\theta_s(X) = \sum_{n=1}^\infty \mathds{1}_{\sigma_n< s\leq \tau_n,\ 0<X_s\leq \varepsilon}(X)$.
-        \end{lem}
-        
+            with $\theta_s(X) = \sum_{n=1}^\infty \mathds{1}_{\{\sigma_n< s\leq \tau_n,\ 0<X_s\leq \varepsilon\}}(X)$.
+        \end{lem}        
         Applying lemma \ref{local} with $F(x) = x^2$, it follows:
         \begin{cor}\label{cor}
             Let X be a continuous martingale with $X_0 = 0$. With the same notations as in lemma \ref{local}, for any $\varepsilon>0$ we have
@@ -257,15 +254,18 @@
         \end{cor}
 
 \begin{lem}\label{local time}
-    Let $(\delta,p)\in K(\beta,q)$, t $u$, $u^N$ be the mild solutions to (\ref{pde}), (\ref{pde2}) in $H_p^{1+\delta}$, and $Y$, $Y^N$ solutions of the SDEs (\ref{virtual}), (\ref{virtual approx}).  Then we have
-    \begin{multline*}
-    \E\left[L^0_T(Y-Y^N)\right]\leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + 16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T \varepsilon^{2\alpha-1}\\
-    + 2(1+(\lambda + 1)T)\varepsilon + 4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1} = g(\varepsilon).
+    Let $(\delta,p)\in K(\beta,q)$, $\alpha=\delta-1/p$, $u$, $u^N$ be the mild solutions to (\ref{pde}), (\ref{pde2}) in $H_p^{1+\delta}$, and $Y$, $Y^N$ solutions of the SDEs (\ref{virtual}), (\ref{virtual approx}).  Then we have $\forall\varepsilon\in(0,1]$,
+    \begin{equation*}
+    0\leq \E\left[L^0_T(Y-Y^N)\right]\leq  g(\varepsilon).
+    \end{equation*}
+    where \begin{multline*}
+    g(\varepsilon) = 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right) \varepsilon^{2\alpha-1}\\
+    + 4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}
     \end{multline*}
 \end{lem}
 
 \begin{proof}
-    Let $\varepsilon>0$. Corollary \ref{cor} gives us:    
+    Let $\varepsilon\in(0,1]$. Corollary \ref{cor} gives us:    
     \begin{multline*}
     0\leq L^0_T(Y-Y^N) \leq 2\varepsilon - \frac{2}{\varepsilon}\int_0^T \theta_s(Y-Y^N) \left(\varepsilon - 2{(Y_s-Y_s^N)^+}\right)\ \di (Y_s-Y_s^N)\\
     +\frac{2}{\varepsilon}\int_0^T \theta_s(Y-Y^N) \ \di[(Y-Y^N)]_s.
@@ -273,29 +273,42 @@
     \begin{rem}
         Note that $\theta_s(Y-Y^N) \left|\varepsilon - 2{(Y_s-Y_s^N)^+}\right|\leq \varepsilon\theta_s(Y-Y^N)$.
     \end{rem}
-    We take the expectation to remove again the martingale part:
+Let $t\in[0,T]$.
+\begin{multline*}
+Y_t-Y_t^N = (\lambda + 1 )\int_0^t\left\{u\left(s,\Psi\left(s,Y_s\right)\right)-u^N\left(s,\Psi\left(s,Y_s^N\right)\right)\right\}\ \di s\\ + \int_0^t\left\{\nabla u\left(s,\Psi\left(s,Y_s\right)\right)-\nabla u^N\left(t,\Psi\left(s,Y_s^N\right)\right)\right\}\ \di W_s.
+\end{multline*}
+\begin{rem}  
+    For clarity purpose, we note $\tilde{u}\left(s,x\right) = u\left(s,\Psi\left(s,x\right)\right)$ and use the same notation for the gradient and the approximated mild solution. We can notice that $\tilde{u}$ is 1-lipschitz in space and $\widetilde{\nabla u}$ is $\alpha$-Hölder with constant $2\norme{u}_{\mathcal{C}^{1,\alpha}}$.
+\end{rem}
+$\widetilde{\nabla u}$ and $\widetilde{\nabla u}^N$ are bounded so the Itô integral is a martingale. We take the expectation:
     \begin{multline*}
     \E\left[L^0_T(Y-Y^N)\right] \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\} \di s \right]\\
-    +\frac{2}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\nabla\tilde{u}\left(s,Y_s\right)-\nabla\tilde{u}^N\left(s,Y_s^N\right)\right\}^2\ \di s\right]
+    +\frac{2}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\widetilde{\nabla u}\left(s,Y_s\right)-\widetilde{\nabla u}^N\left(s,Y_s^N\right)\right\}^2\ \di s\right]
     \end{multline*}
     \begin{multline*}
     \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}\left(s,Y_s^N\right)\right\}\ \di s \right]\\+2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left\{\tilde{u}\left(s,Y_s^N\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s \right]\\
-    +\frac{4}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\nabla\tilde{u}\left(s,Y_s\right)-\nabla\tilde{u}\left(s,Y_s^N\right)\right\}^2\ \di s\right]\\
-    +\frac{4}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\nabla\tilde{u}\left(s,Y_s^N\right)-\nabla\tilde{u}^N\left(s,Y_s^N\right)\right\}^2\ \di s\right]
+    +\frac{4}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\widetilde{\nabla u}\left(s,Y_s\right)-\widetilde{\nabla u}\left(s,Y_s^N\right)\right\}^2\ \di s\right]\\
+    +\frac{4}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\widetilde{\nabla u}\left(s,Y_s^N\right)-\widetilde{\nabla u}^N\left(s,Y_s^N\right)\right\}^2\ \di s\right]
     \end{multline*}
     \begin{multline*}
     \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|\ \di s \right] \\
     +\frac{16\norme{u}_{\mathcal{C}^{1,\alpha}}^2}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|^{2\alpha}\ \di s\right]\\
     +2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} +4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}
     \end{multline*}
-    where we have used Lemma \ref{morrey}, the 1-lipschitz property of $\tilde{u}$ and the $\alpha$-Hölder property of $\nabla\tilde{u}$ (with constant $2\norme{u}_{\mathcal{C}^{1,\alpha}}$). As $\theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|\leq \varepsilon$, the result follows.    
+    where we have used Lemma \ref{morrey}, the 1-lipschitz property of $\tilde{u}$ and the $\alpha$-Hölder property of $\widetilde{\nabla u}$ (with constant $2\norme{u}_{\mathcal{C}^{1,\alpha}}$). As $\theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|\leq \varepsilon$, we have    
+    \begin{multline*}
+    \E\left[L^0_T(Y-Y^N)\right]\leq 2\varepsilon + 2(\lambda + 1)\ T\varepsilon
+    +16\norme{u}_{\mathcal{C}^{1,\alpha}}^2\ T \varepsilon^{2\alpha-1}\\
+    +2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} +4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}
+    \end{multline*}    
+    As $2\alpha-1>0$, the result follows from $\varepsilon\leq\varepsilon^{2\alpha-1}$ when $0<\varepsilon\leq1$.  
     
 \end{proof}
 
-\begin{lem}
-    With assumptions and notations of Lemma \ref{local time}, with $\alpha>1/2$ we have $\forall \varepsilon\leq1$
+\begin{lem}\label{key lemma}
+    With assumptions and notations of Lemma \ref{local time}, with $\alpha>1/2$ we have $\forall \varepsilon\in(0,1],$
     \begin{equation}
-    g(\varepsilon) \leq \sigma\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
+    0\leq\E\left[L^0_T(Y-Y^N)\right]\leq g(\varepsilon) \leq \sigma\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
     \end{equation}
     for $\norme{b^N-b}_{H^{-\beta}_{q}}$ small enough (it is to say $N$ big enough) where \begin{equation*}
     \sigma = 2(\lambda + 1)\ cT Ke^{\rho T} + \left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}
@@ -305,12 +318,15 @@
 \end{lem}
 
 \begin{proof}
-    With $2\alpha-1>0$ we have $\varepsilon\leq\varepsilon^{2\alpha-1}$. By Lemma \ref{local time},
+    By Lemma \ref{local time},
     
     \begin{equation*}
-    \E\left[L^0_T(Y-Y^N)\right]\leq g(\varepsilon).
+    0\leq\E\left[L^0_T(Y-Y^N)\right]\leq g(\varepsilon)
     \end{equation*}
-    
+    where \begin{multline*}
+    g(\varepsilon) = 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right) \varepsilon^{2\alpha-1}\\
+    + 4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}.
+    \end{multline*}    
     With \begin{multline*}
     g'(\varepsilon)=(2\alpha-1)\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right)\varepsilon^{2\alpha-2}\\-4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-2},
     \end{multline*}
@@ -318,7 +334,7 @@
     \begin{multline*}
     g''(\varepsilon)=(2\alpha-2)(2\alpha-1)\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right)\varepsilon^{2\alpha-3}\\+8c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-3},\end{multline*}
     
-    the minimum of $g$ on $(0,1]$ is reached in \begin{equation*}
+    the minimum of $g$ on $(0,1]$ is reached when $N$ is big enough in \begin{equation*}
     \varepsilon_0=\left(\frac{4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2}{(2\alpha-1)\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right)}\right)^{\frac{1}{2\alpha}}=\omega \norme{b^N-b}_{H^{-\beta}_{q}}^{1/\alpha}.
     \end{equation*}
     
@@ -337,73 +353,58 @@
     $
     \begin{multline*}
     \leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} +\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right) \omega^{2\alpha-1} \norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}\\+ 4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\omega^{-1}\norme{b^N-b}_{H^{-\beta}_{q}}^{-1/\alpha}
-    \end{multline*}
-    
+    \end{multline*}    
     \begin{multline*}
     \leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} \\+\left(\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}\right)\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
-    \end{multline*}
-    
+    \end{multline*}    
     \begin{multline*}
-    \leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} \\+\left(\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}\right)\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
+    \leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha} \\+\left(\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}\right)\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
     \end{multline*}
-    
-    The result follows.
+    for $N$ big enough. The result follows.
 \end{proof}
 
 \begin{theo}
-    Let $f$ be $\mu$-Hölder with constant $C_f>0$ and $\mu\in(0,1]$. If $\beta < 1/2$, $\forall \varepsilon >0$, with  $(\delta,p)\in K(\beta,q)$ such that $\alpha = \delta - 1/p = 1-2\beta - \varepsilon$, exists $\xi_f$ such that for $N\in\N$, $\rho>1$, $\lambda$ big enough it holds:
+    Let $f$ be $\mu$-Hölder with constant $C_f>0$ and $\mu\in(0,1]$. If $0<\beta < 1/4$, $q\in\left(\frac{1}{1-\beta},\frac{1}{\beta}\right)$, $\forall \varepsilon \in(0,\frac{1-4\beta}{2})$, with  $(\delta,p)\in K(\beta,q)$ such that $\delta - 1/p = 1-2\beta - \varepsilon$, exists $\xi$ independent of $f$ such that for $N\in\N$, $\rho>1$, $\lambda$ big enough it holds:
     
     \begin{equation*}
-    \E\left[f\left(X_T\right)-f\left(X_T^N\right)\right] \leq \xi_f \norme{b^N-b}_{H^{-\beta}_{q}}^{\mu(2-\frac{1}{1-2\beta-\varepsilon})}
-    \end{equation*}    
-    where $\xi_f$ is linear in $C_f$.
+    \left|\E\left[f\left(X_T\right)-f\left(X_T^N\right)\right]\right| \leq \xi C_f \norme{b^N-b}_{H^{-\beta}_{q}}^{\mu\left(2-\frac{1}{1-2\beta-\varepsilon}\right)}
+    \end{equation*}
 \end{theo}
 
 \begin{proof}
-    By Lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$ (See Step 2 of the proof of Proposition 29 in \cite{Fla-Iss-Rus-2017}). Therefore $u^N(t,\cdot)$ and $u(t,\cdot)$ are $\frac{1}{2}$-lipschitz. We recall that in this case, by Lemma 22 in \cite{Fla-Iss-Rus-2017}, $\Psi(t,\cdot)$ is 2-lipschitz.
-    
+    We note as usual $\alpha = \delta - 1/p$.
+    By Lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$ (See Step 2 of the proof of Proposition 29 in \cite{Fla-Iss-Rus-2017}). Therefore $u^N(t,\cdot)$ and $u(t,\cdot)$ are $\frac{1}{2}$-lipschitz. We recall that in this case, by Lemma 22 in \cite{Fla-Iss-Rus-2017}, $\Psi(t,\cdot)$ is 2-lipschitz.    
     \begin{equation*}
-    \E\left[f\left(X_T\right)-f\left(X_T^N\right)\right] = \E\left[f\left(\Psi\left(T,Y_T\right)\right)-f\left(\Psi\left(T,Y_T^N\right)\right)\right]
-    \end{equation*}
-    
+    \left|\E\left[f\left(X_T\right)-f\left(X_T^N\right)\right]\right| = \left|\E\left[f\left(\Psi\left(T,Y_T\right)\right)-f\left(\Psi\left(T,Y_T^N\right)\right)\right]\right|
+    \end{equation*}    
     \begin{equation}\label{jensen}
     \leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|^\mu\right] \leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|\right]^\mu
-    \end{equation}
-    
-    by Jensen's inequality. Let $t\in[0,T]$.
+    \end{equation}    
+    by Jensen's inequality. Let $t\in[0,T]$. 
     \begin{multline*}
     Y_t-Y_t^N = (\lambda + 1 )\int_0^t\left\{u\left(s,\Psi\left(s,Y_s\right)\right)-u^N\left(s,\Psi\left(s,Y_s^N\right)\right)\right\}\ \di s\\ + \int_0^t\left\{\nabla u\left(s,\Psi\left(s,Y_s\right)\right)-\nabla u^N\left(t,\Psi\left(s,Y_s^N\right)\right)\right\}\ \di W_s.
     \end{multline*}
-    
-    \begin{rem}  
-    For clarity purpose, we note $\tilde{u}\left(s,x\right) = u\left(s,\Psi\left(s,x\right)\right)$ and use the same notation for the gradient and the approximated mild solution. We can notice that $\tilde{u}$ is 1-lipschitz in space and $\nabla\tilde{u}$ is $\alpha$-Hölder with constant $2\norme{u}_{\mathcal{C}^{1,\alpha}}$.
-    \end{rem}
-    
     We apply Meyer-Tanaka's formula to obtain:
     \begin{multline*}
-    \left|Y_t-Y_t^N\right| = (\lambda + 1)\ \int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s\\ + \int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\nabla\tilde{u}\left(s,Y_s\right)-\nabla\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di W_s + L_t^0(Y-Y^N).
-    \end{multline*}
-    
+    \left|Y_t-Y_t^N\right| = (\lambda + 1)\ \int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s\\ + \int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\widetilde{\nabla u}\left(s,Y_s\right)-\widetilde{\nabla u}^N\left(s,Y_s^N\right)\right\}\ \di W_s + L_t^0(Y-Y^N).
+     \end{multline*}    
     Taking the expectation leads to:
     \begin{multline*}
     \E\left[\left|Y_t-Y_t^N\right|\right] = (\lambda + 1)\ \E\left[\int_0^t\mathrm{sign}(Y_s-Y_s^N)\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s\right]\\ + \E \left[L_t^0(Y-Y^N)\right]
     \end{multline*}
-    because $\nabla\tilde{u}$ and $\nabla\tilde{u}^N$ are bounded so the Itô integral is a martingale.    
+    because $\widetilde{\nabla u}$ and $\widetilde{\nabla u}^N$ are bounded so the Itô integral is a martingale.    
     \begin{multline*}
     \E\left[\left|Y_t-Y_t^N\right|\right]\leq (\lambda + 1)\ \E\left[\int_0^t\left\{\tilde{u}\left(s,Y_s\right)-\tilde{u}\left(s,Y_s^N\right)\right\} \di s\right]\\ +(\lambda + 1)\ \E\left[\int_0^t\left\{\tilde{u}\left(s,Y_s^N\right)-\tilde{u}^N\left(s,Y_s^N\right)\right\} \di s\right] + \E \left[L_t^0(Y-Y^N)\right].
-    \end{multline*}
-    
+    \end{multline*}    
     \paragraph{}
     We use Lemma \ref{morrey} and the 1-lipschitz property of $\tilde{u}$:
     \begin{multline*}
     \E\left[\left|Y_t-Y_t^N\right|\right]\leq (\lambda + 1)\ \E\left[\int_0^t\left|Y_s-Y_s^N\right| \di s\right] +(\lambda + 1)\ ctKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\ + \E \left[L_t^0(Y-Y^N)\right]
-    \end{multline*}
-    
+    \end{multline*}    
     \begin{multline*}
     \leq (\lambda + 1)\ \int_0^t\E\left[\left|Y_s-Y_s^N\right|\right] \di s + (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\ + \E \left[L_T^0(Y-Y^N)\right].
     \end{multline*}
-    where we have used the fact that $L_t^0(Y-Y^N)$ is an increasing process.
-    
+    where we have used the fact that $L_t^0(Y-Y^N)$ is an increasing process.    
     \paragraph{}
     By Gronwall's Lemma, it follows:
     \begin{equation}\label{gronwall}
@@ -411,27 +412,31 @@
     \end{equation}
     with $C(N) = (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \E \left[L_T^0(Y-Y^N)\right].$      
     
-    Going back to (\ref{gronwall}) we obtain \begin{equation*}
-    C(N) = (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \sigma\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha} \leq \zeta \norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}.
+    \paragraph{}
+    With Lemma \ref{key lemma} we obtain \begin{equation*}
+    C(N) \leq (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \sigma\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha} \leq \zeta \norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}.
     \end{equation*}   
     for $\norme{b^N-b}_{H^{-\beta}_{q}}$ small enough where $\zeta = (\lambda + 1)\ cTKe^{\rho T} + \sigma $. It follows:
-    \begin{equation}
+    \begin{equation}\label{gronfinal}
     \E\left[\left|Y_T-Y_T^N\right|\right] \leq \zeta \exp((\lambda+1)T) \norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}.
     \end{equation}
     
-    Finally we obtain from (\ref{jensen}):
+    Finally, combining (\ref{jensen}) and (\ref{gronfinal}) we obtain:
     
     \begin{equation*}
-    \E\left[f\left(X_T\right)-f\left(X_T^N\right)\right] \leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|\right]^\mu
+    \left|\E\left[f\left(X_T\right)-f\left(X_T^N\right)\right]\right| \leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|\right]^\mu
     \end{equation*}
     \begin{equation*}
     \leq 2^\mu C_f  \zeta^\mu \exp(\mu(\lambda+1)T) \norme{b^N-b}_{H^{-\beta}_{q}}^{\mu(2-1/\alpha)}.
-    \end{equation*}
+    \end{equation*}    
+    which is the expected result.
     
 \end{proof}   
 
+\newpage
 \section{Numerical results}
-    \subsection{Rate of convergence of the Euler scheme}
+    \subsection{Strong convergence of the Euler scheme}
+    We choose $f=Id$.
     
         \begin{center}
             \includegraphics[width=9cm]{finalerror.png}

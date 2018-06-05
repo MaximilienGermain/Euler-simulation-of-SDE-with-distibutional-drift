@@ -191,9 +191,9 @@
         \end{equation}
         Then we consider an approximated version of (\ref{virtual}): \begin{equation}\label{virtual approx}
         \begin{cases}
-        Y_t^N = y + (\lambda+1)\int_0^t u^N\left(s,Y_s^N\right)\ \di s +\int_0^t \left(\nabla u^N\left(s,Y_s^N\right)+1\right)\ \di W_s.\\
+        Y_t^N = y + (\lambda+1)\int_0^t u^N\left(s,Y_s^N\right)\ \di s +\int_0^t \left(\nabla u^N\left(s,Y_s^N\right)+1\right)\ \di W_s\\
         X_t^N = \Psi(t,Y_t^N) = \varphi^{-1}(t,Y_t^N)
-        \end{cases}
+        \end{cases}.
         \end{equation}
         
         \begin{rem}
@@ -204,14 +204,17 @@
     We also recall a useful lemma concerning the solutions of (\ref{pde}) and (\ref{pde2}).
     
     \begin{lem}[Lemma 20 in \cite{Fla-Iss-Rus-2017}]\label{lem}
-        Let $(\delta,p)\in K(\beta,q)$ and let $v_\lambda$ be the mild solution to (\ref{pde}) in $H_p^{1+\delta}$. Fix $\rho$ such that the integral operator is a contraction and let $\lambda>\rho$. Then $v_\lambda(t)\in\mathcal{C}^{1,\alpha}$ with $\alpha=\delta-1/p$ for each fixed $t$ and 
+        Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solution to (\ref{pde}) in $H_p^{1+\delta}$. Fix $\rho$ such that the integral operator is a contraction and let $\lambda>\rho$. Then $u(t),\ u^N(t)\in\mathcal{C}^{1,\alpha}$ with $\alpha=\delta-1/p$ for each fixed $t$ and 
         \begin{equation*}
-        \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla v_\lambda(t,x)| \rightarrow 0,\ as\ \lambda \rightarrow \infty
+        \begin{cases}
+        \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla u(t,x)| \rightarrow 0,\ as\ \lambda \rightarrow \infty \\
+        \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla u^N(t,x)| \rightarrow 0,\ as\ \lambda \rightarrow \infty
+        \end{cases}
         \end{equation*}
         where the choice of $\lambda$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b}_{H_q^{-\beta}}$.
     \end{lem}
     
-    \begin{lem}\label{morrey} Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solutions to (\ref{pde}),(\ref{pde2}) in $H_p^{1+\delta}$. $\alpha = \delta - 1/p$. Exists $c,K>0$ such that for both $N\in\N$ and $\rho>1$ big enough, $\forall t\in[0,T]$,
+    \begin{lem}\label{morrey} Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solutions to (\ref{pde}),(\ref{pde2}) in $H_p^{1+\delta}$, $\alpha = \delta - 1/p$. Exists $c,K>0$ such that for both $N\in\N$ and $\rho>1$ big enough, $\forall t\in[0,T]$,
         \begin{equation}
         \begin{cases}
         \norme{u^N(t) - u(t)}_{L^\infty}\leq cKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}\\        
@@ -246,7 +249,7 @@
         \end{lem}        
         Applying lemma \ref{local} with $F(x) = x^2$, it follows:
         \begin{cor}\label{cor}
-            Let X be a continuous martingale with $X_0 = 0$. With the same notations as in lemma \ref{local}, for any $\varepsilon>0$ we have
+            Let X be a continuous semimartingale with $X_0 = 0$. With the same notations as in lemma \ref{local}, for any $\varepsilon>0$ we have
             \begin{multline}
                 0\leq L^0_t(X) \leq 2\varepsilon - \frac{2}{\varepsilon}\int_0^t \theta_s(X) \left(\varepsilon - 2{X_s^+}\right)\ \di X_s
                 +\frac{2}{\varepsilon}\int_0^t \theta_s(X) \ \di[X]_s
@@ -254,7 +257,7 @@
         \end{cor}
 
 \begin{lem}\label{local time}
-    Let $(\delta,p)\in K(\beta,q)$, $\alpha=\delta-1/p$, $u$, $u^N$ be the mild solutions to (\ref{pde}), (\ref{pde2}) in $H_p^{1+\delta}$, and $Y$, $Y^N$ solutions of the SDEs (\ref{virtual}), (\ref{virtual approx}).  Then we have $\forall\varepsilon\in(0,1]$,
+    Let $(\delta,p)\in K(\beta,q)$, $\alpha=\delta-1/p<1$, $u$, $u^N$ be the mild solutions to (\ref{pde}), (\ref{pde2}) in $H_p^{1+\delta}$, and $Y$, $Y^N$ solutions of the SDEs (\ref{virtual}), (\ref{virtual approx}).  Then, if $\alpha>1/2$, for $\lambda$ big enough we have $\forall\varepsilon\in(0,1]$,
     \begin{equation*}
     0\leq \E\left[L^0_T(Y-Y^N)\right]\leq  g(\varepsilon).
     \end{equation*}
@@ -265,6 +268,7 @@
 \end{lem}
 
 \begin{proof}
+    By Lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$. Therefore $u^N(t,\cdot)$ and $u(t,\cdot)$ are $\frac{1}{2}$-lipschitz. We recall that in this case, by Lemma 22 in \cite{Fla-Iss-Rus-2017}, $\Psi(t,\cdot)$ is 2-lipschitz.
     Let $\varepsilon\in(0,1]$. Corollary \ref{cor} gives us:    
     \begin{multline*}
     0\leq L^0_T(Y-Y^N) \leq 2\varepsilon - \frac{2}{\varepsilon}\int_0^T \theta_s(Y-Y^N) \left(\varepsilon - 2{(Y_s-Y_s^N)^+}\right)\ \di (Y_s-Y_s^N)\\
@@ -301,14 +305,14 @@ $\widetilde{\nabla u}$ and $\widetilde{\nabla u}^N$ are bounded so the Itô inte
     +16\norme{u}_{\mathcal{C}^{1,\alpha}}^2\ T \varepsilon^{2\alpha-1}\\
     +2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} +4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}
     \end{multline*}    
-    As $2\alpha-1>0$, the result follows from $\varepsilon\leq\varepsilon^{2\alpha-1}$ when $0<\varepsilon\leq1$.  
+    As $1>2\alpha-1>0$, the result follows from $\varepsilon\leq\varepsilon^{2\alpha-1}$ when $0<\varepsilon\leq1$.  
     
 \end{proof}
 
 \begin{lem}\label{key lemma}
-    With assumptions and notations of Lemma \ref{local time}, with $\alpha>1/2$ we have $\forall \varepsilon\in(0,1],$
+    With assumptions and notations of Lemma \ref{local time}, and $1>\alpha>1/2$ we have $\forall \varepsilon\in(0,1],$
     \begin{equation}
-    0\leq\E\left[L^0_T(Y-Y^N)\right]\leq g(\varepsilon) \leq \sigma\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
+    g(\varepsilon) \leq \sigma\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
     \end{equation}
     for $\norme{b^N-b}_{H^{-\beta}_{q}}$ small enough (it is to say $N$ big enough) where \begin{equation*}
     \sigma = 2(\lambda + 1)\ cT Ke^{\rho T} + \left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2(1+(\lambda + 1)T)\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}
@@ -413,7 +417,7 @@ $\widetilde{\nabla u}$ and $\widetilde{\nabla u}^N$ are bounded so the Itô inte
     with $C(N) = (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \E \left[L_T^0(Y-Y^N)\right].$      
     
     \paragraph{}
-    With Lemma \ref{key lemma} we obtain \begin{equation*}
+    With Lemma \ref{local time} and Lemma \ref{key lemma} we obtain \begin{equation*}
     C(N) \leq (\lambda + 1)\ cTKe^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \sigma\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha} \leq \zeta \norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}.
     \end{equation*}   
     for $\norme{b^N-b}_{H^{-\beta}_{q}}$ small enough where $\zeta = (\lambda + 1)\ cTKe^{\rho T} + \sigma $. It follows:
@@ -427,16 +431,16 @@ $\widetilde{\nabla u}$ and $\widetilde{\nabla u}^N$ are bounded so the Itô inte
     \left|\E\left[f\left(X_T\right)-f\left(X_T^N\right)\right]\right| \leq 2^\mu C_f  \E\left[\left|Y_T-Y_T^N\right|\right]^\mu
     \end{equation*}
     \begin{equation*}
-    \leq 2^\mu C_f  \zeta^\mu \exp(\mu(\lambda+1)T) \norme{b^N-b}_{H^{-\beta}_{q}}^{\mu(2-1/\alpha)}.
+    \leq 2^\mu C_f  \zeta^\mu \exp(\mu(\lambda+1)T) \norme{b^N-b}_{H^{-\beta}_{q}}^{\mu(2-1/\alpha)}
     \end{equation*}    
     which is the expected result.
     
 \end{proof}   
 
-\newpage
+%\newpage
 \section{Numerical results}
     \subsection{Strong convergence of the Euler scheme}
-    We choose $f=Id$.
+    %We choose $f=Id$.
     
         \begin{center}
             \includegraphics[width=9cm]{finalerror.png}

@@ -10,8 +10,8 @@ xlabel('$t$','Interpreter','latex')
 ylabel('$X_t$','Interpreter','latex')
 chn = ['Approximation of a sample path of the SDE solution ($n =\ $',num2str(NT),' ; $N =\ $',num2str(N),')'];
 title(chn,'Interpreter','latex')
-name = ['n = ',num2str(NT),' ; N = ',num2str(N),'.png'];
-saveas(gcf,name);
+%name = ['n = ',num2str(NT),' ; N = ',num2str(N),'.png'];
+%saveas(gcf,name);
 frame = getframe(gcf);
     
 end

@@ -20,7 +20,7 @@ chn = ['Sample path of $B^H_x$ and approximation of $\frac{\mathrm{d}}{\mathrm{d
 title(chn,'Interpreter','latex')
 name = ['Haar H = ',num2str(H),' ; N = ',num2str(N),'.png'];
 set(gcf,'PaperPositionMode','auto')
-print(name,'-dpng','-r0')
+%print(name,'-dpng','-r0')
 frame = getframe(gcf);
     
 end

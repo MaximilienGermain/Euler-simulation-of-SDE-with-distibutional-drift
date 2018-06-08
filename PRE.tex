@@ -204,14 +204,14 @@
     We also recall a useful lemma concerning the solutions of (\ref{pde}) and (\ref{pde2}).
     
     \begin{lem}[Lemma 20 in \cite{Fla-Iss-Rus-2017}]\label{lem}
-        Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solution to (\ref{pde}) in $H_p^{1+\delta}$. Fix $\rho$ such that the integral operator is a contraction and let $\lambda>\rho$. Then $u(t),\ u^N(t)\in\mathcal{C}^{1,\alpha}$ with $\alpha=\delta-1/p$ for each fixed $t$ and 
+        Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solutions to (\ref{pde}), (\ref{pde2}) in $H_p^{1+\delta}$. Fix $\rho$ such that the integral operator is a contraction and let $\lambda>\rho$. Then $u(t),\ u^N(t)\in\mathcal{C}^{1,\alpha}$ with $\alpha=\delta-1/p$ for each fixed $t$ and 
         \begin{equation*}
         \begin{cases}
         \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla u(t,x)| \rightarrow 0,\ as\ \lambda \rightarrow \infty \\
         \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla u^N(t,x)| \rightarrow 0,\ as\ \lambda \rightarrow \infty
         \end{cases}
         \end{equation*}
-        where the choice of $\lambda$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b}_{H_q^{-\beta}}$.
+        where the choice of $\lambda$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b^N}_{H_q^{-\beta}}$.
     \end{lem}
     
     \begin{lem}\label{morrey} Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solutions to (\ref{pde}),(\ref{pde2}) in $H_p^{1+\delta}$, $\alpha = \delta - 1/p$. Exists $c,K>0$ such that for both $N\in\N$ and $\rho>1$ big enough, $\forall t\in[0,T]$,
@@ -268,7 +268,7 @@
 \end{lem}
 
 \begin{proof}
-    By Lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$. Therefore $u^N(t,\cdot)$ and $u(t,\cdot)$ are $\frac{1}{2}$-lipschitz. We recall that in this case, by Lemma 22 in \cite{Fla-Iss-Rus-2017}, $\Psi(t,\cdot)$ is 2-lipschitz.
+    By Lemma \ref{lem}, we choose $\lambda$ big enough for $\nabla u$ and $\nabla u^N$ to be bounded by $\frac{1}{2}$. $\lambda$ can be chosen independently of $N$ as far as $\norme{b - b^N}_{H_q^s(\R)} \underset{N\rightarrow\infty}{\longrightarrow} 0$. Therefore $u^N(t,\cdot)$ and $u(t,\cdot)$ are $\frac{1}{2}$-lipschitz. 
     Let $\varepsilon\in(0,1]$. Corollary \ref{cor} gives us:    
     \begin{multline*}
     0\leq L^0_T(Y-Y^N) \leq 2\varepsilon - \frac{2}{\varepsilon}\int_0^T \theta_s(Y-Y^N) \left(\varepsilon - 2{(Y_s-Y_s^N)^+}\right)\ \di (Y_s-Y_s^N)\\
@@ -438,7 +438,7 @@ ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a martingale
     \paragraph{}
     Moreover, using $\underset{x\in\R}{\sup}\left|\nabla u^N(T,x)\right| \leq 1/2$, we obtain with $\varphi(t,x)=x+u(t,x)$:
     \begin{equation*}
-    |\varphi^N\left(T,\Psi^N\left(T,Y_T^N\right)\right)-\varphi^N\left(T,\Psi\left(t,Y_T^N\right)\right)| 
+    \left|\varphi^N\left(T,\Psi^N\left(T,Y_T^N\right)\right)-\varphi^N\left(T,\Psi\left(t,Y_T^N\right)\right)\right| 
     \end{equation*}
     \begin{equation*}
     \geq \underset{x\in\R}{\inf}\left|\nabla\varphi^N(T,x)\right|

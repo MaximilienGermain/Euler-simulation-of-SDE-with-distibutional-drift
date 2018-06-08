@@ -1,6 +1,6 @@
 function [beta0,beta1] = linearRegression(x,y)
 
-n= length(x);
+n = length(x);
 X = [ones(n,1) x];
 beta = (X'*X)\(X'*y);
 beta0 = beta(1);

@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}      
@@ -263,7 +263,7 @@
     0\leq \E\left[L^0_T(Y-Y^N)\right]\leq  g(\varepsilon).
     \end{equation*}
     where \begin{multline*}
-    g(\varepsilon) = 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2+2(\lambda + 1)T\right) \varepsilon^{2\alpha-1}\\
+    g(\varepsilon) = 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2+2(\lambda + 1)T\right) \varepsilon^{2\alpha-1}\\
     + 4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}
     \end{multline*}
 \end{lem}
@@ -284,27 +284,27 @@
     \end{rem}
 
 \begin{rem}  
-    For clarity purpose, we note $\tilde{u}\left(s,x\right) = u\left(s,\Psi\left(s,x\right)\right)$ and use the same notation for the gradient and the approximated mild solution. We can notice that $\tilde{u}$ is 1-lipschitz in space and $\widetilde{\nabla u}$ is $\alpha$-Hölder with constant $2\norme{u}_{\mathcal{C}^{1,\alpha}}$.
+    For clarity purpose, we note $\tilde{u}\left(s,x\right) = u\left(s,\Psi\left(s,x\right)\right)$ and use the same notation for the gradient and the approximated mild solution. We can notice that $\tilde{u}$ is 1-lipschitz in space and $\widetilde{\nabla u}$ is $\alpha$-Hölder with constant $2^\alpha\norme{u}_{\mathcal{C}^{1,\alpha}}$.
 \end{rem}
 ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a martingale. We take the expectation:
     \begin{multline*}
-    \E\left[L^0_T(Y-Y^N)\right] \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left\{\widetilde{u}\left(s,Y_s\right)-\widetilde{u}^N\left(s,Y_s^N\right)\right\} \di s \right]\\
+    \E\left[L^0_T(Y-Y^N)\right] \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left|\widetilde{u}\left(s,Y_s\right)-\widetilde{u}^N\left(s,Y_s^N\right)\right| \di s \right]\\
     +\frac{2}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\widetilde{\nabla u}\left(s,Y_s\right)-{\widetilde{\nabla u}^N}\left(s,Y_s^N\right)\right\}^2\ \di s\right]
     \end{multline*}
     \begin{multline*}
-    \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left\{\widetilde{u}\left(s,Y_s\right)-\widetilde{u}\left(s,Y_s^N\right)\right\}\ \di s \right]\\+2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left\{\widetilde{u}\left(s,Y_s^N\right)-\widetilde{u}^N\left(s,Y_s^N\right)\right\}\ \di s \right]\\
+    \leq 2\varepsilon + 2(\lambda + 1)\ \E\left|\int_0^T\theta_s(Y-Y^N)\left|\widetilde{u}\left(s,Y_s\right)-\widetilde{u}\left(s,Y_s^N\right)\right|\ \di s \right]\\+2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left|\widetilde{u}\left(s,Y_s^N\right)-\widetilde{u}^N\left(s,Y_s^N\right)\right|\ \di s \right]\\
     +\frac{4}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\widetilde{\nabla u}\left(s,Y_s\right)-\widetilde{\nabla u}\left(s,Y_s^N\right)\right\}^2\ \di s\right]\\
     +\frac{4}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left\{\widetilde{\nabla u}\left(s,Y_s^N\right)-\widetilde{\nabla u}^N\left(s,Y_s^N\right)\right\}^2\ \di s\right]
     \end{multline*}
     \begin{multline*}
     \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_0^T\theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|\ \di s \right] \\
-    +\frac{16\norme{u}_{\mathcal{C}^{1,\alpha}}^2}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|^{2\alpha}\ \di s\right]\\
+    +\frac{4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2}{\varepsilon}\ \E\left[\int_0^T \theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|^{2\alpha}\ \di s\right]\\
     +2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} +4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}
     \end{multline*}
-    where we have used Lemma \ref{morrey}, the $1$-lipschitz property of $\widetilde{u}$ and the $\alpha$-Hölder property of $\widetilde{\nabla u}$ (with constant $2\norme{u}_{\mathcal{C}^{1,\alpha}}$). As $\theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|\leq \varepsilon$, we have    
+    where we have used Lemma \ref{morrey}, the $1$-lipschitz property of $\widetilde{u}$ and the $\alpha$-Hölder property of $\widetilde{\nabla u}$ (with constant $2^\alpha\norme{u}_{\mathcal{C}^{1,\alpha}}$). As $\theta_s(Y-Y^N)\left|Y_s - Y^N_s\right|\leq \varepsilon$, we have    
     \begin{multline*}
     \E\left[L^0_T(Y-Y^N)\right]\leq 2\varepsilon + 2(\lambda + 1)\ T\varepsilon
-    +16\norme{u}_{\mathcal{C}^{1,\alpha}}^2\ T \varepsilon^{2\alpha-1}\\
+    +4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2\ T \varepsilon^{2\alpha-1}\\
     +2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} +4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}
     \end{multline*}    
     As $1>2\alpha-1>0$, the result follows from $\varepsilon\leq\varepsilon^{2\alpha-1}$ when $0<\varepsilon\leq1$.  
@@ -317,9 +317,9 @@ ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a martingale
     \E\left[L^0_T(Y-Y^N)\right]\leq g(\varepsilon_N) = \sigma\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
     \end{equation}
     for $\norme{b^N-b}_{H^{-\beta}_{q}}$ small enough (it is to say $N$ big enough) where \begin{equation*}
-    \sigma = 2(\lambda + 1)\ cT Ke^{\rho T} + \left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}
+    \sigma = 2(\lambda + 1)\ cT Ke^{\rho T} + \left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}
     \end{equation*} and \begin{equation*}
-    \omega = \left(\frac{4c^2T K^2e^{2\rho T}}{(2\alpha-1)\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right)}\right)^{\frac{1}{2\alpha}}.
+    \omega = \left(\frac{4c^2T K^2e^{2\rho T}}{(2\alpha-1)\left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right)}\right)^{\frac{1}{2\alpha}}.
     \end{equation*}
 \end{lem}
 
@@ -330,18 +330,18 @@ ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a martingale
     0\leq\E\left[L^0_T(Y-Y^N)\right]\leq g(\varepsilon)
     \end{equation*}
     where \begin{multline*}
-    g(\varepsilon) = 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right) \varepsilon^{2\alpha-1}\\
+    g(\varepsilon) = 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} + \left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right) \varepsilon^{2\alpha-1}\\
     + 4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-1}.
     \end{multline*}    
     With \begin{multline*}
-    g'(\varepsilon)=(2\alpha-1)\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right)\varepsilon^{2\alpha-2}\\-4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-2},
+    g'(\varepsilon)=(2\alpha-1)\left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right)\varepsilon^{2\alpha-2}\\-4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-2},
     \end{multline*}
     and 
     \begin{multline*}
-    g''(\varepsilon)=(2\alpha-2)(2\alpha-1)\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right)\varepsilon^{2\alpha-3}\\+8c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-3},\end{multline*}
+    g''(\varepsilon)=(2\alpha-2)(2\alpha-1)\left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right)\varepsilon^{2\alpha-3}\\+8c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\varepsilon^{-3},\end{multline*}
     
     the minimum of $g$ on $(0,1]$ is reached when $N$ is big enough in \begin{equation*}
-    \varepsilon_N=\left(\frac{4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2}{(2\alpha-1)\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right)}\right)^{\frac{1}{2\alpha}}=\omega \norme{b^N-b}_{H^{-\beta}_{q}}^{1/\alpha}.
+    \varepsilon_N=\left(\frac{4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2}{(2\alpha-1)\left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right)}\right)^{\frac{1}{2\alpha}}=\omega \norme{b^N-b}_{H^{-\beta}_{q}}^{1/\alpha}.
     \end{equation*}
     
     where 
@@ -351,20 +351,20 @@ ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a martingale
     \end{equation*}
     
     and \begin{equation*}
-    \omega = \left(\frac{4c^2T K^2e^{2\rho T}}{(2\alpha-1)\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right)}\right)^{\frac{1}{2\alpha}}.
+    \omega = \left(\frac{4c^2T K^2e^{2\rho T}}{(2\alpha-1)\left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right)}\right)^{\frac{1}{2\alpha}}.
     \end{equation*}
     
     Therefore $
     \E\left[L^0_T(Y-Y^N)\right]\leq g(\varepsilon_N)
     $
     \begin{multline*}
-    \leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} +\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right) \omega^{2\alpha-1} \norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}\\+ 4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\omega^{-1}\norme{b^N-b}_{H^{-\beta}_{q}}^{-1/\alpha}
+    \leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} \\+\left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right) \omega^{2\alpha-1} \norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}\\+ 4c^2T K^2e^{2\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^2\omega^{-1}\norme{b^N-b}_{H^{-\beta}_{q}}^{-1/\alpha}
     \end{multline*}    
     \begin{multline*}
-    \leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} \\+\left(\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}\right)\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
+    \leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}} \\+\left(\left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}\right)\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
     \end{multline*}    
     \begin{multline*}
-    \leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha} \\+\left(\left(16\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}\right)\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
+    \leq 2(\lambda + 1)\ cT Ke^{\rho T}\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha} \\+\left(\left(4^{\alpha+1}\norme{u}_{\mathcal{C}^{1,\alpha}}^2 T + 2 + 2(\lambda + 1)T\right) \omega^{2\alpha-1} + 4c^2T K^2e^{2\rho T}\omega^{-1}\right)\norme{b^N-b}_{H^{-\beta}_{q}}^{2-1/\alpha}
     \end{multline*}
     for $N$ big enough. The result follows.
 \end{proof}
@@ -406,7 +406,7 @@ ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a martingale
     \end{multline*}
     because ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a martingale.    
     \begin{multline*}
-    \E\left[\left|Y_t-Y_t^N\right|\right]\leq (\lambda + 1)\ \E\left[\int_0^t\left\{\widetilde{u}\left(s,Y_s\right)-\widetilde{u}\left(s,Y_s^N\right)\right\} \di s\right]+ \left|u(0,x)-u^N(0,x)\right|\\ +(\lambda + 1)\ \E\left[\int_0^t\left\{\widetilde{u}\left(s,Y_s^N\right)-\widetilde{u}^N\left(s,Y_s^N\right)\right\} \di s\right] + \E \left[L_t^0(Y-Y^N)\right].
+    \E\left[\left|Y_t-Y_t^N\right|\right]\leq (\lambda + 1)\ \E\left[\int_0^t\left|\widetilde{u}\left(s,Y_s\right)-\widetilde{u}\left(s,Y_s^N\right)\right| \di s\right]+ \left|u(0,x)-u^N(0,x)\right|\\ +(\lambda + 1)\ \E\left[\int_0^t\left|\widetilde{u}\left(s,Y_s^N\right)-\widetilde{u}^N\left(s,Y_s^N\right)\right| \di s\right] + \E \left[L_t^0(Y-Y^N)\right].
     \end{multline*}    
     \paragraph{}
     We use Lemma \ref{morrey} and the $1$-lipschitz property of $\widetilde{u}$:

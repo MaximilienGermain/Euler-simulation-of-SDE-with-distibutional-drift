@@ -64,7 +64,7 @@
     where $b\in H^{-\beta}_q(\R),\ \beta\in\left(0,\frac{1}{2}\right)$, $q\in\left(\frac{1}{1-\beta},\frac{1}{\beta}\right)$, $t\in[0,T]$, and $W_t$ is a standard Brownian motion. Equation (\ref{sde}) is studied by F. Flandoli, E. Issoglio, and F. Russo in \cite{Fla-Iss-Rus-2017} in which they define a concept of virtual solution. The authors prove then existence and unicity in law of this solution. 
     
     \begin{ex}
-        An example of such drift $b$ is given by the derivative of a sample path of a fractional Brownian motion $B^H_x$ with Hurst index $1/2<H<1$. These stochastic processes are gaussian processes verifying $$\E\left[B_t^HB_s^H\right]=\frac{1}{2}\left(t^{2H}+s^{2H}+|t-s|^{2H}\right).$$ We note $-\beta = H - 1$. Given $B^H_x(\omega)\in H^{1-\beta}_q(\R)$, we can take $b(x) = \pade{}{x}B^H_x(\omega)\in H^{-\beta}_q(\R)$. We will use this in our numerical simulations.
+        An example of such drift $b$ is given by the derivative of a sample path of a fractional Brownian motion $B^H_x$ with Hurst index $1/2<H<1$. These stochastic processes are gaussian processes verifying $$\E\left[B_t^HB_s^H\right]=\frac{1}{2}\left(t^{2H}+s^{2H}+|t-s|^{2H}\right).$$ We note $-\beta = H - 1$. Given $B^H_x(\omega)\in H^{1-\beta}_q(\R)$, we can take $b(x) = \de{}{x}B^H_x(\omega)\in H^{-\beta}_q(\R)$. We will use this in our numerical simulations.
     \end{ex}    
     
     \paragraph{}
@@ -78,7 +78,7 @@
         \begin{equation*}
         X^{N,n}_t = X_0 + \int_0^t b^N\left(X^{N,n}_{\eta_n(t)}\right)\di t + W_{\eta_n(t)}
         \end{equation*}
-        where $\eta_n(t)=t_k$ if $t\in[t_k,t_k+1]$, for $t_k=\frac{k}{n}$ with $ k\in\llbracket0,\lceil nT\rceil\rrbracket$.
+        where $\eta_n(t)=t_k$ if $t\in[t_k,t_k+1[$, for $t_k=\frac{k}{n}$ with $ k\in\llbracket0,\lceil nT\rceil\rrbracket$.
         
     \end{enumerate}
 
@@ -205,14 +205,14 @@
     We also recall a useful lemma concerning the solutions of (\ref{pde}) and (\ref{pde2}).
     
     \begin{lem}[Lemma 20 in \cite{Fla-Iss-Rus-2017}]\label{lem}
-        Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solutions to (\ref{pde}), (\ref{pde2}) in $H_p^{1+\delta}$. Fix $\rho$ such that the integral operator is a contraction and let $\lambda>\rho$. Then $u(t),\ u^N(t)\in\mathcal{C}^{1,\alpha}$ with $\alpha=\delta-1/p$ for each fixed $t$ and 
+        Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solutions to (\ref{pde}), (\ref{pde2}) in $H_p^{1+\delta}$. Fix $\rho$ such that the integral operator is a contraction and let $\lambda>\lambda^*$. Then $u(t),\ u^N(t)\in\mathcal{C}^{1,\alpha}$ with $\alpha=\delta-1/p$ for each fixed $t$ and $\forall\varepsilon>0,\ \exists\lambda_0>0$ such that
         \begin{equation*}
-        \begin{cases}
-        \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla u(t,x)| \rightarrow 0,\ as\ \lambda \rightarrow \infty \\
-        \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla u^N(t,x)| \rightarrow 0,\ as\ \lambda \rightarrow \infty
+        \begin{cases}\forall\lambda\geq\lambda_0,\
+        \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla u(t,x)| \leq\varepsilon  \\ \forall\lambda\geq\lambda_0,\
+        \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla u^N(t,x)| \leq\varepsilon
         \end{cases}
         \end{equation*}
-        where the choice of $\lambda$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b^N}_{H_q^{-\beta}}$.
+        where the choice of $\lambda_0$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b^N}_{H_q^{-\beta}}$.
     \end{lem}
     
     \begin{lem}\label{morrey} Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solutions to (\ref{pde}),(\ref{pde2}) in $H_p^{1+\delta}$, $\alpha = \delta - 1/p$. Exists $c,K>0$ such that for both $N\in\N$ and $\rho>1$ big enough, $\forall t\in[0,T]$,
@@ -490,15 +490,14 @@ ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a martingale
     because ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a martingale.    
     \begin{multline*}
     \E\left[\left|Y_t-Y_t^N\right|\right]\leq \left|u(0,x)-u^N(0,x)\right| + (\lambda + 1)\ \E\left[\int_0^t\left|\widetilde{u}\left(s,Y_s\right)-\widetilde{u}\left(s,Y_s^N\right)\right| \di s\right]+ \\ + (\lambda + 1)\ \E\left[\int_0^t\left|\widetilde{u}\left(s,Y_s^N\right)-\widetilde{u}^N\left(s,Y_s^N\right)\right| \di s\right] + (\lambda + 1)\ \E\left[\int_0^t\left|\widetilde{u}^N\left(s,Y_s^N\right)-\overline{u}^N\left(s,Y_s^N\right)\right| \di s\right]\\ + \E \left[L_t^0(Y-Y^N)\right].
-    \end{multline*}    
-    \paragraph{}
+    \end{multline*}
     We use Lemma \ref{morrey}, the $1$-lipschitz property of $\widetilde{u}$, and the $1/2$-lipschitz property of $u$:
     \begin{multline*}
     \E\left[\left|Y_t-Y_t^N\right|\right]\leq \kappa\norme{b^N-b}_{H^{-\beta}_{q}} + (\lambda + 1)\ \E\left[\int_0^t\left|Y_s-Y_s^N\right| \di s\right] + (\lambda + 1)t\kappa\norme{b^N-b}_{H^{-\beta}_{q}}\\+ \frac{\lambda + 1}{2}\ \E\left[\int_0^t\left|\Psi\left(s,Y_s^N\right)-\Psi^N\left(s,Y_s^N\right)\right| \di s\right]  + \E \left[L_t^0(Y-Y^N)\right]
     \end{multline*}    
-    \begin{multline*}
+    \begin{equation*}
     \leq (\lambda + 1)\ \int_0^t\E\left[\left|Y_s-Y_s^N\right|\right] \di s + (2(\lambda + 1)T+1)\kappa\norme{b^N-b}_{H^{-\beta}_{q}}  + \E \left[L_T^0(Y-Y^N)\right].
-    \end{multline*}
+    \end{equation*}
     where we have used the fact that $L_t^0(Y-Y^N)$ is an increasing process and Lemma \ref{psi}.    
     \paragraph{}
     By Gronwall's Lemma, it follows:

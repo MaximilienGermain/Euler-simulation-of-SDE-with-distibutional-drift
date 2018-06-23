@@ -1,0 +1,28 @@
+\begin{thebibliography}{1}
+
+\bibitem{Fla-Iss-Rus-2017}
+F.~Flandoli, E.~Issoglio, and F.~Russo.
+\newblock Multidimensional stochastic differential equations with
+  distributional drift.
+\newblock {\em Transactions of the American Mathematical Society}, 369
+  (3):1655--1688, 3 2017.
+
+\bibitem{Iss-Rus-2200}
+E.~Issoglio and F.~Russo.
+\newblock On a class of {Markov} {BSDE}s with generalized driver.
+\newblock submitted.
+\newblock arXiv:1805.02466v1.
+
+\bibitem{Leo-Szo}
+G.~Leobacher and M.~Szölgyenyi.
+\newblock Convergence of the {E}uler–{M}aruyama method for multidimensional
+  {SDE}s with discontinuous drift and degenerate diffusion coefficient.
+\newblock preprint.
+\newblock arXiv:1610.07047v5.
+
+\bibitem{Yan}
+L.~Yan.
+\newblock The {E}uler {S}cheme with {I}rregular {C}oefficients.
+\newblock {\em The Annals of Probability}, 30(3):1172--1194, 7 2002.
+
+\end{thebibliography}

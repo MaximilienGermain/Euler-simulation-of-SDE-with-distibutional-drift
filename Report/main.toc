@@ -1,0 +1,34 @@
+\select@language {english}
+\contentsline {chapter}{Confidentiality Notice}{3}{chapter*.1}
+\contentsline {chapter}{Abstract}{5}{chapter*.2}
+\contentsline {chapter}{Acknowledgment}{7}{chapter*.3}
+\contentsline {chapter}{Introduction}{11}{chapter*.5}
+\contentsline {chapter}{\numberline {I}Context}{13}{chapter.1}
+\contentsline {paragraph}{}{13}{section*.6}
+\contentsline {section}{\numberline {I.1}Principle of the approximation algorithm}{13}{section.1.1}
+\contentsline {paragraph}{}{13}{section*.7}
+\contentsline {section}{\numberline {I.2}Virtual solutions of the original SDE and its approximation}{14}{section.1.2}
+\contentsline {paragraph}{}{14}{section*.8}
+\contentsline {chapter}{\numberline {II}Numerical aspects}{15}{chapter.2}
+\contentsline {section}{\numberline {II.1}Numerical simulation of fractional Brownian motion}{15}{section.2.1}
+\contentsline {paragraph}{}{15}{section*.9}
+\contentsline {subsection}{\numberline {II.1.1}Refining a sample path of a fractional Brownian motion}{15}{subsection.2.1.1}
+\contentsline {section}{\numberline {II.2}Approximation of the drift}{15}{section.2.2}
+\contentsline {subsection}{\numberline {II.2.1}Series representation}{15}{subsection.2.2.1}
+\contentsline {paragraph}{}{15}{section*.10}
+\contentsline {subsection}{\numberline {II.2.2}Computation of the coefficients for the series representation}{16}{subsection.2.2.2}
+\contentsline {chapter}{\numberline {III}Convergence of the algorithm}{17}{chapter.3}
+\contentsline {section}{\numberline {III.1}Weak convergence rate of $X_t^{N,n}$ to $X_t^N$}{17}{section.3.1}
+\contentsline {paragraph}{}{17}{section*.11}
+\contentsline {section}{\numberline {III.2}Weak convergence rate of $X^{N}_t$ to $X_t$}{17}{section.3.2}
+\contentsline {paragraph}{}{17}{section*.12}
+\contentsline {subsection}{\numberline {III.2.1}Useful lemmas}{18}{subsection.3.2.1}
+\contentsline {paragraph}{}{18}{section*.13}
+\contentsline {paragraph}{}{19}{section*.14}
+\contentsline {subsection}{\numberline {III.2.2}Main result}{24}{subsection.3.2.2}
+\contentsline {paragraph}{}{25}{section*.15}
+\contentsline {paragraph}{}{25}{section*.16}
+\contentsline {paragraph}{}{25}{section*.17}
+\contentsline {section}{\numberline {III.3}Convergence in law of $X^N_t$ to $X_t$}{25}{section.3.3}
+\contentsline {chapter}{\numberline {IV}Numerical results}{27}{chapter.4}
+\contentsline {section}{\numberline {IV.1}Strong convergence of the Euler scheme}{27}{section.4.1}

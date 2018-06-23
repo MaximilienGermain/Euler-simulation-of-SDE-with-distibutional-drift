@@ -1,0 +1,21 @@
+\BOOKMARK [0][]{chapter*.1}{Confidentiality Notice}{}% 1
+\BOOKMARK [0][]{chapter*.2}{Abstract}{}% 2
+\BOOKMARK [0][]{chapter*.3}{Acknowledgment}{}% 3
+\BOOKMARK [0][]{chapter*.5}{Introduction}{}% 4
+\BOOKMARK [0][]{chapter.1}{I Context}{}% 5
+\BOOKMARK [1][]{section.1.1}{I.1 Principle of the approximation algorithm}{chapter.1}% 6
+\BOOKMARK [1][]{section.1.2}{I.2 Virtual solutions of the original SDE and its approximation}{chapter.1}% 7
+\BOOKMARK [0][]{chapter.2}{II Numerical aspects}{}% 8
+\BOOKMARK [1][]{section.2.1}{II.1 Numerical simulation of fractional Brownian motion}{chapter.2}% 9
+\BOOKMARK [2][]{subsection.2.1.1}{II.1.1 Refining a sample path of a fractional Brownian motion}{section.2.1}% 10
+\BOOKMARK [1][]{section.2.2}{II.2 Approximation of the drift}{chapter.2}% 11
+\BOOKMARK [2][]{subsection.2.2.1}{II.2.1 Series representation}{section.2.2}% 12
+\BOOKMARK [2][]{subsection.2.2.2}{II.2.2 Computation of the coefficients for the series representation}{section.2.2}% 13
+\BOOKMARK [0][]{chapter.3}{III Convergence of the algorithm}{}% 14
+\BOOKMARK [1][]{section.3.1}{III.1 Weak convergence rate of XtN,n to XtN}{chapter.3}% 15
+\BOOKMARK [1][]{section.3.2}{III.2 Weak convergence rate of XNt to Xt}{chapter.3}% 16
+\BOOKMARK [2][]{subsection.3.2.1}{III.2.1 Useful lemmas}{section.3.2}% 17
+\BOOKMARK [2][]{subsection.3.2.2}{III.2.2 Main result}{section.3.2}% 18
+\BOOKMARK [1][]{section.3.3}{III.3 Convergence in law of XNt to Xt}{chapter.3}% 19
+\BOOKMARK [0][]{chapter.4}{IV Numerical results}{}% 20
+\BOOKMARK [1][]{section.4.1}{IV.1 Strong convergence of the Euler scheme}{chapter.4}% 21

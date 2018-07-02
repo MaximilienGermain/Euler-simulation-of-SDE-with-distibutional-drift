@@ -3,9 +3,9 @@ X0 = 1;
 startNT = 10;
 startN = 3; 
 NT = 10; % Time grid precision 2^(-N)
-N = 5; % Space grid precision 2^(-N) Limited by 8 ????
+N = 5; % Space grid precision 2^(-N)
 T = 1.2;
-Kmax = startN+7;
+Kmax = 5;
 Nx = 1+Kmax*2^(startN+2); % 2 times more precise than the grid for b^N
 H = 0.85;
 graphHaar = 0;
@@ -14,9 +14,9 @@ testId = 0;
 seed = 2;
 PlotActive = 1;
 
-[xgrid,B,~] = createfBm(H,Kmax,N,startN,Nx,-Kmax,1000);
-Mu = computeMu(B,N,testId,Kmax);
-rng('shuffle');
+% [xgrid,B,~] = createfBm(H,Kmax,N,startN,Nx,-Kmax,1000);
+% Mu = computeMu(B,N,testId,Kmax);
+% rng('shuffle');
 
 % graphHaar = 1;
 % % control = 0;
@@ -38,7 +38,7 @@ rng('shuffle');
 % startNT = 2;
 % PlotActive = 1;
 % %control = 1;
-% %graphHaar = 1
+% graphHaar = 1;
 % nmin = 2;
 % nmax = 12;
 % convergencen(nmin,nmax,X0,startNT,N,T,H,B,Mu,xgrid,testId,Kmax,graphHaar,control,seed,PlotActive)
@@ -53,13 +53,13 @@ rng('shuffle');
 
 %  Monte-Carlo N
 MC = 400;
-NT = 10;
+NT = 12; % Error depends a lot on NT 
 startNT = NT;
-Nmax = 8;
-Kmax = Nmax;
-minN = 3;
+Nmax = 9;
+Kmax = 6;
+minN = Nmax-5;
 startN = minN;  
-maxN = Nmax-1;
+maxN = Nmax-1; %%   
 PlotActive = 0;
 [expectations,var] = monteCarlo_N(X0,T,H,Nmax,Kmax,graphHaar,control,testId,minN,maxN,PlotActive,MC,NT,startNT,startN)
 

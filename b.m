@@ -17,7 +17,7 @@ for i = 1:length(x)
                 l(j,floor(x(i))+K+1) = h(j-2,floor(x(i)),x(i));
             end
         else
-            p= floor(2^(j-2)*x(i));
+            p = floor(2^(j-2)*x(i));
             if (p < K*2^(j-2)) && (p >= -K*2^(j-2))
                  hm(j,p+K*2^(j-2)+1) = h(j-2,p,x(i));
             end

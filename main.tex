@@ -9,6 +9,12 @@
 \usepackage{caption}
 \usepackage{dsfont}
 
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+    {-3.5ex \@plus -1ex \@minus -.2ex}%
+    {2.3ex \@plus.2ex}%
+    {\centering\large\scshape\bfseries}}
+
 \logo{logos/Leeds.png}
 \specialite{SIM}
 \annees{2017-2018}
@@ -74,7 +80,9 @@ Applications ?
     where $b\in H^{-\beta}_q(\R),\ \beta\in\left(0,\frac{1}{2}\right)$, $q\in\left(\frac{1}{1-\beta},\frac{1}{\beta}\right)$, $t\in[0,T]$, and $W_t$ is a standard Brownian motion. Equation (\ref{sde}) is studied by F. Flandoli, E. Issoglio, and F. Russo in \cite{Fla-Iss-Rus-2017} in which they define a concept of virtual solution. The authors prove then existence and unicity in law of this solution. 
     
     \begin{ex}
-        An example of such drift $b$ on a bounded interval is given by the derivative of a sample path of a fractional Brownian motion $B^H_x$ with Hurst index $1/2<H<1$. These stochastic processes are centered gaussian processes verifying $$\E\left[B_t^HB_s^H\right]=\frac{1}{2}\left(t^{2H}+s^{2H}+|t-s|^{2H}\right).$$ For $H=1/2$, we retrieve the usual brownian motion. We note $-\beta = H - 1$. Given $B^H_x(\omega)\in H^{1-\beta}_q([0,2K])$, we can take in a distributional sense $b = \de{}{u}B^H_u(\omega)\in H^{-\beta}_q([0,2K])$. We will use a translated and cut to zero version of this type of drift in our numerical simulations.
+        An example of such drift $b$ on a bounded interval is given by the derivative of a sample path of a fractional Brownian motion $B^H_x$ with Hurst index $1/2<H<1$. These stochastic processes are centered gaussian processes verifying \begin{equation}
+        \E\left[B_t^HB_s^H\right]=\frac{1}{2}\left(t^{2H}+s^{2H}+|t-s|^{2H}\right).
+        \end{equation} For $H=1/2$, we retrieve the usual brownian motion. We note $-\beta = H - 1$. Given $B^H_x(\omega)\in H^{1-\beta}_q([0,2K])$, we can take in a distributional sense $b = \de{}{u}B^H_u(\omega)\in H^{-\beta}_q([0,2K])$. We will use a translated and cut to zero version of this type of drift in our numerical simulations.
     \end{ex}    
 
 \section{Principle of the approximation algorithm}
@@ -174,13 +182,13 @@ X \\ Y
 \paragraph{}
 If you have already simulated $B^H$ on the grid $(x_k)_{k\in\llbracket1,n\rrbracket}$ with the random variable $X$, it verifies $B^H = MX$ with $C=MM^\top$. Then, let's consider the new correlation matrix $\widetilde{C} = \begin{pmatrix}
 C & A^\top \\ A & B
-\end{pmatrix}$ with \begin{equation*}A_{k,s}=\E\left[B_{\frac{x_k+x_{k-1}}{2}}^HB_{x_s}^H\right]=\frac{1}{2}\left(\left(\frac{x_k+x_{k-1}}{2}\right)^{2H}+x_s^{2H}+\left|\frac{x_k+x_{k-1}}{2}-x_s\right|^{2H}\right)\end{equation*}\begin{multline*}
-B_{k,s}=\E\left[B_{\frac{x_k+x_{k-1}}{2}}^HB_{\frac{x_s+x_{s-1}}{2}}^H\right]\\=\frac{1}{2}\left(\left(\frac{x_k+x_{k-1}}{2}\right)^{2H}+\left(\frac{x_s+x_{s-1}}{2}\right)^{2H}+\left|\frac{x_k+x_{k-1}}{2}-\frac{x_s+x_{s-1}}{2}\right|^{2H}\right)\end{multline*} where we chose by convention $x_0=0$. Looking at $\widetilde{M}$, the Cholesky root of $\widetilde{C}$, we obtain:
-\begin{equation*}
+\end{pmatrix}$ with \begin{equation}A_{k,s}=\E\left[B_{\frac{x_k+x_{k-1}}{2}}^HB_{x_s}^H\right]=\frac{1}{2}\left(\left(\frac{x_k+x_{k-1}}{2}\right)^{2H}+x_s^{2H}+\left|\frac{x_k+x_{k-1}}{2}-x_s\right|^{2H}\right)\end{equation}\begin{multline}
+B_{k,s}=\E\left[B_{\frac{x_k+x_{k-1}}{2}}^HB_{\frac{x_s+x_{s-1}}{2}}^H\right]\\=\frac{1}{2}\left(\left(\frac{x_k+x_{k-1}}{2}\right)^{2H}+\left(\frac{x_s+x_{s-1}}{2}\right)^{2H}+\left|\frac{x_k+x_{k-1}}{2}-\frac{x_s+x_{s-1}}{2}\right|^{2H}\right)\end{multline} where we chose by convention $x_0=0$. Looking at $\widetilde{M}$, the Cholesky root of $\widetilde{C}$, we obtain:
+\begin{equation}
 \widetilde{M} = \begin{pmatrix}
 D & 0\\ E & F
 \end{pmatrix}
-\end{equation*} with $D$ lower triangular matrix verifying $DD^\top = C$ so $D=M$. Therefore, we will have \begin{equation*}
+\end{equation} with $D$ lower triangular matrix verifying $DD^\top = C$ so $D=M$. Therefore, we will have \begin{equation}
 \widetilde{B}^H = \widetilde{M}\widetilde{X} = \begin{pmatrix}
 M & 0\\ E & F
 \end{pmatrix}\begin{pmatrix}
@@ -190,7 +198,7 @@ MX \\ EX + FY
 \end{pmatrix}=\begin{pmatrix}
 B^H \\ EX + FY
 \end{pmatrix}
-\end{equation*}
+\end{equation}
 and we obtain $\widetilde{B}^H$ on the grid $(x_k,\frac{x_k+x_{k-1}}{2})$ without changing the previous values. Therefore, one just have to reorder $\widetilde{B}^H$ to obtain a realization of a fractional brownian motion on the grid $\widetilde{x_k} = \left(\frac{x_1}{2},x_1,\cdots,x_{k-1},\frac{x_k+x_{k-1}}{2},x_k,\cdots,x_N\right)$. Numerical results are shown in figures \ref{64} and \ref{128}.
 
 \begin{figure}
@@ -222,12 +230,16 @@ We use Haar wavelets to give a series representation of $b$. By doing so, we wil
 \end{defi}
 
 \begin{theo}[See Theorem 2.9 in \cite{Tri-bas} and Remark 3.4 in \cite{Tri-fab}]\label{haar}
-    Let $f\in H^s_q(\R)=F^s_{q,2}(\R)$ for $2\leq q \leq \infty$, and $s\in\left(-\frac{1}{2},\frac{1}{q}\right)$. Therefore,
+    Let $f\in H^s_q(\R)=F^s_{q,2}(\R)$ for $2\leq q \leq \infty$, and $s\in\left(-\frac{1}{2},\frac{1}{q}\right)$. Therefore, we have the representation
     \begin{equation}
     f = \sum_{j=-1}^{+\infty}\sum_{k\in\Z}\sum_{m=0}^{2^j-1}\mu_{j,m}^k2^{-j\left(s-\frac{1}{q}\right)}h_{j,m}^k
     \end{equation}
     where $\mu_{j,m}^k = 2^{j\left(s-\frac{1}{q}+1\right)}\int_{\R}f(x)h_{j,m}^k(x)\ \di x$ in the sense of dual pairing and $\sum_{m=0}^{2^j-1}$ means $m=0$ when $j=-1$.
 \end{theo}
+
+\begin{rem}\label{besov}
+    Theorem 3.3 in \cite{Tri-fab} gives the same Haar representation in $B^s_{pq}(\R)$ for $\frac{1}{p}-1<s<\min\left(1,\frac{1}{2}\right)$.
+\end{rem}
 
 \begin{defi}
     With the same notation $\mu_{j,m}^k $, let $f\in H^s_q(\R)$ for $2\leq q \leq \infty$, and $s\in\left(-\frac{1}{2},\frac{1}{q}\right)$. Given $N\in\N^*$ we define $f^N$ by:
@@ -242,7 +254,7 @@ We use Haar wavelets to give a series representation of $b$. By doing so, we wil
 
 \subsection{Computation of the coefficients $\mu_{j,m}^k$ in the special case of the derivative of a fractional brownian motion}
 
-For our numerical studies, we now fix the realization of a fractional brownian motion $B^H_x$ and cut its path to zero continuously. We recall that there exists a modification of $B^H_x$ which is Hölder-continuous and so belongs to a fractional Sobolev space. We note $\mathcal{C}_0(\R)=\{f\in\mathcal{C}^0(\R)\ |\ |f(x)| \underset{|x|\rightarrow \infty}{\longrightarrow} 0\}$. 
+For our numerical studies, we now fix the realization of a fractional brownian motion $B^H_x$ and cut its path to zero continuously. We recall that there exists a modification of $B^H_x$ which is Hölder-continuous and so belongs to a fractional Sobolev space. We note $\mathcal{C}_0(\R)=\{f\in\mathcal{C}(\R)\ |\ |f(x)| \underset{|x|\rightarrow \infty}{\longrightarrow} 0\}$. 
 
 \begin{Pro}[Elena]\label{elena}
     $\forall s\in\left(\frac{1}{2},H\right),$
@@ -259,9 +271,9 @@ b(x) = \sum_{j=-1}^{+\infty}\sum_{k\in\Z}\sum_{m=0}^{2^j-1}\mu_{j,m}^k2^{-j\left
 with $\mu_{j,m}^k = 2^{j\left(s-\frac{1}{q}+1\right)}\int_{\R}f(x)h_{j,m}^k(x)\ \di x$. The problem is the fact that we cannot directly compute these coefficients $\mu_{j,m}^k$. We will need a representation of $B^H_s$ as another series in order to do that.
 
 \paragraph{}
-In \cite{Tri-fab}, H. Triebel defines the Faber bases for the weighted Besov spaces $B^{s}_{pq}(\R,\xi)$. We will use his results in the unweighted case ($\xi = 0$) to find the Faber representation of $B^H_x$, and then the Haar coefficients $\mu^k_{j,m}$ of its derivative. In fact, Triebel expresses in \cite{Tri-fun} the links between fractional Sobolev spaces and unweighted Besov spaces $B^{s}_{pq}(\R)=B^{s}_{pq}(\R,0)$.
+In \cite{Tri-fab}, H. Triebel defines the Faber bases for the weighted Besov spaces $B^{s}_{pq}(\R,\xi)=\{f\in S'(\R)\ |\ \norme{f}_{B^{s}_{pq}(\R,\xi)} = \norme{(1+x^2)^{xi/2}f}_{B^{s}_{pq}(\R)} < \infty\}$. We will use his results in the unweighted case ($\xi = 0$) to find the Faber representation of $B^H_x$, and then the Haar coefficients $\mu^k_{j,m}$ of its derivative. In fact, Triebel expresses in \cite{Tri-fun} the links between fractional Sobolev spaces and unweighted Besov spaces $B^{s}_{pq}(\R)=B^{s}_{pq}(\R,0)$.
 
-\begin{lem}[Link between fractional Sobolev spaces and Besov spaces: Theorem 1.3.2 in \cite{Tri-fun}]
+\begin{lem}[Theorem 1.3.2 in \cite{Tri-fun}]
     Let $s>0$, then \begin{equation}
     H^s_2(\R)=B^s_{22}(\R).
     \end{equation}
@@ -291,12 +303,12 @@ In \cite{Tri-fab}, H. Triebel defines the Faber bases for the weighted Besov spa
     Then, by Theorem 3.1 in \cite{Tri-fab}, the Faber system is a conditional basis of $\mathcal{C}_0(\R)$.
 \end{defi}
 
-We adapt Theorem 3.6 in \cite{Tri-fab} to obtain:
+We adapt Theorem 3.6 in \cite{Tri-fab} to the case $\alpha=0$ and $B^H\in\mathcal{C}_0(\R)$ to obtain:
 
 \begin{theo}(Faber representation of $B^H_x$)
     In $H^s_2(\R)=B^s_{22}(\R)$ we have the unique Faber representation:
     \begin{equation}
-    B^H_x = \sum_{j=-1}^{+\infty}\sum_{k\in\Z}\sum_{m=0}^{2^j-1}\lambda_{j,m}^k2^{-j(s-\frac{1}{2})}v_{j,m}^k(x)
+    B^H_x = \sum_{j=-1}^{+\infty}\sum_{k\in\Z}\sum_{m=0}^{2^j-1}\lambda_{j,m}^k2^{-j\left(s-\frac{1}{2}\right)}v_{j,m}^k(x)
     \end{equation}    
     with \begin{equation}
     \begin{cases}
@@ -308,18 +320,18 @@ We adapt Theorem 3.6 in \cite{Tri-fab} to obtain:
 \end{theo}
 
 \begin{proof}
-    Theorem 3.3 in \cite{Tri-fab} gives a Haar decomposition of $b=\de{}{u} B^H_u$ in the unweighted Besov space $B^{s-1}_{22}(\R)=B^{s-1}_{22}(\R,0)$:
+    Remark \ref{besov} gives a Haar decomposition of $b=\de{}{u} B^H_u$ in the unweighted Besov space $B^{s-1}_{22}(\R)=B^{s-1}_{22}(\R,0)$:
     \begin{equation}
     b =\sum_{k\in\Z}\left(B^H_{k+1}-B^H_k\right)\chi_k +\sum_{j=0}^{+\infty}\sum_{k\in\Z}\sum_{m=0}^{2^j-1}\mu_{j,m}^k(b)2^{-j\left(s-\frac{1}{2}\right)}h_{j,m}^k.
     \end{equation}
-    with $\mu^k_{j,m}(b)=2\lambda^k_{j,m}(B^H)$ and:
+    with $\mu^k_{j,m}(b)= 2^{j\left(s-\frac{1}{2}+1\right)}\int_{\R}\de{}{u} B^H_u(x)h_{j,m}^k(x)\ \di x=-2^{j\left(s-\frac{1}{2}\right)} \left(\Delta^2_{2^{-j-1}}B^H\right)(k+2^{-j}m)=2\lambda^k_{j,m}(B^H)$ and:
     \begin{equation}\label{norm}
     \norme{b}_{B^{s-1}_{22}(\R)} \sim \left(\sum_{k\in\Z}\left|B^H_{k+1}-B^H_k\right|^2\right)^{1/2} + \left(\sum_{j=0}^\infty\left(\sum_{k\in\Z}\sum_{m=0}^{2^j-1}\left|\mu_{j,m}^k(b)\right|^2\right)\right)^{1/2}.
     \end{equation}    
     The representation can also be written as:
-    \begin{equation}
+    \begin{equation*}
     b = \sum_{k\in\Z} B^H_k(\chi_{k-1}-\chi_k) + 2\sum_{j=-0}^{+\infty}\sum_{k\in\Z}\sum_{m=0}^{2^j-1}\lambda_{j,m}^k\left(B^H\right)2^{-j\left(s-1-\frac{1}{2}\right)}h_{j,m}^k.
-    \end{equation}
+    \end{equation*}
     Suppose that $B^H\in\mathcal{C}^\infty_0(\R)$. Then by integration it follows:
      \begin{equation*}
     B^H = \sum_{k\in\Z} B^H_k v^k_{-1,0} + \sum_{j=-0}^{+\infty}\sum_{k\in\Z}\sum_{m=0}^{2^j-1}\lambda_{j,m}^k\left(B^H\right)2^{-j\left(s-\frac{1}{2}\right)}h_{j,m}^k
@@ -389,12 +401,12 @@ We first recall a useful lemma concerning the solutions of (\ref{pde}) and (\ref
 
 \begin{lem}[Lemma 20 in \cite{Fla-Iss-Rus-2017}]\label{lem}
     Let $(\delta,p)\in K(\beta,q)$ and let $u,\ u^N$ be the mild solutions to (\ref{pde}), (\ref{pde2}) in $H_p^{1+\delta}$. Fix $\rho$ such that the integral operator is a contraction and let $\lambda>\lambda^*$. Then $u(t),\ u^N(t)\in\mathcal{C}^{1,\alpha}$ with $\alpha=\delta-1/p$ for each fixed $t$ and $\forall\varepsilon>0,\ \exists\lambda_0>0$ such that
-    \begin{equation*}
+    \begin{equation}
     \begin{cases}\forall\lambda\geq\lambda_0,\
     \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla u(t,x)| \leq\varepsilon  \\ \forall\lambda\geq\lambda_0,\
     \underset{(t,x)\in[0,T]\times\R}{\sup} |\nabla u^N(t,x)| \leq\varepsilon
     \end{cases}
-    \end{equation*}
+    \end{equation}
     where the choice of $\lambda_0$ depends only on $\delta,\beta,\norme{b}_{H_p^{-\beta}}$, and $\norme{b^N}_{H_q^{-\beta}}$.
 \end{lem}
 
@@ -424,9 +436,9 @@ The next lemma uses the embedding between $H_p^{1+\delta}$ and $\mathcal{C}^{1,\
     \end{equation*} from Lemma 23 in \cite{Fla-Iss-Rus-2017}, for both $N\in\N$ and $\rho>1$ big enough, and where $\norme{f(t)}_{\infty,X}^{(\rho)} := \underset{0\leq t\leq T}{\sup} e^{-\rho t} \norme{f(t)}_X$.
 \end{proof}
 \begin{lem}\label{psi}
-    For $\lambda$ big enough, \begin{equation*}
+    For $\lambda$ big enough, \begin{equation}
     \left|\Psi^N\left(t,Y_t^N\right)-\Psi\left(t,Y_t^N\right)\right|\leq 2\kappa \norme{b-b^N}_{H^{-\beta}_q}
-    \end{equation*} 
+    \end{equation} 
     with $\kappa = c Ke^{\rho T}$.
 \end{lem}
 
@@ -442,7 +454,7 @@ The next lemma uses the embedding between $H_p^{1+\delta}$ and $\mathcal{C}^{1,\
     \begin{equation*}
     \geq \frac{1}{2} \left|\Psi^N\left(t,Y_t^N\right)-\Psi\left(t,Y_t^N\right)\right|
     \end{equation*}    
-    and 
+    then
     \begin{equation*}
     \left|\Psi^N\left(t,Y_t^N\right)-\Psi\left(t,Y_t^N\right)\right|\leq 2\ \left|\varphi\left(t,\Psi^N\left(t,Y_t^N\right)\right)-\varphi\left(t,\Psi\left(t,Y_t^N\right)\right)\right|
     \end{equation*}   
@@ -452,22 +464,22 @@ The next lemma uses the embedding between $H_p^{1+\delta}$ and $\mathcal{C}^{1,\
     \begin{equation*}
     \leq 2\ \norme{u(t)-u^N(t)}_\infty
     \end{equation*} 
-    \begin{equation*}\label{other}
+    \begin{equation}\label{other}
     \leq 2\kappa \norme{b-b^N}_{H^{-\beta}_q}
-    \end{equation*} 
-    where we have used Lemma \ref{morrey} and the fact that \begin{equation*}
+    \end{equation} 
+    where we have used Lemma \ref{morrey} and the fact that \begin{equation}
     \varphi^N\left(t,\Psi^N\left(t,Y_t^N\right)\right)=\varphi\left(t,\Psi\left(t,Y_t^N\right)\right) = Y_t^N.
-    \end{equation*}
+    \end{equation}
 \end{proof}
 
 \paragraph{}
 We will need an adapted version of a local time inequality (Lemma 4.2 in \cite{Yan}) from Liqing Yan. The method he introduced will allow us to estimate the error $\E[|Y-Y^N|]$ and therefore calculate the weak error of approximation our algorithm commit. In his paper he studies the case where $X_0=0$ whereas in our case we don't assume anything about the initial value of the semimartingale $X_t$. That's why the proof is mainly the same. The difference is that $\sigma_1$ is now a stopping time when its value was 0 in the proof of Yan.         
 \begin{lem}\label{local}
     Let $X_t$ be a continuous semimartingale. For $\varepsilon>0$ we define a double sequence of stopping times by $\sigma_1 = \inf\{t\geq0 | X_t=0\}$, $\tau_1=\inf\{t>\sigma_1 | X_t=\varepsilon\}$, $\sigma_n = \inf\{t>\tau_{n-1}|X_t=0\}$, $\tau_n=\inf\{t>\sigma_n|X_t=\varepsilon\}$. For any real function $F(\cdot)\in\mathcal{C}^2(\R)$ with $F(0)=0,\ F'(0) = 0$, $F(\cdot) > 0$ on $(0,\varepsilon_0)$ with some $\varepsilon_0 > 0$, and for any $0<\varepsilon<\varepsilon_0$ we have
-    \begin{equation*}
+    \begin{equation}
     0\leq L^0_t(X) \leq 2\varepsilon - \frac{2}{F(\varepsilon)}\int_{\sigma_1\wedge t}^t \theta_s(X) \left(F\left(\varepsilon\right) - \varepsilon F'\left(X_s^+\right)\right)\ \di X_s
     +\frac{\varepsilon}{F(\varepsilon)}\int_{\sigma_1\wedge t}^t \theta_s(X) F''(X_s^+)\ \di[X]_s
-    \end{equation*}
+    \end{equation}
     with $\theta_s(X) = \sum_{n=1}^\infty \mathds{1}_{\{\sigma_n< s\leq \tau_n,\ 0<X_s\leq \varepsilon\}}(X)$.
 \end{lem}        
 Applying lemma \ref{local} with $F:x\in\R \mapsto x^2$, it follows:
@@ -481,12 +493,12 @@ Applying lemma \ref{local} with $F:x\in\R \mapsto x^2$, it follows:
 
 \begin{lem}\label{local time}
     Let $(\delta,p)\in K(\beta,q)$, $\alpha=\delta-1/p<1$, $u$, $u^N$ be the mild solutions to (\ref{pde}), (\ref{pde2}) in $H_p^{1+\delta}$, and $Y$, $Y^N$ solutions of the SDEs (\ref{virtual}), (\ref{virtual approx}).  Then, if $\alpha>1/2$, for $\lambda$ big enough we have $\forall\varepsilon\in(0,1]$,
-    \begin{equation*}
+    \begin{equation}
     0\leq \E\left[L^0_T(Y-Y^N)\right]\leq  g(\varepsilon).
-    \end{equation*}
-    where \begin{multline*}
-    g(\varepsilon) \leq 4(\lambda + 1)T\kappa\norme{b-b^N}_{H^{-\beta}_{q}} + \left(2 + 2(\lambda + 1)\ T + 6\norme{u}_{\mathcal{C}^{1,\alpha}}^2 4^{\alpha}T\right) \varepsilon^{2\alpha-1} \\ + 6T\left(\Omega^24^{\alpha}\kappa^{2\alpha} \norme{b-b^N}_{H^{-\beta}_q}^{2\alpha}+\kappa^2\norme{b-b^N}_{H^{-\beta}_{q}}^2\right)\varepsilon^{-1}.
-    \end{multline*}
+    \end{equation}
+    where \begin{multline}
+    g(\varepsilon) = 4(\lambda + 1)T\kappa\norme{b-b^N}_{H^{-\beta}_{q}} + \left(2 + 2(\lambda + 1)\ T + 6\norme{u}_{\mathcal{C}^{1,\alpha}}^2 4^{\alpha}T\right) \varepsilon^{2\alpha-1} \\ + 6T\left(\Omega^24^{\alpha}\kappa^{2\alpha} \norme{b-b^N}_{H^{-\beta}_q}^{2\alpha}+\kappa^2\norme{b-b^N}_{H^{-\beta}_{q}}^2\right)\varepsilon^{-1}.
+    \end{multline}
     
 \end{lem}
 
@@ -509,9 +521,9 @@ We have been able with Lemma \ref{local time} to bound the expectation of the lo
 \begin{theo}\label{main}
     Let $f$ be $\mu$-Hölder with constant $C_f>0$ and $\mu\in(0,1]$. If $0<\beta < 1/4$, $q\in\left(\frac{1}{1-\beta},\frac{1}{\beta}\right)$, $\forall \varepsilon \in(0,1-4\beta)$, with  $(\delta,p)\in K(\beta,q)$ such that $\delta - 1/p = 1-2\beta - \varepsilon/2$, exists $\xi$ independent of $f$ such that for $N\in\N$, $\rho>1$, $\lambda$ big enough it holds:
     
-    \begin{equation*}
+    \begin{equation}
     \underset{0\leq t\leq T} {\sup}\E\left[\left|f\left(X_t\right)-f\left(X_t^N\right)\right|\right] \leq \xi C_f \norme{b^N-b}_{H^{-\beta}_{q}}^{\mu\left(1-4\beta-\varepsilon\right)}
-    \end{equation*}
+    \end{equation}
 \end{theo}
 
 \begin{proof}[Proof of Theorem \ref{main}]
@@ -580,9 +592,9 @@ We have been able with Lemma \ref{local time} to bound the expectation of the lo
     \begin{equation*}
     \leq C_f  \left(2^\mu\zeta^\mu e^{\mu(\lambda+1)T} \norme{b^N-b}_{H^{-\beta}_{q}}^{\mu(2\alpha-1)} + 2^\mu \kappa^\mu \norme{b^N-b}_{H^{-\beta}_q}^\mu\right)
     \end{equation*}
-    \begin{equation*}
-    \leq 2^\mu C_f  \left(\zeta^\mu e^{\mu(\lambda+1)T} + 2^\mu \kappa^\mu\right)\norme{b^N-b}_{H^{-\beta}_{q}}^{\mu(2\alpha-1)}
-    \end{equation*}       
+    \begin{equation}
+    \leq 2^\mu C_f  \left(\zeta^\mu e^{\mu(\lambda+1)T} +  \kappa^\mu\right)\norme{b^N-b}_{H^{-\beta}_{q}}^{\mu(2\alpha-1)}
+    \end{equation}       
     for $N$ big enough, which is the expected result.    
 \end{proof}   
 
@@ -593,7 +605,7 @@ To prove the convergence in law of the solution $X^N_t$ of (\ref{sde2}) to the v
 
 \part{Numerical results}
 
-\section{Monte-Carlo method and variance reduction}
+\section{Monte-Carlo method for error estimation}
 
 \section{Strong convergence of the Euler scheme}
 
@@ -604,6 +616,8 @@ To prove the convergence in law of the solution $X^N_t$ of (\ref{sde2}) to the v
 \end{figure}
 
 We observe a numerical strong convergence rate of $0.85$ when Theorem \ref{leo} shows a theoretical rate of $0.5-\varepsilon$.
+
+\section{Weak convergence of $X^N_T$ to $X_T$}
 
 \partb{Conclusion}
 
@@ -670,7 +684,7 @@ As explained before, this proof is an adaptation of the one of L. Yan in \cite{Y
         Note that $\theta_s(Y-Y^N) \left|\varepsilon - 2{(Y_s-Y_s^N)^+}\right|\leq \varepsilon\theta_s(Y-Y^N)$.
     \end{rem}    
     
-    ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a martingale. We take the expectation:
+    ${\nabla u}$ and ${\nabla u}^N$ are bounded so the Itô integral is a true martingale. We take the expectation:
     \begin{multline*}
     \E\left[L^0_T(Y-Y^N)\right] \leq 2\varepsilon + 2(\lambda + 1)\ \E\left[\int_{\sigma_1\wedge T}^T\theta_s\left(Y-Y^N\right)\left|\widetilde{u}\left(s,Y_s\right)-\overline{u}^N\left(s,Y_s^N\right)\right| \di s \right]\\
     +\frac{2}{\varepsilon}\ \E\left[\int_{\sigma_1\wedge T}^T \theta_s\left(Y-Y^N\right)\left\{\widetilde{\nabla u}\left(s,Y_s\right)-{\overline{\nabla u}}\left(s,Y_s^N\right)\right\}^2\ \di s\right]

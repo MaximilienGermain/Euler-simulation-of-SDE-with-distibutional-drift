@@ -40,7 +40,7 @@ xlim([min(log(2.^Ns)) max(log(2.^Ns))])
 %ylim([min(log(expectations-1.96*sqrt(var)/sqrt(M))) max(log(expectations+1.96*sqrt(var)/sqrt(M)))])
 a = plot(log(2.^Ns),log(expectations+1.96*sqrt(var)/sqrt(M)),'--b');
 plot(log(2.^Ns),log(expectations-1.96*sqrt(var)/sqrt(M)),'--b')
-legend(a,'95% confidence interval')
+legend(a,{'$95\%$ confidence interval'},'Interpreter','latex')
 title(['Error when $n$ varies estimated with Monte-Carlo method for ',num2str(M),' paths'],'Interpreter','latex') 
 [beta0,beta1] = linearRegression(log(2.^Ns)',log(expectations)');
 order = - beta1

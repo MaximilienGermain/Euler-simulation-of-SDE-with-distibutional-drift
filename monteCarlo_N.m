@@ -27,21 +27,21 @@ for N=minN:maxN
 end
 figure
 Ns = minN:maxN;
-plot(log(2.^Ns),log(expectations),'o')
+plot(log(Ns),log(expectations),'o')
 grid on 
 grid minor
 hold on
-xlim([min(log(2.^Ns)) max(log(2.^Ns))])
+xlim([min(log(Ns)) max(log(Ns))])
 %ylim([min(log(expectations-1.96*sqrt(var)/sqrt(MC))) max(log(expectations+1.96*sqrt(var)/sqrt(MC)))])
 xlabel('$\log(N)$','Interpreter','latex')
 ylabel('$\log|E[X^{N}_t-X^{N_0}_t]|$','Interpreter','latex')
-a = plot(log(2.^Ns),log(expectations+1.96*sqrt(var)/sqrt(MC)),'--b');
-plot(log(2.^Ns),log(expectations-1.96*sqrt(var)/sqrt(MC)),'--b')
-legend(a,'95% confidence interval','Interpreter','latex')
+a = plot(log(Ns),log(expectations+1.96*sqrt(var)/sqrt(MC)),'--b');
+plot(log(Ns),log(expectations-1.96*sqrt(var)/sqrt(MC)),'--b')
+legend(a,{'$95\%$ confidence interval'},'Interpreter','latex')
 title(['Error when $N$ varies estimated with Monte-Carlo method with ',num2str(MC),' paths'],'Interpreter','latex')
-[beta0,beta1] = linearRegression(log(2.^Ns)',log(expectations)');
+[beta0,beta1] = linearRegression(log(Ns)',log(expectations)');
 order = - beta1
-dispgrid = linspace(log(2^minN),log(2^maxN),1000);
+dispgrid = linspace(log(minN),log(maxN),1000);
 plot(dispgrid,beta0+beta1*dispgrid)
 delete(f)
 

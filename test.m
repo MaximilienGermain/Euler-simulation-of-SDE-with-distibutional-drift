@@ -52,7 +52,7 @@ PlotActive = 1;
 % convergence_N(minN,maxN,X0,startNT,startN,NT,T,H,testId,Kmax,seed,Nx,graphHaar,control,PlotActive)
 
 %  Monte-Carlo N
-MC = 400;
+MC = 1000;
 NT = 12; % Error depends a lot on NT 
 startNT = NT;
 Nmax = 9;
@@ -64,7 +64,7 @@ PlotActive = 0;
 [expectations,var] = monteCarlo_N(X0,T,H,Nmax,Kmax,graphHaar,control,testId,minN,maxN,PlotActive,MC,NT,startNT,startN)
 
 %  Monte-Carlo n
-% M = 60;
+% M = 400;
 % X0 = 0;
 % NTmax = 12;
 % minN = 5;

@@ -1,18 +1,23 @@
 function [expectations,var] = monteCarlo_N(X0,T,H,Nmax,Kmax,graphHaar,control,testId,minN,maxN,PlotActive,MC,NT,startNT,startN)
 
+rng('shuffle');
 Nx = 1+Kmax*2^(startN+2); 
 [xref,Bref,~] = createfBm(H,Kmax,Nmax,startN,Nx,-Kmax,1000);
 Muref = computeMu(Bref,Nmax,testId,Kmax);
 expectations = [];
 var = [];
 f = waitbar(0,'Please wait...');
+err = [];
 
 for N=minN:maxN
-    values = [];    
+    values = []; 
+    [xgrid,B,~] = createfBm(H,Kmax,N,startN,Nx,-Kmax,1000);
+    Mu = computeMu(B,N,testId,Kmax);
+    %Muref(1:N+2,1:Kmax*2^(N+1)) - Mu
+    err = [err errorb(Muref,N)];
+    
     for o=1:MC  
         seed = randi(10^8);
-        [xgrid,B,~] = createfBm(H,Kmax,N,startN,Nx,-Kmax,1000);
-        Mu = computeMu(B,N,testId,Kmax);
         [X,Y,~,~,~,~] = eulerMethod(X0,startNT,NT,N,T,H,B,Mu,xgrid,testId,Kmax,graphHaar,control,seed,PlotActive);
         waitbar(((N-minN)+(o-0.5)/MC)/(maxN-minN+1),f,['Computing Monte-Carlo simulation... (',num2str(floor(((N-minN)+(o-0.5)/MC)/(maxN-minN+1)*100)),' %)'])
         [Xref,Yref,~,~,~,~] = eulerMethod(X0,startNT,NT,Nmax,T,H,Bref,Muref,xref,testId,Kmax,graphHaar,control,seed,PlotActive);       
@@ -44,5 +49,16 @@ order = - beta1
 dispgrid = linspace(log(minN),log(maxN),1000);
 plot(dispgrid,beta0+beta1*dispgrid)
 delete(f)
+
+figure
+plot(log(Ns),log(err))
+xlabel('$\log(N)$','Interpreter','latex')
+ylabel('$\log||b-b^N||$','Interpreter','latex')
+title(['Error in $H^s_2$ when $N$ varies'],'Interpreter','latex')
+
+[beta2,beta3] = linearRegression(log(Ns)',log(err)');
+plot(dispgrid,beta2+beta3*dispgrid)
+order = - beta3
+err
 
 end

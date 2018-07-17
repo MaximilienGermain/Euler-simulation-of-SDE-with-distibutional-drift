@@ -18,7 +18,7 @@ ylim(AX(1), [min(approx)-0.2*abs(min(approx)) max(approx)+0.2*abs(min(approx))])
 ylim(AX(2), [min(B)-0.2*abs(min(B)) max(B)+0.2*abs(min(B))])
 chn = ['Sample path of $B^H_x$ and approximation of $\frac{\mathrm{d}}{\mathrm{d} x}B^H_x$ (H = ',num2str(H),' ; N = ',num2str(N),')'];
 title(chn,'Interpreter','latex')
-name = ['Haar H = ',num2str(H),' ; N = ',num2str(N),'.png'];
+name = ['Haar H = ',num2str(H),' ; N = ',num2str(N),'.eps'];
 set(gcf,'PaperPositionMode','auto')
 print(name,'-dpng','-r0')
 frame = getframe(gcf);

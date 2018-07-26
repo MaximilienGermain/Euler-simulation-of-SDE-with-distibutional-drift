@@ -14,12 +14,13 @@ for i = 1:length(x)
         if (j==1)
             if (floor(x(i)) < K) && (floor(x(i)) >= -K)
                 hm(j,floor(x(i))+K+1) = h(j-2,floor(x(i)),x(i));
-                l(j,floor(x(i))+K+1) = h(j-2,floor(x(i)),x(i));
+               % l(j,floor(x(i))+K+1) = h(j-2,floor(x(i)),x(i));
             end
         else
             p = floor(2^(j-2)*x(i));
             if (p < K*2^(j-2)) && (p >= -K*2^(j-2))
-                 hm(j,p+K*2^(j-2)+1) = h(j-2,p,x(i));
+                 hm(j,p+K*2^(j-2)+1) = 2^(j-2)* h(j-2,p,x(i));
+                 % hm(j,p+K*2^(j-2)+1) = h(j-2,p,x(i)); ok
             end
         end
     end

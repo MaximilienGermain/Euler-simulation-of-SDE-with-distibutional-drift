@@ -29,12 +29,12 @@ lastY = X0;
 
 % Euler scheme
 for i=1:n-1
-    if abs(lastX) > K || abs(lastY) > K
-        t = t(1:i);
-        X = X(1:i);
-        Y = Y(1:i);
-        break
-    end
+%     if abs(lastX) > K || abs(lastY) > K
+%         t = t(1:i);
+%         X = X(1:i);
+%         Y = Y(1:i);
+%         break
+%     end
     inc = W(i+1) - W(i);
     lastX = lastX + b(Mu,K,lastX)*dt + inc;
     lastY = lastY + b(Mu,K,lastY)*dt - inc;

@@ -15,7 +15,7 @@ for N=minN:maxN
     Mu = computeMu(B,N,testId,Kmax);
     %Muref(1:N+2,1:Kmax*2^(N+1)) - Mu
     err = [err errorb(Muref,N)];
-    
+    %parpool(2)
     for o=1:MC  
         seed = randi(10^8);
         [X,Y,~,~,~,~] = eulerMethod(X0,startNT,NT,N,T,H,B,Mu,xgrid,testId,Kmax,graphHaar,control,seed,PlotActive);
@@ -49,16 +49,43 @@ order = - beta1
 dispgrid = linspace(log(minN),log(maxN),1000);
 plot(dispgrid,beta0+beta1*dispgrid)
 delete(f)
+name = ['MC = ',num2str(MC),'.eps'];
+set(gcf,'PaperPositionMode','auto')
+print(name,'-depsc','-tiff')
+
+figure
+plot(log(err),log(expectations),'o')
+grid on 
+grid minor
+hold on
+%xlim([min(log(Ns)) max(log(Ns))])
+%ylim([min(log(expectations-1.96*sqrt(var)/sqrt(MC))) max(log(expectations+1.96*sqrt(var)/sqrt(MC)))])
+xlabel('$\log||b-b^N||$','Interpreter','latex')
+ylabel('$\log|E[X^{N}_T-X^{N_0}_T]|$','Interpreter','latex')
+a = plot(log(err),log(expectations+1.96*sqrt(var)/sqrt(MC)),'--b');
+plot(log(err),log(expectations-1.96*sqrt(var)/sqrt(MC)),'--b')
+legend(a,{'$95\%$ confidence interval'},'Interpreter','latex')
+title(['Error when $N$ varies estimated with Monte-Carlo method with ',num2str(MC),' paths'],'Interpreter','latex')
+[beta4,beta5] = linearRegression(log(err)',log(expectations)');
+order = beta5
+dispgrid = linspace(log(min(err)),log(max(err)),1000);
+plot(dispgrid,beta4+beta5*dispgrid)
+name = ['err MC = ',num2str(MC),'.eps'];
+set(gcf,'PaperPositionMode','auto')
+print(name,'-depsc','-tiff')
 
 figure
 plot(log(Ns),log(err))
 xlabel('$\log(N)$','Interpreter','latex')
 ylabel('$\log||b-b^N||$','Interpreter','latex')
 title(['Error in $H^s_2$ when $N$ varies'],'Interpreter','latex')
-
 [beta2,beta3] = linearRegression(log(Ns)',log(err)');
+dispgrid = linspace(log(minN),log(maxN),1000);
 plot(dispgrid,beta2+beta3*dispgrid)
-order = - beta3
+orderc = - beta3
 err
+name = ['error b ',num2str(MC),'.eps'];
+set(gcf,'PaperPositionMode','auto')
+print(name,'-depsc','-tiff')
 
 end

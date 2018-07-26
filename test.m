@@ -14,20 +14,17 @@ testId = 0;
 seed = 2;
 PlotActive = 1;
 
-[xgrid,B,~] = createfBm(H,Kmax,N,startN,Nx,-Kmax,1000);
-Mu = computeMu(B,N,testId,Kmax);
-rng('shuffle');
-
-graphHaar = 1;
+% [xgrid,B,~] = createfBm(H,Kmax,N,startN,Nx,-Kmax,1000);
+% Mu = computeMu(B,N,testId,Kmax);
+% rng('shuffle');
+% % 
+% graphHaar = 1;
 % control = 0;
-[X,~,frame,haar,control,usual] = eulerMethod(X0,startNT,NT,N,T,H,B,Mu,xgrid,testId,Kmax,graphHaar,control,seed,PlotActive);
-imshow(['Haar H = ',num2str(H),' ; N = ',num2str(N),'.eps'])
+% [X,~,frame,haar,control,usual] = eulerMethod(X0,startNT,NT,N,T,H,B,Mu,xgrid,testId,Kmax,graphHaar,control,seed,PlotActive);
 
 % Test with b=id
 % testId = 1;
 % graphHaar = 1;
-% Kmax = 5;
-% N = 4;
 % B = linspace(-Kmax,Kmax,1+Kmax*2^(N+2));
 % Mu = computeMu(B.^2/2,N,testId,Kmax);
 % [X,~,frame,haar,control,usual] = eulerMethod(X0,startNT,NT,N,T,H,B.^2/2,Mu,B,testId,Kmax,graphHaar,control,seed,PlotActive);
@@ -52,16 +49,16 @@ imshow(['Haar H = ',num2str(H),' ; N = ',num2str(N),'.eps'])
 % convergence_N(minN,maxN,X0,startNT,startN,NT,T,H,testId,Kmax,seed,Nx,graphHaar,control,PlotActive)
 
 %  Monte-Carlo N
-% MC = 1000;
-% NT = 12; % Error depends a lot on NT 
-% startNT = NT;
-% Nmax = 9;
-% Kmax = 6;
-% minN = Nmax-5;
-% startN = minN;  
-% maxN = Nmax-1; %%   
-% PlotActive = 0;
-% [expectations,var] = monteCarlo_N(X0,T,H,Nmax,Kmax,graphHaar,control,testId,minN,maxN,PlotActive,MC,NT,startNT,startN)
+MC = 100;
+NT = 12; % Error depends a lot on NT 
+startNT = NT;
+Nmax = 10;
+Kmax = 6;
+minN = Nmax-7;
+startN = minN;  
+maxN = Nmax-1; %%   
+PlotActive = 0;
+[expectations,var] = monteCarlo_N(X0,T,H,Nmax,Kmax,graphHaar,control,testId,minN,maxN,PlotActive,MC,NT,startNT,startN)
 
 %  Monte-Carlo n
 % M = 400;

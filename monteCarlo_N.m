@@ -13,9 +13,8 @@ for N=minN:maxN
     values = []; 
     [xgrid,B,~] = createfBm(H,Kmax,N,startN,Nx,-Kmax,1000);
     Mu = computeMu(B,N,testId,Kmax);
-    %Muref(1:N+2,1:Kmax*2^(N+1)) - Mu
-    err = [err errorb(Muref,N)];
-    %parpool(2)
+    err = [err errorb(Muref,N,Nmax)];
+    
     for o=1:MC  
         seed = randi(10^8);
         [X,Y,~,~,~,~] = eulerMethod(X0,startNT,NT,N,T,H,B,Mu,xgrid,testId,Kmax,graphHaar,control,seed,PlotActive);
@@ -74,18 +73,18 @@ name = ['err MC = ',num2str(MC),'.eps'];
 set(gcf,'PaperPositionMode','auto')
 print(name,'-depsc','-tiff')
 
-figure
-plot(log(Ns),log(err))
-xlabel('$\log(N)$','Interpreter','latex')
-ylabel('$\log||b-b^N||$','Interpreter','latex')
-title(['Error in $H^s_2$ when $N$ varies'],'Interpreter','latex')
-[beta2,beta3] = linearRegression(log(Ns)',log(err)');
-dispgrid = linspace(log(minN),log(maxN),1000);
-plot(dispgrid,beta2+beta3*dispgrid)
-orderc = - beta3
-err
-name = ['error b ',num2str(MC),'.eps'];
-set(gcf,'PaperPositionMode','auto')
-print(name,'-depsc','-tiff')
+% figure
+% plot(log(Ns),log(err))
+% xlabel('$\log(N)$','Interpreter','latex')
+% ylabel('$\log||b-b^N||$','Interpreter','latex')
+% title(['Error in $H^s_2$ when $N$ varies'],'Interpreter','latex')
+% [beta2,beta3] = linearRegression(log(Ns)',log(err)');
+% dispgrid = linspace(log(minN),log(maxN),1000);
+% plot(dispgrid,beta2+beta3*dispgrid)
+% orderc = - beta3
+% err
+% name = ['error b ',num2str(MC),'.eps'];
+% set(gcf,'PaperPositionMode','auto')
+% print(name,'-depsc','-tiff')
 
 end

@@ -3,7 +3,7 @@ function [expectations,var] = monteCarlo_N(X0,T,H,Nmax,Kmax,graphHaar,control,te
 rng('shuffle');
 Nx = 1+Kmax*2^(startN+2); 
 [xref,Bref,~] = createfBm(H,Kmax,Nmax,startN,Nx,-Kmax,1000);
-Muref = computeMu(Bref,Nmax,testId,Kmax);
+[Muref,Mureferr] = computeMu(Bref,Nmax,testId,Kmax,H);
 expectations = [];
 var = [];
 f = waitbar(0,'Please wait...');
@@ -12,8 +12,9 @@ err = [];
 for N=minN:maxN
     values = []; 
     [xgrid,B,~] = createfBm(H,Kmax,N,startN,Nx,-Kmax,1000);
-    Mu = computeMu(B,N,testId,Kmax);
-    err = [err errorb(Muref,N,Nmax)];
+    [Mu,~] = computeMu(B,N,testId,Kmax,H);
+    %err = [err errorb(Muref,N,Nmax)];
+    err = [err errorb(Mureferr,N,Nmax)];
     
     for o=1:MC  
         seed = randi(10^8);
@@ -38,7 +39,7 @@ hold on
 xlim([min(log(Ns)) max(log(Ns))])
 %ylim([min(log(expectations-1.96*sqrt(var)/sqrt(MC))) max(log(expectations+1.96*sqrt(var)/sqrt(MC)))])
 xlabel('$\log(N)$','Interpreter','latex')
-ylabel('$\log|E[X^{N}_t-X^{N_0}_t]|$','Interpreter','latex')
+ylabel('$\log|E[X^{N,n_0}_T-X^{N_0,n_0}_T]|$','Interpreter','latex')
 a = plot(log(Ns),log(expectations+1.96*sqrt(var)/sqrt(MC)),'--b');
 plot(log(Ns),log(expectations-1.96*sqrt(var)/sqrt(MC)),'--b')
 legend(a,{'$95\%$ confidence interval'},'Interpreter','latex')
@@ -57,7 +58,7 @@ plot(log(err),log(expectations),'o')
 grid on 
 grid minor
 hold on
-%xlim([min(log(Ns)) max(log(Ns))])
+xlim([min(log(err)) max(log(err))])
 %ylim([min(log(expectations-1.96*sqrt(var)/sqrt(MC))) max(log(expectations+1.96*sqrt(var)/sqrt(MC)))])
 xlabel('$\log||b-b^N||$','Interpreter','latex')
 ylabel('$\log|E[X^{N}_T-X^{N_0}_T]|$','Interpreter','latex')

@@ -26,7 +26,7 @@ for i = 1:length(x)
     end
     hm = sparse(hm);
     % Calculus of the approximation of b(x)
-    output(i) = sqrt(2) * Mu(1,:)*hm(1,:)' + trace(Mu(2:N+2,:)*hm(2:N+2,:)');
+    output(i) = Mu(1,:)*hm(1,:)' + trace(Mu(2:N+2,:)*hm(2:N+2,:)');
 end
 
 end

@@ -1,6 +1,6 @@
-function err = errorb(Mu,N,Nmax)
+function err = errorb(Muerr,N,Nmax)
 
-diag(Mu(N+2:end,:)*Mu(N+2:end,:)')
-err = sqrt(sum(diag(Mu(N+2:end,:)*Mu(N+2:end,:)')));
+diag(Muerr(N+2:end,:)*Muerr(N+2:end,:)')
+err = sqrt(sum(diag(Muerr(N+2:end,:)*Muerr(N+2:end,:)')));
 
 end

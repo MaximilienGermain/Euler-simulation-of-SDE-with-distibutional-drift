@@ -1,11 +1,11 @@
 % To fix omega, we must fix seed and startNT. To fix b we must fix startN, and Kmax
-X0 = 1;
+X0 = 0;
 startNT = 10;
 startN = 3; 
 NT = 10; % Time grid precision 2^(-N)
 N = 8; % Space grid precision 2^(-N)
 T = 1.2;
-Kmax = 5;
+Kmax = 5; % Support [-K,K] for the approximation
 Nx = 1+Kmax*2^(startN+2); % 2 times more precise than the grid for b^N
 H = 0.85;
 graphHaar = 0;
@@ -15,7 +15,7 @@ seed = 2;
 PlotActive = 1;
 
 % [xgrid,B,~] = createfBm(H,Kmax,N,startN,Nx,-Kmax,1000);
-% Mu = computeMu(B,N,testId,Kmax);
+% [Mu,~] = computeMu(B,N,testId,Kmax,H);
 % rng('shuffle');
 % % 
 % graphHaar = 1;
@@ -26,10 +26,10 @@ PlotActive = 1;
 % testId = 1;
 % graphHaar = 1;
 % B = linspace(-Kmax,Kmax,1+Kmax*2^(N+2));
-% Mu = computeMu(B.^2/2,N,testId,Kmax);
+% [Mu,~] = computeMu(B.^2/2,N,testId,Kmax,H);
 % [X,~,frame,haar,control,usual] = eulerMethod(X0,startNT,NT,N,T,H,B.^2/2,Mu,B,testId,Kmax,graphHaar,control,seed,PlotActive);
-% imshow(['Haar H = ',num2str(H),' ; N = ',num2str(N),'.png'])
 % imshow(['Identity test n = ',num2str(NT),' ; N = ',num2str(N),'.png'])
+%imshow(['Haar H = ',num2str(H),' ; N = ',num2str(N),'.png'])
 
 % Convergence in n
 % startNT = 2;
@@ -49,14 +49,14 @@ PlotActive = 1;
 % convergence_N(minN,maxN,X0,startNT,startN,NT,T,H,testId,Kmax,seed,Nx,graphHaar,control,PlotActive)
 
 %  Monte-Carlo N
-MC = 80;
-NT = 12;
+MC = 400;
+NT = 14;
 startNT = NT;
-Nmax = 7;
+Nmax = 8;
 Kmax = 6;
-minN = Nmax-5;
-startN = minN;  
-maxN = Nmax-1; %%   
+maxN = Nmax-1; 
+minN = maxN-5;
+startN = minN;     
 PlotActive = 0;
 [expectations,var] = monteCarlo_N(X0,T,H,Nmax,Kmax,graphHaar,control,testId,minN,maxN,PlotActive,MC,NT,startNT,startN)
 
